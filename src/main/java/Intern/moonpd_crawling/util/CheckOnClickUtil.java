@@ -79,7 +79,6 @@ public class CheckOnClickUtil {
         int pdfOrdinalNumber, String titleText, int index) {
 
         List<WebElement> pdfLinks = null;
-        List<WebElement> titles = null;
 
         if (lstType.equals(LstType.HAS_ONCLICK)) {
             String onClickLstScript = lstLinks.get(index).getAttribute("onclick");

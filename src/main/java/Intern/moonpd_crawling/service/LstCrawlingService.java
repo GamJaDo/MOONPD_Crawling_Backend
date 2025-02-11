@@ -27,7 +27,7 @@ public class LstCrawlingService {
         this.elementFinderUtil = elementFinderUtil;
     }
 
-    public void crawlLst(Target target, String itemLink, String parentPdfIdentifier,
+    public void crawlLst(Target target, String lstLink, String parentPdfIdentifier,
         ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
         int pdfOrdinalNumber, String titleText) {
@@ -40,7 +40,7 @@ public class LstCrawlingService {
         List<WebElement> pdfLinks = null;
 
         try {
-            webDriver.get(itemLink);
+            webDriver.get(lstLink);
             Thread.sleep(500);
 
             pdfLinks = elementFinderUtil.getPdfElements(webDriver, parentPdfIdentifier,

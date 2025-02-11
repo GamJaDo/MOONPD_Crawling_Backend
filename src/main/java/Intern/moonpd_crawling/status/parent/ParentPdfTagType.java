@@ -12,6 +12,7 @@ public enum ParentPdfTagType {
     P("P"), // P 태그
     TD("TD"),
     TR("TR"),
+    LI("LI"),
     NONE("NONE");   // 기본값 (빈 값 또는 null)
 
     private final String value;

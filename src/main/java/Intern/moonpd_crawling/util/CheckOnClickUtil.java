@@ -66,7 +66,7 @@ public class CheckOnClickUtil {
 
             noOnClickBackUtil.goToBackByElement(backElement);
         } else {
-            throw new WebDriverException("Unsupported backIdentifier type");
+            throw new WebDriverException("Unsupported back type");
         }
     }
 
@@ -108,7 +108,7 @@ public class CheckOnClickUtil {
                 childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, parentTitleIdentifier,
                 parentTitleTagType, childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
         } else {
-            throw new WebDriverException("Unsupported lstIdentifier type");
+            throw new WebDriverException("Unsupported lst type");
         }
     }
 

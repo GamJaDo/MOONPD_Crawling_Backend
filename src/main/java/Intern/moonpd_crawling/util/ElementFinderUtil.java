@@ -42,7 +42,7 @@ public class ElementFinderUtil {
         if (childLstTagType.equals(ChildLstTagType.A)) {
             return anchorTagLstUtil.getLstLink(lstLinks, index);
         } else {
-            throw new WebDriverException("Unsupported lstIdentifier type");
+            throw new WebDriverException("Unsupported lst type");
         }
     }
 
@@ -55,7 +55,7 @@ public class ElementFinderUtil {
         } else if (childPdfTagType.equals(ChildPdfTagType.IMG)) {
             return imgTagPdfUtil.getPdfLink(webDriver, pdfLinks, index);
         } else {
-            throw new WebDriverException("Unsupported pdfIdentifier type");
+            throw new WebDriverException("Unsupported pdf type");
         }
     }
 

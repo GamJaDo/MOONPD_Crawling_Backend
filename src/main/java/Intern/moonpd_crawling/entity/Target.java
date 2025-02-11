@@ -51,14 +51,14 @@ public class Target {
     private LstType lstType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "parent_lst_type", nullable = true)
+    @Column(name = "parent_lst_tag_type", nullable = true)
     private ParentLstTagType parentLstTagType;
 
     @Column(name = "parent_lst_identifier", nullable = true)
     private String parentLstIdentifier;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "child_lst_type", nullable = true)
+    @Column(name = "child_lst_tag_type", nullable = true)
     private ChildLstTagType childLstTagType;
 
     @Column(name = "child_lst_identifier", nullable = true)
@@ -74,14 +74,14 @@ public class Target {
     private BackType backType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "parent_back_type", nullable = true)
+    @Column(name = "parent_back_tag_type", nullable = true)
     private ParentBackTagType parentBackTagType;
 
     @Column(name = "parent_back_identifier", nullable = true)
     private String parentBackIdentifier;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "child_back_type", nullable = true)
+    @Column(name = "child_back_tag_type", nullable = true)
     private ChildBackTagType childBackTagType;
 
     @Column(name = "child_back_identifier", nullable = true)

@@ -7,7 +7,9 @@ public enum ChildPdfTagType {
     A("A"),         // 앵커 태그
     BUTTON("BUTTON"), // 버튼 태그
     IMG("IMG"),     // 이미지 태그
-    DIV("DIV"),     // DIV 태그
+    DIV("DIV"),
+    TD("TD"),
+    TR("TR"),// DIV 태그
     NONE("NONE");   // 기본값 (빈 값 또는 null)
 
     private final String value;

@@ -12,6 +12,8 @@ public enum ParentTitleTagType {
     A("A"), // 앵커 태그
     H5("H5"),
     LI("LI"),
+    TR("TR"),
+    TD("TD"),
     NONE("NONE"); // 기본값
 
     private final String value;

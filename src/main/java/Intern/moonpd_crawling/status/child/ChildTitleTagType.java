@@ -13,6 +13,8 @@ public enum ChildTitleTagType {
     H5("H5"),
     LI("LI"),
     H2("H2"),
+    TR("TR"),
+    TD("TD"),
     NONE("NONE"); // 기본값
 
     private final String value;

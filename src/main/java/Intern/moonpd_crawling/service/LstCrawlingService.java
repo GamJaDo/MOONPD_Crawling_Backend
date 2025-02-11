@@ -64,6 +64,11 @@ public class LstCrawlingService {
                         + childTitleIdentifier);
             }
 
+            System.out.println("##############################");
+            System.out.println("pdfLinks.size(): " + pdfLinks.size());
+            System.out.println("titles.size(): " + titles.size());
+            System.out.println("##############################");
+
             for (int i = 0; i < pdfLinks.size(); i++) {
                 String pdfLink = elementFinderUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType,
                     i);

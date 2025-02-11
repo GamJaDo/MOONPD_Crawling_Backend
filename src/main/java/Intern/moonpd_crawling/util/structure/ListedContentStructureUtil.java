@@ -46,6 +46,7 @@ public class ListedContentStructureUtil {
         NextPageType nextPageType, String nextIdentifier) {
 
         List<WebElement> lstLinks = null;
+        List<WebElement> titles = null;
 
         try {
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
@@ -59,6 +60,14 @@ public class ListedContentStructureUtil {
                             + childLstIdentifier);
                 }
 
+                titles = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
+                    parentTitleTagType, childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
+                if (titles.isEmpty()) {
+                    throw new WebDriverException(
+                        "No lst titles found for identifier: " + parentTitleIdentifier + " or "
+                            + childTitleIdentifier);
+                }
+
                 for (int i = 0; i < lstLinks.size(); i++) {
 
                     lstLinks = elementFinderUtil.getLstElements(webDriver,
@@ -69,14 +78,14 @@ public class ListedContentStructureUtil {
                     새로 조회(re-fetch) 함...
                      */
 
+                    String titleText = titles.get(i).getText();
+
                     checkOnClickUtil.checkOnClickLst(webDriver, target, lstLinks, lstType,
                         childLstTagType,
                         backType, parentBackIdentifier, parentBackTagType, childBackIdentifier,
                         childBackTagType, backOrdinalNumber, parentPdfIdentifier, parentPdfTagType,
                         childPdfIdentifier,
-                        childPdfTagType, pdfOrdinalNumber, parentTitleIdentifier,
-                        parentTitleTagType,
-                        childTitleIdentifier, childTitleTagType, titleOrdinalNumber, i);
+                        childPdfTagType, pdfOrdinalNumber, titleText , i);
                 }
 
                 if (currentPage < totalPage) {

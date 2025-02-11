@@ -30,16 +30,13 @@ public class LstCrawlingService {
     public void crawlLst(Target target, String itemLink, String parentPdfIdentifier,
         ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
-        int pdfOrdinalNumber, int titleOrdinalNumber,
-        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType) {
+        int pdfOrdinalNumber, String titleText) {
 
         System.setProperty("webdriver.chrome.driver",
             "C:\\tools\\chromedriver-win64\\chromedriver.exe");
 
         WebDriver webDriver = new ChromeDriver();
 
-        List<WebElement> titles = null;
         List<WebElement> pdfLinks = null;
 
         try {
@@ -55,24 +52,9 @@ public class LstCrawlingService {
                         + childPdfIdentifier);
             }
 
-            titles = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
-                parentTitleTagType,
-                childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
-            if (titles.isEmpty()) {
-                throw new WebDriverException(
-                    "No titles found for identifier: " + parentTitleIdentifier + " or "
-                        + childTitleIdentifier);
-            }
-
-            System.out.println("##############################");
-            System.out.println("pdfLinks.size(): " + pdfLinks.size());
-            System.out.println("titles.size(): " + titles.size());
-            System.out.println("##############################");
-
             for (int i = 0; i < pdfLinks.size(); i++) {
                 String pdfLink = elementFinderUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType,
                     i);
-                String titleText = titles.get(i).getText();
 
                 if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
                     continue;

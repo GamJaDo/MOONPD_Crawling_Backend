@@ -25,7 +25,7 @@ public class HasOnClickLstUtil {
     }
 
     public void goToLstByOnclick(WebDriver webDriver, Target target, String onClickLstScript,
-        List<WebElement> pdfLinks, List<WebElement> titles, ChildPdfTagType childPdfTagType) {
+        List<WebElement> pdfLinks, String titleText, ChildPdfTagType childPdfTagType) {
 
         try {
             JavascriptExecutor js = (JavascriptExecutor) webDriver;
@@ -33,7 +33,6 @@ public class HasOnClickLstUtil {
 
             for (int i = 0; i < pdfLinks.size(); i++) {
                 String pdfLink = elementFinderUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType, i);
-                String titleText = titles.get(i).getText();
 
                 if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
                     continue;

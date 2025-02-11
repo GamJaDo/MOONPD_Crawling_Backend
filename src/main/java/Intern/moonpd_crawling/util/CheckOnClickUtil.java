@@ -76,10 +76,7 @@ public class CheckOnClickUtil {
         String childBackIdentifier, ChildBackTagType childBackTagType, int backOrdinalNumber,
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
-        int pdfOrdinalNumber,
-        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
-        int index) {
+        int pdfOrdinalNumber, String titleText, int index) {
 
         List<WebElement> pdfLinks = null;
         List<WebElement> titles = null;
@@ -91,12 +88,9 @@ public class CheckOnClickUtil {
                 parentPdfIdentifier,
                 parentPdfTagType,
                 childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
-             titles = elementFinderUtil.getTitleElements(webDriver,
-                parentTitleIdentifier,
-                parentTitleTagType, childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
 
             hasOnClickLstUtil.goToLstByOnclick(webDriver, target, onClickLstScript, pdfLinks,
-                titles, childPdfTagType);
+                titleText, childPdfTagType);
 
             checkOnClickBack(webDriver, backType, parentBackIdentifier, parentBackTagType,
                 childBackIdentifier, childBackTagType, backOrdinalNumber);
@@ -105,8 +99,7 @@ public class CheckOnClickUtil {
 
             noOnClickLstUtil.goToLstByElement(target, lstLink, parentPdfIdentifier,
                 parentPdfTagType,
-                childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, parentTitleIdentifier,
-                parentTitleTagType, childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
+                childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleText);
         } else {
             throw new WebDriverException("Unsupported lst type");
         }

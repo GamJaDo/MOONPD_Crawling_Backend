@@ -20,14 +20,10 @@ public class NoOnClickLstUtil {
     public void goToLstByElement(Target target, String lstLink,
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
-        int pdfOrdinalNumber,
-        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber) {
+        int pdfOrdinalNumber, String titleText) {
 
         lstCrawlingService.crawlLst(target, lstLink,
             parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-            pdfOrdinalNumber, titleOrdinalNumber,
-            parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-            childTitleTagType);
+            pdfOrdinalNumber, titleText);
     }
 }

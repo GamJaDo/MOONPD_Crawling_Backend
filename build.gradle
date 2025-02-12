@@ -25,7 +25,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.27.0'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.28.1'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

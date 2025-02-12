@@ -8,10 +8,8 @@ import Intern.moonpd_crawling.status.NextPageType;
 import Intern.moonpd_crawling.status.child.ChildBackTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
-import Intern.moonpd_crawling.status.child.ChildTitleTagType;
 import Intern.moonpd_crawling.status.parent.ParentBackTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
-import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
 import Intern.moonpd_crawling.util.BackCrawling.HasOnClickBackUtil;
 import Intern.moonpd_crawling.util.BackCrawling.NoOnClickBackUtil;
 import Intern.moonpd_crawling.util.lstCrawling.HasOnClickLstUtil;
@@ -78,18 +76,12 @@ public class CheckOnClickUtil {
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
         int pdfOrdinalNumber, String titleText, int index) {
 
-        List<WebElement> pdfLinks = null;
-
         if (lstType.equals(LstType.HAS_ONCLICK)) {
             String onClickLstScript = lstLinks.get(index).getAttribute("onclick");
 
-            pdfLinks = elementFinderUtil.getPdfElements(webDriver,
+            hasOnClickLstUtil.goToLstByOnclick(webDriver, target, onClickLstScript,
                 parentPdfIdentifier,
-                parentPdfTagType,
-                childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
-
-            hasOnClickLstUtil.goToLstByOnclick(webDriver, target, onClickLstScript, pdfLinks,
-                titleText, childPdfTagType);
+                parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleText);
 
             checkOnClickBack(webDriver, backType, parentBackIdentifier, parentBackTagType,
                 childBackIdentifier, childBackTagType, backOrdinalNumber);

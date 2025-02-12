@@ -5,6 +5,7 @@ import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.repository.CrawlingDataRepository;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
+import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import java.util.List;
 import org.openqa.selenium.JavascriptExecutor;
@@ -25,14 +26,25 @@ public class HasOnClickLstUtil {
     }
 
     public void goToLstByOnclick(WebDriver webDriver, Target target, String onClickLstScript,
-        List<WebElement> pdfLinks, String titleText, ChildPdfTagType childPdfTagType) {
+        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
+        String titleText) {
 
         try {
             JavascriptExecutor js = (JavascriptExecutor) webDriver;
             js.executeScript(onClickLstScript);
 
+        } catch (Exception e) {
+            throw new WebDriverException("Failed to execute onclick script: " + onClickLstScript);
+        }
+
+        List<WebElement> pdfLinks = elementFinderUtil.getPdfElements(webDriver, parentPdfIdentifier,
+            parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
+
+        if (!pdfLinks.isEmpty()) {
             for (int i = 0; i < pdfLinks.size(); i++) {
-                String pdfLink = elementFinderUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType, i);
+                String pdfLink = elementFinderUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType,
+                    i);
 
                 if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
                     continue;
@@ -43,8 +55,6 @@ public class HasOnClickLstUtil {
 
                 crawlingDataRepository.save(crawlingData);
             }
-        } catch (Exception e) {
-            throw new WebDriverException("Failed to execute onclick script: " + onClickLstScript);
         }
     }
 }

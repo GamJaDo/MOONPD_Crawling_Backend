@@ -67,6 +67,12 @@ public class SinglePageStructureUtil {
                             + childTitleIdentifier);
                 }
 
+                if (pdfLinks.size() != titles.size()) {
+                    int diff = Math.abs(pdfLinks.size() - titles.size());
+
+                    pdfLinks = pdfLinks.subList(diff, pdfLinks.size());
+                }
+
                 for (int i = 0; i < pdfLinks.size(); i++) {
                     String pdfLink = elementFinderUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType,
                         i);

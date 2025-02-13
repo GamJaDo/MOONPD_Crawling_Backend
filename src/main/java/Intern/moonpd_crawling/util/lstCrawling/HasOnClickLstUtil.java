@@ -4,7 +4,9 @@ import Intern.moonpd_crawling.entity.CrawlingData;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.repository.CrawlingDataRepository;
+import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
+import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import java.util.List;
@@ -25,7 +27,10 @@ public class HasOnClickLstUtil {
         this.elementFinderUtil = elementFinderUtil;
     }
 
-    public void goToLstByOnclick(WebDriver webDriver, Target target, String onClickLstScript,
+    public void goToLstByOnclick(WebDriver webDriver,
+        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
+        Target target, String onClickLstScript,
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
         String titleText) {
@@ -38,7 +43,10 @@ public class HasOnClickLstUtil {
             throw new WebDriverException("Failed to execute onclick script: " + onClickLstScript);
         }
 
-        List<WebElement> pdfLinks = elementFinderUtil.getPdfElements(webDriver, parentPdfIdentifier,
+        List<WebElement> pdfLinks = elementFinderUtil.getPdfElements(webDriver,
+            extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+            extendedPdfOrdinalNumber,
+            parentPdfIdentifier,
             parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
 
         if (!pdfLinks.isEmpty()) {

@@ -3,12 +3,14 @@ package Intern.moonpd_crawling.util;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.status.BackType;
+import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.NextPageType;
 import Intern.moonpd_crawling.status.child.ChildBackTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentBackTagType;
+import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.util.BackCrawling.HasOnClickBackUtil;
 import Intern.moonpd_crawling.util.BackCrawling.NoOnClickBackUtil;
@@ -68,7 +70,10 @@ public class CheckOnClickUtil {
         }
     }
 
-    public void checkOnClickLst(WebDriver webDriver, Target target, List<WebElement> lstLinks,
+    public void checkOnClickLst(WebDriver webDriver, Target target,
+        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
+        List<WebElement> lstLinks,
         LstType lstType, ChildLstTagType childLstTagType,
         BackType backType, String parentBackIdentifier, ParentBackTagType parentBackTagType,
         String childBackIdentifier, ChildBackTagType childBackTagType, int backOrdinalNumber,
@@ -79,7 +84,9 @@ public class CheckOnClickUtil {
         if (lstType.equals(LstType.HAS_ONCLICK)) {
             String onClickLstScript = lstLinks.get(index).getAttribute("onclick");
 
-            hasOnClickLstUtil.goToLstByOnclick(webDriver, target, onClickLstScript,
+            hasOnClickLstUtil.goToLstByOnclick(webDriver, extendedPdfType,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+                extendedPdfOrdinalNumber, target, onClickLstScript,
                 parentPdfIdentifier,
                 parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleText);
 
@@ -88,7 +95,8 @@ public class CheckOnClickUtil {
         } else if (lstType.equals(LstType.NO_ONCLICK)) {
             String lstLink = elementFinderUtil.getLstLink(lstLinks, childLstTagType, index);
 
-            noOnClickLstUtil.goToLstByElement(target, lstLink, parentPdfIdentifier,
+            noOnClickLstUtil.goToLstByElement(target, extendedPdfType, parentExtendedPdfIdentifier,
+                parentExtendedPdfTagType, extendedPdfOrdinalNumber, lstLink, parentPdfIdentifier,
                 parentPdfTagType,
                 childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleText);
         } else {

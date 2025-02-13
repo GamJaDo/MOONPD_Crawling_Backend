@@ -3,6 +3,7 @@ package Intern.moonpd_crawling.util.structure;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.status.BackType;
+import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.NextPageType;
 import Intern.moonpd_crawling.status.child.ChildBackTagType;
@@ -10,6 +11,7 @@ import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.child.ChildTitleTagType;
 import Intern.moonpd_crawling.status.parent.ParentBackTagType;
+import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentLstTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
@@ -32,12 +34,15 @@ public class ListedContentStructureUtil {
         this.elementFinderUtil = elementFinderUtil;
     }
 
-    public void crawl(WebDriver webDriver, Target target, LstType lstType,
+    public void crawl(WebDriver webDriver, Target target,
+        LstType lstType,
         String parentLstIdentifier, ParentLstTagType parentLstTagType,
         String childLstIdentifier, ChildLstTagType childLstTagType, int lstOrdinalNumber,
         BackType backType, String parentBackIdentifier, ParentBackTagType parentBackTagType,
         String childBackIdentifier, ChildBackTagType childBackTagType, int backOrdinalNumber,
         int totalPage,
+        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
         int pdfOrdinalNumber,
@@ -60,32 +65,45 @@ public class ListedContentStructureUtil {
                             + childLstIdentifier);
                 }
 
+                System.out.println(
+                    "\n ############ lstLinks.size(): " + lstLinks.size() + " ############ \n");
+
                 titles = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
-                    parentTitleTagType, childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
+                    parentTitleTagType, childTitleIdentifier, childTitleTagType,
+                    titleOrdinalNumber);
                 if (titles.isEmpty()) {
                     throw new WebDriverException(
                         "No lst titles found for identifier: " + parentTitleIdentifier + " or "
                             + childTitleIdentifier);
                 }
 
-                for (int i = 0; i < lstLinks.size(); i++) {
+                if (lstLinks.size() != titles.size()) {
+                    int diff = Math.abs(lstLinks.size() - titles.size());
 
-                    lstLinks = elementFinderUtil.getLstElements(webDriver,
-                        parentLstIdentifier, parentLstTagType, childLstIdentifier, childLstTagType,
-                        lstOrdinalNumber);
+                    lstLinks = lstLinks.subList(diff, lstLinks.size());
+                }
+
+                for (int i = 0; i < lstLinks.size(); i++) {
                     /*
+                    lstLinks = elementFinderUtil.getLstElements(webDriver,
+                        parentLstIdentifier, parentLstTagType,
+                        childLstIdentifier, childLstTagType, lstOrdinalNumber);
+
                     stLinks 리스트는 페이지가 업데이트되거나 DOM이 변경될 때 "stale" 상태가 되어 이전에 저장된 요소 참조가 더 이상 유효하지 않게되므로
                     새로 조회(re-fetch) 함...
-                     */
 
+                    */
                     String titleText = titles.get(i).getText();
 
-                    checkOnClickUtil.checkOnClickLst(webDriver, target, lstLinks, lstType,
+                    checkOnClickUtil.checkOnClickLst(webDriver, target,
+                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+                        extendedPdfOrdinalNumber,
+                        lstLinks, lstType,
                         childLstTagType,
                         backType, parentBackIdentifier, parentBackTagType, childBackIdentifier,
                         childBackTagType, backOrdinalNumber, parentPdfIdentifier, parentPdfTagType,
                         childPdfIdentifier,
-                        childPdfTagType, pdfOrdinalNumber, titleText , i);
+                        childPdfTagType, pdfOrdinalNumber, titleText, i);
                 }
 
                 if (currentPage < totalPage) {

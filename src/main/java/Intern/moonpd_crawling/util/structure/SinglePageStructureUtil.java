@@ -4,9 +4,11 @@ import Intern.moonpd_crawling.entity.CrawlingData;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.repository.CrawlingDataRepository;
+import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.NextPageType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.child.ChildTitleTagType;
+import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
 import Intern.moonpd_crawling.util.CheckOnClickUtil;
@@ -31,6 +33,8 @@ public class SinglePageStructureUtil {
     }
 
     public void crawl(WebDriver webDriver, Target target, int totalPage,
+        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
         int pdfOrdinalNumber,
@@ -45,7 +49,9 @@ public class SinglePageStructureUtil {
         try {
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
 
-                pdfLinks = elementFinderUtil.getPdfElements(webDriver, parentPdfIdentifier, parentPdfTagType,
+                pdfLinks = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
+                    parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                    parentPdfIdentifier, parentPdfTagType,
                     childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
                 if (pdfLinks.isEmpty()) {
                     throw new WebDriverException(

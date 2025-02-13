@@ -4,7 +4,9 @@ import Intern.moonpd_crawling.entity.CrawlingData;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.repository.CrawlingDataRepository;
+import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
+import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import java.util.List;
@@ -25,7 +27,9 @@ public class LstCrawlingService {
         this.elementFinderUtil = elementFinderUtil;
     }
 
-    public void crawlLst(Target target, String lstLink, String parentPdfIdentifier,
+    public void crawlLst(Target target, ExtendedPdfType extendedPdfType,
+        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
+        int extendedPdfOrdinalNumber, String lstLink, String parentPdfIdentifier,
         ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
         int pdfOrdinalNumber, String titleText) {
@@ -41,7 +45,9 @@ public class LstCrawlingService {
             webDriver.get(lstLink);
             Thread.sleep(500);
 
-            pdfLinks = elementFinderUtil.getPdfElements(webDriver, parentPdfIdentifier,
+            pdfLinks = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+                extendedPdfOrdinalNumber, parentPdfIdentifier,
                 parentPdfTagType,
                 childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
 

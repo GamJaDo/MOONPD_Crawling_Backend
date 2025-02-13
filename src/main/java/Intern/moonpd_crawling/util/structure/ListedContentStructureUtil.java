@@ -6,6 +6,7 @@ import Intern.moonpd_crawling.status.BackType;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.NextPageType;
+import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.child.ChildBackTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
@@ -43,7 +44,7 @@ public class ListedContentStructureUtil {
         int totalPage,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
         int pdfOrdinalNumber,
         String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
@@ -64,9 +65,6 @@ public class ListedContentStructureUtil {
                         "No lst links found for identifier: " + parentLstIdentifier + " or "
                             + childLstIdentifier);
                 }
-
-                System.out.println(
-                    "\n ############ lstLinks.size(): " + lstLinks.size() + " ############ \n");
 
                 titles = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
                     parentTitleTagType, childTitleIdentifier, childTitleTagType,

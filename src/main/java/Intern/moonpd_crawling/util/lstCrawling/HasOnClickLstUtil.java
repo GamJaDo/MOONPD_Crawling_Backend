@@ -38,7 +38,6 @@ public class HasOnClickLstUtil {
         try {
             JavascriptExecutor js = (JavascriptExecutor) webDriver;
             js.executeScript(onClickLstScript);
-
         } catch (Exception e) {
             throw new WebDriverException("Failed to execute onclick script: " + onClickLstScript);
         }

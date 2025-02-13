@@ -6,6 +6,7 @@ import Intern.moonpd_crawling.status.BackType;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.NextPageType;
+import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.child.ChildBackTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
@@ -18,6 +19,8 @@ import Intern.moonpd_crawling.util.lstCrawling.HasOnClickLstUtil;
 import Intern.moonpd_crawling.util.lstCrawling.NoOnClickLstUtil;
 import Intern.moonpd_crawling.util.nextPageCrawling.HasOnClickNextPageUtil;
 import Intern.moonpd_crawling.util.nextPageCrawling.NoOnClickNextPageUtil;
+import Intern.moonpd_crawling.util.pdfCrawling.HasOnClickPdfUtil;
+import Intern.moonpd_crawling.util.pdfCrawling.NoOnclickPdfUtil;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -30,18 +33,23 @@ public class CheckOnClickUtil {
     private final NoOnClickLstUtil noOnClickLstUtil;
     private final HasOnClickBackUtil hasOnClickBackUtil;
     private final NoOnClickBackUtil noOnClickBackUtil;
+    private final HasOnClickPdfUtil hasOnClickPdfUtil;
+    private final NoOnclickPdfUtil noOnclickPdfUtil;
     private final HasOnClickNextPageUtil hasOnClickNextPageUtil;
     private final NoOnClickNextPageUtil noOnClickNextPageUtil;
     private final ElementFinderUtil elementFinderUtil;
 
     public CheckOnClickUtil(HasOnClickLstUtil hasOnClickLstUtil, NoOnClickLstUtil noOnClickLstUtil,
         HasOnClickBackUtil hasOnClickBackUtil, NoOnClickBackUtil noOnClickBackUtil,
+        HasOnClickPdfUtil hasOnClickPdfUtil, NoOnclickPdfUtil noOnclickPdfUtil,
         HasOnClickNextPageUtil hasOnClickNextPageUtil, NoOnClickNextPageUtil noOnClickNextPageUtil,
         ElementFinderUtil elementFinderUtil) {
         this.hasOnClickLstUtil = hasOnClickLstUtil;
         this.noOnClickLstUtil = noOnClickLstUtil;
         this.hasOnClickBackUtil = hasOnClickBackUtil;
         this.noOnClickBackUtil = noOnClickBackUtil;
+        this.hasOnClickPdfUtil = hasOnClickPdfUtil;
+        this.noOnclickPdfUtil = noOnclickPdfUtil;
         this.hasOnClickNextPageUtil = hasOnClickNextPageUtil;
         this.noOnClickNextPageUtil = noOnClickNextPageUtil;
         this.elementFinderUtil = elementFinderUtil;
@@ -82,6 +90,7 @@ public class CheckOnClickUtil {
         int pdfOrdinalNumber, String titleText, int index) {
 
         if (lstType.equals(LstType.HAS_ONCLICK)) {
+
             String onClickLstScript = lstLinks.get(index).getAttribute("onclick");
 
             hasOnClickLstUtil.goToLstByOnclick(webDriver, extendedPdfType,
@@ -104,8 +113,25 @@ public class CheckOnClickUtil {
         }
     }
 
+    public String checkOnClickPdf(WebDriver webDriver, PdfType pdfType, List<WebElement> pdfLinks,
+        ChildPdfTagType childPdfTagType, int index) {
+
+        if (pdfType.equals(PdfType.HAS_ONCLICK)) {
+
+            String onClickPdfScript = pdfLinks.get(index).getAttribute("onclick");
+
+            return hasOnClickPdfUtil.getPdfLinkByOnClick(webDriver, onClickPdfScript);
+
+        } else if (pdfType.equals(PdfType.NO_ONCLICK)) {
+            return noOnclickPdfUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType, index);
+        } else {
+            throw new WebDriverException("Unsupported pdf type");
+        }
+    }
+
     public void checkOnClickNextPage(WebDriver webDriver, NextPageType nextPageType,
         String nextIdentifier, int currentPage) throws InterruptedException {
+
         if (nextPageType.equals(NextPageType.HAS_ONCLICK)) {
             hasOnClickNextPageUtil.goToNextPageByOnclick(webDriver, nextIdentifier,
                 currentPage + 1);

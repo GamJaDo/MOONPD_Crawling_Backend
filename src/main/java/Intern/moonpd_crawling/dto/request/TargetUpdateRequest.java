@@ -4,6 +4,7 @@ import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.status.BackType;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
+import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.child.ChildBackTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
@@ -31,7 +32,7 @@ public record TargetUpdateRequest(OrganizationType organizationType, String regi
                                   ExtendedPdfType extendedPdfType,
                                   String parentExtendedPdfIdentifier,
                                   ParentExtendedPdfTagType parentExtendedPdfTagType,
-                                  int extendedPdfOrdinalNumber,
+                                  int extendedPdfOrdinalNumber, PdfType pdfType,
                                   String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
                                   String childPdfIdentifier, ChildPdfTagType childPdfTagType,
                                   int pdfOrdinalNumber, int titleOrdinalNumber,
@@ -43,16 +44,13 @@ public record TargetUpdateRequest(OrganizationType organizationType, String regi
 
     public Target toEntity() {
         return new Target(organizationType, region, group, structureType,
-            lstType,
-            parentLstTagType, parentLstIdentifier, childLstTagType, childLstIdentifier,
+            lstType, parentLstTagType, parentLstIdentifier, childLstTagType, childLstIdentifier,
             lstOrdinalNumber, backType, parentBackTagType, parentBackIdentifier,
-            childBackTagType, childBackIdentifier, backOrdinalNumber,
-            pageUrl, totalPage, extendedPdfType, parentExtendedPdfIdentifier,
-            parentExtendedPdfTagType,
-            extendedPdfOrdinalNumber,
-            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-            pdfOrdinalNumber, titleOrdinalNumber, parentTitleIdentifier, parentTitleTagType,
-            childTitleIdentifier, childTitleTagType,
+            childBackTagType, childBackIdentifier, backOrdinalNumber, pageUrl, totalPage,
+            extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+            extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
+            childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleOrdinalNumber,
+            parentTitleIdentifier, parentTitleTagType, childTitleIdentifier, childTitleTagType,
             nextPageType, nextIdentifier);
     }
 }

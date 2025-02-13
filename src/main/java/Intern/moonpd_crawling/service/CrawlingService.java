@@ -6,6 +6,7 @@ import Intern.moonpd_crawling.repository.TargetRepository;
 import Intern.moonpd_crawling.status.BackType;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
+import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.child.ChildBackTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
@@ -80,6 +81,7 @@ public class CrawlingService {
                 ParentExtendedPdfTagType parentExtendedPdfTagType = target.getParentExtendedPdfTagType();
                 int extendedPdfOrdinalNumber = target.getExtendedPdfOrdinalNumber();
 
+                PdfType pdfType = target.getPdfType();
                 String parentPdfIdentifier = target.getParentPdfIdentifier();
                 ParentPdfTagType parentPdfTagType = target.getParentPdfTagType();
                 String childPdfIdentifier = target.getChildPdfIdentifier();
@@ -98,7 +100,7 @@ public class CrawlingService {
                 if (structureType.equals(StructureType.SINGLE_PAGE)) {
                     singlePageStructureUtil.crawl(webDriver, target, totalPage,
                         extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber,
+                        extendedPdfOrdinalNumber, pdfType,
                         parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
                         pdfOrdinalNumber,
                         parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
@@ -115,7 +117,7 @@ public class CrawlingService {
                         childBackTagType, backOrdinalNumber,
                         totalPage,
                         extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber,
+                        extendedPdfOrdinalNumber, pdfType,
                         parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
                         pdfOrdinalNumber,
                         parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,

@@ -6,6 +6,7 @@ import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.repository.CrawlingDataRepository;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.NextPageType;
+import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.child.ChildTitleTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
@@ -35,7 +36,7 @@ public class SinglePageStructureUtil {
     public void crawl(WebDriver webDriver, Target target, int totalPage,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
         int pdfOrdinalNumber,
         String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
@@ -74,8 +75,8 @@ public class SinglePageStructureUtil {
                 }
 
                 for (int i = 0; i < pdfLinks.size(); i++) {
-                    String pdfLink = elementFinderUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType,
-                        i);
+
+                    String pdfLink = checkOnClickUtil.checkOnClickPdf(webDriver, pdfType, pdfLinks, childPdfTagType, i);
                     String titleText = titles.get(i).getText();
 
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {

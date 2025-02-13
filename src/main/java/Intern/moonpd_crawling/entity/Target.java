@@ -4,6 +4,7 @@ import Intern.moonpd_crawling.dto.response.TargetViewResponse;
 import Intern.moonpd_crawling.status.BackType;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
+import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.child.ChildBackTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
@@ -119,6 +120,10 @@ public class Target {
 
     // #############################################################################################
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "pdf_type", nullable = true)
+    private PdfType pdfType;
+
     @Column(name = "parent_pdf_identifier", nullable = true)
     private String parentPdfIdentifier;
 
@@ -186,7 +191,7 @@ public class Target {
         String pageUrl,
         int totalPage, ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier,
         ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, int titleOrdinalNumber,
         String parentTitleIdentifier,
@@ -216,6 +221,7 @@ public class Target {
         this.parentExtendedPdfIdentifier = parentExtendedPdfIdentifier;
         this.parentExtendedPdfTagType = parentExtendedPdfTagType;
         this.extendedPdfOrdinalNumber = extendedPdfOrdinalNumber;
+        this.pdfType = pdfType;
         this.parentPdfIdentifier = parentPdfIdentifier;
         this.parentPdfTagType = parentPdfTagType;
         this.childPdfIdentifier = childPdfIdentifier;
@@ -261,6 +267,7 @@ public class Target {
         this.parentExtendedPdfIdentifier = target.getParentExtendedPdfIdentifier();
         this.parentExtendedPdfTagType = target.getParentExtendedPdfTagType();
         this.extendedPdfOrdinalNumber = target.getExtendedPdfOrdinalNumber();
+        this.pdfType = target.getPdfType();
         this.parentPdfIdentifier = target.getParentPdfIdentifier();
         this.parentPdfTagType = target.getParentPdfTagType();
         this.childPdfIdentifier = target.getChildPdfIdentifier();

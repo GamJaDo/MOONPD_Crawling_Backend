@@ -5,9 +5,11 @@ import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.repository.CrawlingDataRepository;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
+import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
+import Intern.moonpd_crawling.util.CheckOnClickPdfUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import java.util.List;
 import org.openqa.selenium.JavascriptExecutor;
@@ -19,18 +21,20 @@ import org.springframework.stereotype.Component;
 public class HasOnClickLstUtil {
 
     private final CrawlingDataRepository crawlingDataRepository;
+    private final CheckOnClickPdfUtil checkOnClickPdfUtil;
     private final ElementFinderUtil elementFinderUtil;
 
     public HasOnClickLstUtil(CrawlingDataRepository crawlingDataRepository,
-        ElementFinderUtil elementFinderUtil) {
+        CheckOnClickPdfUtil checkOnClickPdfUtil, ElementFinderUtil elementFinderUtil) {
         this.crawlingDataRepository = crawlingDataRepository;
+        this.checkOnClickPdfUtil = checkOnClickPdfUtil;
         this.elementFinderUtil = elementFinderUtil;
     }
 
-    public void goToLstByOnclick(WebDriver webDriver,
+    public void goToLstByOnclick(WebDriver webDriver, String pageUrl,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        Target target, String onClickLstScript,
+        Target target, String onClickLstScript, PdfType pdfType,
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
         String titleText) {
@@ -50,8 +54,9 @@ public class HasOnClickLstUtil {
 
         if (!pdfLinks.isEmpty()) {
             for (int i = 0; i < pdfLinks.size(); i++) {
-                String pdfLink = elementFinderUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType,
-                    i);
+
+                String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl, pdfType,
+                    pdfLinks, childPdfTagType, i);
 
                 if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
                     continue;

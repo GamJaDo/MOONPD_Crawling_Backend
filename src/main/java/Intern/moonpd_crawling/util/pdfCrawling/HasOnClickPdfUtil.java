@@ -1,22 +1,43 @@
 package Intern.moonpd_crawling.util.pdfCrawling;
 
-import Intern.moonpd_crawling.exception.WebDriverException;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.openqa.selenium.WebDriverException;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HasOnClickPdfUtil {
 
-    public String getPdfLinkByOnClick(WebDriver webDriver, String onClickPdfScript){
-
+    public String getPdfLinkByOnClick(String pageUrl, String onClickPdfScript) {
         try {
-            JavascriptExecutor js = (JavascriptExecutor) webDriver;
-            js.executeScript(onClickPdfScript);
-        } catch (Exception e) {
-            throw new WebDriverException("Failed to execute onclick script: " + onClickPdfScript);
-        }
+            URL url = new URL(pageUrl);
+            String baseDomain = url.getProtocol() + "://" + url.getHost();
 
-        return "temp";
+            String regex;
+            String endpoint;
+
+            if (onClickPdfScript.contains("fn_egov_downFile")) {
+                regex = "fn_egov_downFile\\('([^']+)'\\s*,\\s*'([^']+)'\\)";
+                endpoint = "/cmm/fms/FileDown.do";
+            } else if (onClickPdfScript.contains("yhLib.file.download")) {
+                regex = "yhLib\\.file\\.download\\('([^']+)'\\s*,\\s*'([^']+)'\\)";
+                endpoint = "/common/file/download.do";
+            } else {
+                throw new WebDriverException("Unknown PDF download function in script: " + onClickPdfScript);
+            }
+
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(onClickPdfScript);
+            if (matcher.find() && matcher.groupCount() >= 2) {
+                String atchFileId = matcher.group(1);
+                String fileSn = matcher.group(2);
+                return baseDomain + endpoint + "?atchFileId=" + atchFileId + "&fileSn=" + fileSn;
+            } else {
+                throw new WebDriverException("Failed to extract parameters using regex: " + regex + " from script: " + onClickPdfScript);
+            }
+        } catch (Exception e) {
+            throw new WebDriverException("Error processing pageUrl: " + pageUrl, e);
+        }
     }
 }

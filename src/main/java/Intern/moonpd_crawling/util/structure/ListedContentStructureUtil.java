@@ -35,7 +35,7 @@ public class ListedContentStructureUtil {
         this.elementFinderUtil = elementFinderUtil;
     }
 
-    public void crawl(WebDriver webDriver, Target target,
+    public void crawl(WebDriver webDriver, String pageUrl, Target target,
         LstType lstType,
         String parentLstIdentifier, ParentLstTagType parentLstTagType,
         String childLstIdentifier, ChildLstTagType childLstTagType, int lstOrdinalNumber,
@@ -93,15 +93,13 @@ public class ListedContentStructureUtil {
                     */
                     String titleText = titles.get(i).getText();
 
-                    checkOnClickUtil.checkOnClickLst(webDriver, target,
+                    checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target,
                         extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber,
-                        lstLinks, lstType,
-                        childLstTagType,
-                        backType, parentBackIdentifier, parentBackTagType, childBackIdentifier,
-                        childBackTagType, backOrdinalNumber, parentPdfIdentifier, parentPdfTagType,
-                        childPdfIdentifier,
-                        childPdfTagType, pdfOrdinalNumber, titleText, i);
+                        extendedPdfOrdinalNumber, lstLinks, lstType, childLstTagType, backType,
+                        parentBackIdentifier, parentBackTagType, childBackIdentifier,
+                        childBackTagType, backOrdinalNumber, pdfType, parentPdfIdentifier,
+                        parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber,
+                        titleText, i);
                 }
 
                 if (currentPage < totalPage) {

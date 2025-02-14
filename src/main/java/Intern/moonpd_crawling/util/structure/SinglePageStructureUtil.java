@@ -12,6 +12,7 @@ import Intern.moonpd_crawling.status.child.ChildTitleTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
+import Intern.moonpd_crawling.util.CheckOnClickPdfUtil;
 import Intern.moonpd_crawling.util.CheckOnClickUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import java.util.List;
@@ -24,16 +25,19 @@ public class SinglePageStructureUtil {
 
     private final CrawlingDataRepository crawlingDataRepository;
     private final CheckOnClickUtil checkOnClickUtil;
+    private final CheckOnClickPdfUtil checkOnClickPdfUtil;
     private final ElementFinderUtil elementFinderUtil;
 
     public SinglePageStructureUtil(CrawlingDataRepository crawlingDataRepository,
-        CheckOnClickUtil checkOnClickUtil, ElementFinderUtil elementFinderUtil) {
+        CheckOnClickUtil checkOnClickUtil, CheckOnClickPdfUtil checkOnClickPdfUtil,
+        ElementFinderUtil elementFinderUtil) {
         this.crawlingDataRepository = crawlingDataRepository;
         this.checkOnClickUtil = checkOnClickUtil;
+        this.checkOnClickPdfUtil = checkOnClickPdfUtil;
         this.elementFinderUtil = elementFinderUtil;
     }
 
-    public void crawl(WebDriver webDriver, Target target, int totalPage,
+    public void crawl(WebDriver webDriver, String pageUrl, Target target, int totalPage,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
@@ -76,7 +80,7 @@ public class SinglePageStructureUtil {
 
                 for (int i = 0; i < pdfLinks.size(); i++) {
 
-                    String pdfLink = checkOnClickUtil.checkOnClickPdf(webDriver, pdfType, pdfLinks, childPdfTagType, i);
+                    String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl, pdfType, pdfLinks, childPdfTagType, i);
                     String titleText = titles.get(i).getText();
 
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {

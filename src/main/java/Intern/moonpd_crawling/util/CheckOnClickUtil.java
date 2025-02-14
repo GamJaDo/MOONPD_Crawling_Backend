@@ -19,8 +19,6 @@ import Intern.moonpd_crawling.util.lstCrawling.HasOnClickLstUtil;
 import Intern.moonpd_crawling.util.lstCrawling.NoOnClickLstUtil;
 import Intern.moonpd_crawling.util.nextPageCrawling.HasOnClickNextPageUtil;
 import Intern.moonpd_crawling.util.nextPageCrawling.NoOnClickNextPageUtil;
-import Intern.moonpd_crawling.util.pdfCrawling.HasOnClickPdfUtil;
-import Intern.moonpd_crawling.util.pdfCrawling.NoOnclickPdfUtil;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -33,23 +31,18 @@ public class CheckOnClickUtil {
     private final NoOnClickLstUtil noOnClickLstUtil;
     private final HasOnClickBackUtil hasOnClickBackUtil;
     private final NoOnClickBackUtil noOnClickBackUtil;
-    private final HasOnClickPdfUtil hasOnClickPdfUtil;
-    private final NoOnclickPdfUtil noOnclickPdfUtil;
     private final HasOnClickNextPageUtil hasOnClickNextPageUtil;
     private final NoOnClickNextPageUtil noOnClickNextPageUtil;
     private final ElementFinderUtil elementFinderUtil;
 
     public CheckOnClickUtil(HasOnClickLstUtil hasOnClickLstUtil, NoOnClickLstUtil noOnClickLstUtil,
         HasOnClickBackUtil hasOnClickBackUtil, NoOnClickBackUtil noOnClickBackUtil,
-        HasOnClickPdfUtil hasOnClickPdfUtil, NoOnclickPdfUtil noOnclickPdfUtil,
         HasOnClickNextPageUtil hasOnClickNextPageUtil, NoOnClickNextPageUtil noOnClickNextPageUtil,
         ElementFinderUtil elementFinderUtil) {
         this.hasOnClickLstUtil = hasOnClickLstUtil;
         this.noOnClickLstUtil = noOnClickLstUtil;
         this.hasOnClickBackUtil = hasOnClickBackUtil;
         this.noOnClickBackUtil = noOnClickBackUtil;
-        this.hasOnClickPdfUtil = hasOnClickPdfUtil;
-        this.noOnclickPdfUtil = noOnclickPdfUtil;
         this.hasOnClickNextPageUtil = hasOnClickNextPageUtil;
         this.noOnClickNextPageUtil = noOnClickNextPageUtil;
         this.elementFinderUtil = elementFinderUtil;
@@ -78,54 +71,39 @@ public class CheckOnClickUtil {
         }
     }
 
-    public void checkOnClickLst(WebDriver webDriver, Target target,
+    public void checkOnClickLst(WebDriver webDriver, String pageUrl, Target target,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         List<WebElement> lstLinks,
         LstType lstType, ChildLstTagType childLstTagType,
         BackType backType, String parentBackIdentifier, ParentBackTagType parentBackTagType,
         String childBackIdentifier, ChildBackTagType childBackTagType, int backOrdinalNumber,
-        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType,
-        int pdfOrdinalNumber, String titleText, int index) {
+        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
+        String titleText, int index) {
 
         if (lstType.equals(LstType.HAS_ONCLICK)) {
 
             String onClickLstScript = lstLinks.get(index).getAttribute("onclick");
 
-            hasOnClickLstUtil.goToLstByOnclick(webDriver, extendedPdfType,
+            hasOnClickLstUtil.goToLstByOnclick(webDriver, pageUrl, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                extendedPdfOrdinalNumber, target, onClickLstScript,
+                extendedPdfOrdinalNumber, target, onClickLstScript, pdfType,
                 parentPdfIdentifier,
                 parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleText);
 
             checkOnClickBack(webDriver, backType, parentBackIdentifier, parentBackTagType,
                 childBackIdentifier, childBackTagType, backOrdinalNumber);
         } else if (lstType.equals(LstType.NO_ONCLICK)) {
+
             String lstLink = elementFinderUtil.getLstLink(lstLinks, childLstTagType, index);
 
-            noOnClickLstUtil.goToLstByElement(target, extendedPdfType, parentExtendedPdfIdentifier,
-                parentExtendedPdfTagType, extendedPdfOrdinalNumber, lstLink, parentPdfIdentifier,
-                parentPdfTagType,
-                childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleText);
+            noOnClickLstUtil.goToLstByElement(pageUrl, target, extendedPdfType,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
+                childPdfTagType,pdfOrdinalNumber, titleText);
         } else {
             throw new WebDriverException("Unsupported lst type");
-        }
-    }
-
-    public String checkOnClickPdf(WebDriver webDriver, PdfType pdfType, List<WebElement> pdfLinks,
-        ChildPdfTagType childPdfTagType, int index) {
-
-        if (pdfType.equals(PdfType.HAS_ONCLICK)) {
-
-            String onClickPdfScript = pdfLinks.get(index).getAttribute("onclick");
-
-            return hasOnClickPdfUtil.getPdfLinkByOnClick(webDriver, onClickPdfScript);
-
-        } else if (pdfType.equals(PdfType.NO_ONCLICK)) {
-            return noOnclickPdfUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType, index);
-        } else {
-            throw new WebDriverException("Unsupported pdf type");
         }
     }
 

@@ -17,6 +17,7 @@ public enum ParentTitleTagType {
     EM("EM"),
     ARTICLE("ARTICLE"),
     FIGCAPTION("FIGCAPTION"),
+    B("B"),
     NONE("NONE"); // 기본값
 
     private final String value;

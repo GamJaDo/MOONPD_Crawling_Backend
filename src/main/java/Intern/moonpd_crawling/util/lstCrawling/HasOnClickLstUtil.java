@@ -1,72 +1,57 @@
 package Intern.moonpd_crawling.util.lstCrawling;
 
-import Intern.moonpd_crawling.entity.CrawlingData;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
-import Intern.moonpd_crawling.repository.CrawlingDataRepository;
+import Intern.moonpd_crawling.service.LstCrawlingService;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
-import Intern.moonpd_crawling.util.CheckOnClickPdfUtil;
-import Intern.moonpd_crawling.util.ElementFinderUtil;
-import java.util.List;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HasOnClickLstUtil {
 
-    private final CrawlingDataRepository crawlingDataRepository;
-    private final CheckOnClickPdfUtil checkOnClickPdfUtil;
-    private final ElementFinderUtil elementFinderUtil;
+    private final LstCrawlingService lstCrawlingService;
 
-    public HasOnClickLstUtil(CrawlingDataRepository crawlingDataRepository,
-        CheckOnClickPdfUtil checkOnClickPdfUtil, ElementFinderUtil elementFinderUtil) {
-        this.crawlingDataRepository = crawlingDataRepository;
-        this.checkOnClickPdfUtil = checkOnClickPdfUtil;
-        this.elementFinderUtil = elementFinderUtil;
+    public HasOnClickLstUtil(LstCrawlingService lstCrawlingService) {
+        this.lstCrawlingService = lstCrawlingService;
     }
 
-    public void goToLstByOnclick(WebDriver webDriver, String pageUrl,
-        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        Target target, String onClickLstScript, PdfType pdfType,
-        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
-        String titleText) {
+    public void goToLstByOnclick(String pageUrl, ExtendedPdfType extendedPdfType,
+        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
+        int extendedPdfOrdinalNumber, Target target, String onClickLstScript, PdfType pdfType,
+        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
+        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, String titleText) {
+
+        String lstLink;
 
         try {
-            JavascriptExecutor js = (JavascriptExecutor) webDriver;
-            js.executeScript(onClickLstScript);
-        } catch (Exception e) {
-            throw new WebDriverException("Failed to execute onclick script: " + onClickLstScript);
-        }
-
-        List<WebElement> pdfLinks = elementFinderUtil.getPdfElements(webDriver,
-            extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-            extendedPdfOrdinalNumber,
-            parentPdfIdentifier,
-            parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
-
-        if (!pdfLinks.isEmpty()) {
-            for (int i = 0; i < pdfLinks.size(); i++) {
-
-                String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl, pdfType,
-                    pdfLinks, childPdfTagType, i);
-
-                if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
-                    continue;
-                }
-
-                CrawlingData crawlingData = new CrawlingData(target, pdfLink, titleText);
-                crawlingData.setCrawlingTime();
-
-                crawlingDataRepository.save(crawlingData);
+            URL url = new URL(pageUrl);
+            String baseDomain = url.getProtocol() + "://" + url.getHost();
+            String endpoint = "/portal/bbs/view.do";
+            Pattern pattern = Pattern.compile("goTo\\.view\\('list','([^']+)','([^']+)','([^']+)'\\)");
+            Matcher matcher = pattern.matcher(onClickLstScript);
+            if (matcher.find() && matcher.groupCount() == 3) {
+                String bIdx = matcher.group(1);
+                String ptIdx = matcher.group(2);
+                String mId = matcher.group(3);
+                lstLink =  baseDomain + endpoint + "?mId=" + mId + "&bIdx=" + bIdx + "&ptIdx=" + ptIdx;
+            } else {
+                throw new WebDriverException("Failed to extract parameters from onClick script: " + onClickLstScript);
             }
+        } catch (Exception e) {
+            throw new WebDriverException("Error processing pageUrl: " + pageUrl);
         }
+
+        lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType, parentExtendedPdfIdentifier,
+            parentExtendedPdfTagType,
+            extendedPdfOrdinalNumber, lstLink, pdfType,
+            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
+            pdfOrdinalNumber, titleText);
     }
 }

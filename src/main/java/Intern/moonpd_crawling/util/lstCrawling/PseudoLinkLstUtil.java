@@ -1,19 +1,12 @@
 package Intern.moonpd_crawling.util.lstCrawling;
 
-import Intern.moonpd_crawling.entity.CrawlingData;
 import Intern.moonpd_crawling.entity.Target;
-import Intern.moonpd_crawling.repository.CrawlingDataRepository;
 import Intern.moonpd_crawling.service.LstCrawlingService;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
-import Intern.moonpd_crawling.util.CheckOnClickPdfUtil;
-import Intern.moonpd_crawling.util.ElementFinderUtil;
-import java.net.URL;
-import java.util.List;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;

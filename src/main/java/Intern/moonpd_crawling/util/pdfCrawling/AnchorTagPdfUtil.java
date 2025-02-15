@@ -1,6 +1,5 @@
 package Intern.moonpd_crawling.util.pdfCrawling;
 
-import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
 import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;

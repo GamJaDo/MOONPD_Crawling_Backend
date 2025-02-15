@@ -1,15 +1,12 @@
 package Intern.moonpd_crawling.entity;
 
 import Intern.moonpd_crawling.dto.response.TargetViewResponse;
-import Intern.moonpd_crawling.status.BackType;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.PdfType;
-import Intern.moonpd_crawling.status.child.ChildBackTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.parent.ParentBackTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentLstTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
@@ -69,29 +66,6 @@ public class Target {
 
     @Column(name = "lst_ordinal_number", nullable = true)
     private int lstOrdinalNumber;
-
-    // #############################################################################################
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "back_type", nullable = true)
-    private BackType backType;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "parent_back_tag_type", nullable = true)
-    private ParentBackTagType parentBackTagType;
-
-    @Column(name = "parent_back_identifier", nullable = true)
-    private String parentBackIdentifier;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "child_back_tag_type", nullable = true)
-    private ChildBackTagType childBackTagType;
-
-    @Column(name = "child_back_identifier", nullable = true)
-    private String childBackIdentifier;
-
-    @Column(name = "back_ordinal_number", nullable = true)
-    private int backOrdinalNumber;
 
     // #############################################################################################
 
@@ -186,8 +160,6 @@ public class Target {
         StructureType structureType,
         LstType lstType, ParentLstTagType parentLstTagType, String parentLstIdentifier,
         ChildLstTagType childLstTagType, String childLstIdentifier, int lstOrdinalNumber,
-        BackType backType, ParentBackTagType parentBackTagType, String parentBackIdentifier,
-        ChildBackTagType childBackTagType, String childBackIdentifier, int backOrdinalNumber,
         String pageUrl,
         int totalPage, ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
@@ -209,12 +181,6 @@ public class Target {
         this.childLstTagType = childLstTagType;
         this.childLstIdentifier = childLstIdentifier;
         this.lstOrdinalNumber = lstOrdinalNumber;
-        this.backType = backType;
-        this.parentBackTagType = parentBackTagType;
-        this.parentBackIdentifier = parentBackIdentifier;
-        this.childBackTagType = childBackTagType;
-        this.childBackIdentifier = childBackIdentifier;
-        this.backOrdinalNumber = backOrdinalNumber;
         this.pageUrl = pageUrl;
         this.totalPage = totalPage;
         this.extendedPdfType = extendedPdfType;
@@ -255,12 +221,6 @@ public class Target {
         this.childLstTagType = target.getChildLstTagType();
         this.childLstIdentifier = target.getChildLstIdentifier();
         this.lstOrdinalNumber = target.getLstOrdinalNumber();
-        this.backType = target.getBackType();
-        this.parentBackTagType = target.getParentBackTagType();
-        this.parentBackIdentifier = target.getParentBackIdentifier();
-        this.childBackTagType = target.getChildBackTagType();
-        this.childBackIdentifier = target.getChildBackIdentifier();
-        this.backOrdinalNumber = target.getBackOrdinalNumber();
         this.pageUrl = target.getPageUrl();
         this.totalPage = target.getTotalPage();
         this.extendedPdfType = target.getExtendedPdfType();

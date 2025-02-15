@@ -2,16 +2,13 @@ package Intern.moonpd_crawling.util.structure;
 
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
-import Intern.moonpd_crawling.status.BackType;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.NextPageType;
 import Intern.moonpd_crawling.status.PdfType;
-import Intern.moonpd_crawling.status.child.ChildBackTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.parent.ParentBackTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentLstTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
@@ -39,8 +36,6 @@ public class ListedContentStructureUtil {
         LstType lstType,
         String parentLstIdentifier, ParentLstTagType parentLstTagType,
         String childLstIdentifier, ChildLstTagType childLstTagType, int lstOrdinalNumber,
-        BackType backType, String parentBackIdentifier, ParentBackTagType parentBackTagType,
-        String childBackIdentifier, ChildBackTagType childBackTagType, int backOrdinalNumber,
         int totalPage,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
@@ -75,25 +70,14 @@ public class ListedContentStructureUtil {
                             + childTitleIdentifier);
                 }
 
-                System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-                for (int i = 0; i < lstLinks.size(); i++) {
-                    System.out.println("listLinks[" + i + "]: " + lstLinks.get(i).getAttribute("innerHTML"));
-                }
-                System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-
-                System.out.println("############################");
-                System.out.println("lstLinks.size(): " + lstLinks.size());
-                System.out.println("titles.size(): " + titles.size());
-                System.out.println("############################");
-
                 if (lstLinks.size() != titles.size()) {
-                    int diff = Math.abs(lstLinks.size() - titles.size());
-
-                    lstLinks = lstLinks.subList(diff, lstLinks.size());
-
-                    System.out.println("*****************************");
-                    System.out.println("** lstLinks.size(): " + lstLinks.size());
-                    System.out.println("*****************************");
+                    if (lstLinks.size() > titles.size()) {
+                        int diff = Math.abs(lstLinks.size() - titles.size());
+                        lstLinks = lstLinks.subList(diff, lstLinks.size());
+                    } else if (lstLinks.size() < titles.size()) {
+                        int diff = Math.abs(lstLinks.size() - titles.size());
+                        titles = titles.subList(diff, titles.size());
+                    }
                 }
 
                 for (int i = 0; i < lstLinks.size(); i++) {
@@ -108,11 +92,9 @@ public class ListedContentStructureUtil {
                     */
                     String titleText = titles.get(i).getText();
 
-                    checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target,
+                    checkOnClickUtil.checkOnClickLst(pageUrl, target,
                         extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber, lstLinks, lstType, childLstTagType, backType,
-                        parentBackIdentifier, parentBackTagType, childBackIdentifier,
-                        childBackTagType, backOrdinalNumber, pdfType, parentPdfIdentifier,
+                        extendedPdfOrdinalNumber, lstLinks, lstType, childLstTagType, pdfType, parentPdfIdentifier,
                         parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber,
                         titleText, i);
                 }

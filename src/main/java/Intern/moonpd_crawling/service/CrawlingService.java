@@ -3,15 +3,12 @@ package Intern.moonpd_crawling.service;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.repository.TargetRepository;
-import Intern.moonpd_crawling.status.BackType;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.PdfType;
-import Intern.moonpd_crawling.status.child.ChildBackTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.parent.ParentBackTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentLstTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
@@ -63,13 +60,6 @@ public class CrawlingService {
                 ChildLstTagType childLstTagType = target.getChildLstTagType();
                 int lstOrdinalNumber = target.getLstOrdinalNumber();
 
-                BackType backType = target.getBackType();
-                String parentBackIdentifier = target.getParentBackIdentifier();
-                ParentBackTagType parentBackTagType = target.getParentBackTagType();
-                String childBackIdentifier = target.getChildBackIdentifier();
-                ChildBackTagType childBackTagType = target.getChildBackTagType();
-                int backOrdinalNumber = target.getBackOrdinalNumber();
-
                 String pageUrl = target.getPageUrl();
                 webDriver.get(pageUrl);
                 Thread.sleep(1000);
@@ -113,8 +103,6 @@ public class CrawlingService {
                         lstType,
                         parentLstIdentifier,
                         parentLstTagType, childLstIdentifier, childLstTagType, lstOrdinalNumber,
-                        backType, parentBackIdentifier, parentBackTagType, childBackIdentifier,
-                        childBackTagType, backOrdinalNumber,
                         totalPage,
                         extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                         extendedPdfOrdinalNumber, pdfType,

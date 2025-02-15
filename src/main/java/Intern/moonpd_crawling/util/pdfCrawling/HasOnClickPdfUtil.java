@@ -13,9 +13,8 @@ public class HasOnClickPdfUtil {
         try {
             URL url = new URL(pageUrl);
             String baseDomain = url.getProtocol() + "://" + url.getHost();
-
             String regex;
-            String endpoint;
+            String endpoint = "";
 
             if (onClickPdfScript.contains("fn_egov_downFile")) {
                 regex = "fn_egov_downFile\\('([^']+)'\\s*,\\s*'([^']+)'\\)";
@@ -23,16 +22,26 @@ public class HasOnClickPdfUtil {
             } else if (onClickPdfScript.contains("yhLib.file.download")) {
                 regex = "yhLib\\.file\\.download\\('([^']+)'\\s*,\\s*'([^']+)'\\)";
                 endpoint = "/common/file/download.do";
+            } else if (onClickPdfScript.contains("location.href=")) {
+                regex = "location\\.href=['\"]([^'\"]+)['\"]";
             } else {
                 throw new WebDriverException("Unknown PDF download function in script: " + onClickPdfScript);
             }
 
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(onClickPdfScript);
-            if (matcher.find() && matcher.groupCount() >= 2) {
-                String atchFileId = matcher.group(1);
-                String fileSn = matcher.group(2);
-                return baseDomain + endpoint + "?atchFileId=" + atchFileId + "&fileSn=" + fileSn;
+            if (matcher.find() && matcher.groupCount() >= 1) {
+                if (endpoint.isEmpty()) {
+                    String extractedUrl = matcher.group(1).replaceAll("&amp;", "&");
+                    return baseDomain + extractedUrl;
+                } else {
+                    if (matcher.groupCount() < 2) {
+                        throw new WebDriverException("Failed to extract both parameters using regex: " + regex + " from script: " + onClickPdfScript);
+                    }
+                    String atchFileId = matcher.group(1);
+                    String fileSn = matcher.group(2);
+                    return baseDomain + endpoint + "?atchFileId=" + atchFileId + "&fileSn=" + fileSn;
+                }
             } else {
                 throw new WebDriverException("Failed to extract parameters using regex: " + regex + " from script: " + onClickPdfScript);
             }

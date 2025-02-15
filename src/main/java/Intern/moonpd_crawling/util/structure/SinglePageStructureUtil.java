@@ -53,34 +53,50 @@ public class SinglePageStructureUtil {
 
         try {
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
+                Thread.sleep(500);
 
                 pdfLinks = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
                     parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
                     parentPdfIdentifier, parentPdfTagType,
                     childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
+                /*
                 if (pdfLinks.isEmpty()) {
                     throw new WebDriverException(
                         "No PDF links found for identifier: " + parentPdfIdentifier + " or "
                             + childPdfIdentifier);
                 }
-
-                titles = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier, parentTitleTagType,
+                */
+                titles = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
+                    parentTitleTagType,
                     childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
+                /*
                 if (titles.isEmpty()) {
                     throw new WebDriverException(
                         "No titles found for identifier: " + parentTitleIdentifier + " or "
                             + childTitleIdentifier);
                 }
+                */
+
 
                 if (pdfLinks.size() != titles.size()) {
                     int diff = Math.abs(pdfLinks.size() - titles.size());
 
-                    pdfLinks = pdfLinks.subList(diff, pdfLinks.size());
+                    if (pdfLinks.size() > titles.size()) {
+                        pdfLinks = pdfLinks.subList(diff, pdfLinks.size());
+                    } else {
+                        titles = titles.subList(0, titles.size() - diff);
+                    }
                 }
+
+                System.out.println("##############################");
+                System.out.println("pdfLinks.size(): " + pdfLinks.size());
+                System.out.println("titles.size(): " + titles.size());
+                System.out.println("##############################");
 
                 for (int i = 0; i < pdfLinks.size(); i++) {
 
-                    String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl, pdfType, pdfLinks, childPdfTagType, i);
+                    String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl,
+                        pdfType, pdfLinks, childPdfTagType, i);
                     String titleText = titles.get(i).getText();
 
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {

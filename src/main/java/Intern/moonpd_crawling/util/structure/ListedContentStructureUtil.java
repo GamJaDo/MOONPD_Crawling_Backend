@@ -51,6 +51,7 @@ public class ListedContentStructureUtil {
 
         try {
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
+                Thread.sleep(500);
 
                 lstLinks = elementFinderUtil.getLstElements(webDriver,
                     parentLstIdentifier, parentLstTagType, childLstIdentifier, childLstTagType,
@@ -71,11 +72,11 @@ public class ListedContentStructureUtil {
                 }
 
                 if (lstLinks.size() != titles.size()) {
+                    int diff = Math.abs(lstLinks.size() - titles.size());
+
                     if (lstLinks.size() > titles.size()) {
-                        int diff = Math.abs(lstLinks.size() - titles.size());
                         lstLinks = lstLinks.subList(diff, lstLinks.size());
-                    } else if (lstLinks.size() < titles.size()) {
-                        int diff = Math.abs(lstLinks.size() - titles.size());
+                    } else {
                         titles = titles.subList(diff, titles.size());
                     }
                 }

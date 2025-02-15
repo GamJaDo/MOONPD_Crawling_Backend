@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum LstType {
     HAS_ONCLICK("HAS_ONCLICK"),  // onclick이 있는 경우
     NO_ONCLICK("NO_ONCLICK"),    // onclick이 없는 경우
+    PSEUDO_LINK("PSEUDO_LINK"), // 실제 URL 대신에 자리만 차지하는 "의사 링크"
     NONE("NONE");                // 기본값 (빈 값 또는 null)
 
     private final String value;

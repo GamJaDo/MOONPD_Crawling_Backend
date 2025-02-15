@@ -17,6 +17,7 @@ import Intern.moonpd_crawling.util.BackCrawling.HasOnClickBackUtil;
 import Intern.moonpd_crawling.util.BackCrawling.NoOnClickBackUtil;
 import Intern.moonpd_crawling.util.lstCrawling.HasOnClickLstUtil;
 import Intern.moonpd_crawling.util.lstCrawling.NoOnClickLstUtil;
+import Intern.moonpd_crawling.util.lstCrawling.PseudoLinkLstUtil;
 import Intern.moonpd_crawling.util.nextPageCrawling.HasOnClickNextPageUtil;
 import Intern.moonpd_crawling.util.nextPageCrawling.NoOnClickNextPageUtil;
 import java.util.List;
@@ -29,6 +30,7 @@ public class CheckOnClickUtil {
 
     private final HasOnClickLstUtil hasOnClickLstUtil;
     private final NoOnClickLstUtil noOnClickLstUtil;
+    private final PseudoLinkLstUtil pseudoLinkLstUtil;
     private final HasOnClickBackUtil hasOnClickBackUtil;
     private final NoOnClickBackUtil noOnClickBackUtil;
     private final HasOnClickNextPageUtil hasOnClickNextPageUtil;
@@ -36,11 +38,13 @@ public class CheckOnClickUtil {
     private final ElementFinderUtil elementFinderUtil;
 
     public CheckOnClickUtil(HasOnClickLstUtil hasOnClickLstUtil, NoOnClickLstUtil noOnClickLstUtil,
+        PseudoLinkLstUtil pseudoLinkLstUtil,
         HasOnClickBackUtil hasOnClickBackUtil, NoOnClickBackUtil noOnClickBackUtil,
         HasOnClickNextPageUtil hasOnClickNextPageUtil, NoOnClickNextPageUtil noOnClickNextPageUtil,
         ElementFinderUtil elementFinderUtil) {
         this.hasOnClickLstUtil = hasOnClickLstUtil;
         this.noOnClickLstUtil = noOnClickLstUtil;
+        this.pseudoLinkLstUtil = pseudoLinkLstUtil;
         this.hasOnClickBackUtil = hasOnClickBackUtil;
         this.noOnClickBackUtil = noOnClickBackUtil;
         this.hasOnClickNextPageUtil = hasOnClickNextPageUtil;
@@ -89,11 +93,13 @@ public class CheckOnClickUtil {
             hasOnClickLstUtil.goToLstByOnclick(webDriver, pageUrl, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 extendedPdfOrdinalNumber, target, onClickLstScript, pdfType,
-                parentPdfIdentifier,
-                parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleText);
-
+                parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
+                pdfOrdinalNumber, titleText);
+            /*
             checkOnClickBack(webDriver, backType, parentBackIdentifier, parentBackTagType,
                 childBackIdentifier, childBackTagType, backOrdinalNumber);
+            */
+            webDriver.navigate().back();
         } else if (lstType.equals(LstType.NO_ONCLICK)) {
 
             String lstLink = elementFinderUtil.getLstLink(lstLinks, childLstTagType, index);
@@ -101,7 +107,17 @@ public class CheckOnClickUtil {
             noOnClickLstUtil.goToLstByElement(pageUrl, target, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
                 lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
-                childPdfTagType,pdfOrdinalNumber, titleText);
+                childPdfTagType, pdfOrdinalNumber, titleText);
+        } else if (lstType.equals(LstType.PSEUDO_LINK)) {
+
+            WebElement pseudoLinkElement = lstLinks.get(index);
+
+            pseudoLinkLstUtil.goToPseudoLink(pageUrl, extendedPdfType,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+                extendedPdfOrdinalNumber, target, pseudoLinkElement, pdfType,
+                parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
+                pdfOrdinalNumber, titleText);
+
         } else {
             throw new WebDriverException("Unsupported lst type");
         }

@@ -71,14 +71,29 @@ public class ListedContentStructureUtil {
                     titleOrdinalNumber);
                 if (titles.isEmpty()) {
                     throw new WebDriverException(
-                        "No lst titles found for identifier: " + parentTitleIdentifier + " or "
+                        "No titles found for identifier: " + parentTitleIdentifier + " or "
                             + childTitleIdentifier);
                 }
+
+                System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                for (int i = 0; i < lstLinks.size(); i++) {
+                    System.out.println("listLinks[" + i + "]: " + lstLinks.get(i).getAttribute("innerHTML"));
+                }
+                System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+
+                System.out.println("############################");
+                System.out.println("lstLinks.size(): " + lstLinks.size());
+                System.out.println("titles.size(): " + titles.size());
+                System.out.println("############################");
 
                 if (lstLinks.size() != titles.size()) {
                     int diff = Math.abs(lstLinks.size() - titles.size());
 
                     lstLinks = lstLinks.subList(diff, lstLinks.size());
+
+                    System.out.println("*****************************");
+                    System.out.println("** lstLinks.size(): " + lstLinks.size());
+                    System.out.println("*****************************");
                 }
 
                 for (int i = 0; i < lstLinks.size(); i++) {

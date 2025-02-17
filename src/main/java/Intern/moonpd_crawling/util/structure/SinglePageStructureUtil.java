@@ -77,7 +77,6 @@ public class SinglePageStructureUtil {
                 }
                 */
 
-
                 if (pdfLinks.size() != titles.size()) {
                     int diff = Math.abs(pdfLinks.size() - titles.size());
 
@@ -87,11 +86,6 @@ public class SinglePageStructureUtil {
                         titles = titles.subList(0, titles.size() - diff);
                     }
                 }
-
-                System.out.println("##############################");
-                System.out.println("pdfLinks.size(): " + pdfLinks.size());
-                System.out.println("titles.size(): " + titles.size());
-                System.out.println("##############################");
 
                 for (int i = 0; i < pdfLinks.size(); i++) {
 
@@ -120,11 +114,3 @@ public class SinglePageStructureUtil {
         }
     }
 }
-
-/*
-                System.out.println("\n\n ###################################");
-                System.out.println("currentPage: " + currentPage);
-                System.out.println("pdfLinks.size(): " + pdfLinks.size());
-                System.out.println("titles.size(): " + titles.size());
-                System.out.println(" ###################################");
- */

@@ -12,6 +12,7 @@ public enum ChildPdfTagType {
     TR("TR"),// DIV 태그
     SPAN("SPAN"),
     LI("LI"),
+    DD("DD"),
     NONE("NONE");   // 기본값 (빈 값 또는 null)
 
     private final String value;

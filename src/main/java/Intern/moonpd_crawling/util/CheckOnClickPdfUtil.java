@@ -5,6 +5,7 @@ import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.util.pdfCrawling.HasOnClickPdfUtil;
 import Intern.moonpd_crawling.util.pdfCrawling.NoOnclickPdfUtil;
+import Intern.moonpd_crawling.util.pdfCrawling.PseudoLinkPdfUtil;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,11 +23,13 @@ public class CheckOnClickPdfUtil {
 
     private final HasOnClickPdfUtil hasOnClickPdfUtil;
     private final NoOnclickPdfUtil noOnclickPdfUtil;
+    private final PseudoLinkPdfUtil pseudoLinkPdfUtil;
 
     public CheckOnClickPdfUtil(HasOnClickPdfUtil hasOnClickPdfUtil,
-        NoOnclickPdfUtil noOnclickPdfUtil) {
+        NoOnclickPdfUtil noOnclickPdfUtil, PseudoLinkPdfUtil pseudoLinkPdfUtil) {
         this.hasOnClickPdfUtil = hasOnClickPdfUtil;
         this.noOnclickPdfUtil = noOnclickPdfUtil;
+        this.pseudoLinkPdfUtil = pseudoLinkPdfUtil;
     }
 
     public String checkOnClickPdf(
@@ -38,9 +41,13 @@ public class CheckOnClickPdfUtil {
             String onClickPdfScript = pdfLinks.get(index).getAttribute("onclick");
 
             return hasOnClickPdfUtil.getPdfLinkByOnClick(pageUrl, onClickPdfScript);
-
         } else if (pdfType.equals(PdfType.NO_ONCLICK)) {
             return noOnclickPdfUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType, index);
+        } else if (pdfType.equals(PdfType.PSEUDO_LINK)) {
+
+            WebElement pseudoLinkElement = pdfLinks.get(index);
+
+            return pseudoLinkPdfUtil.getPdfLinkByPseudoLink(pageUrl, pseudoLinkElement);
         } else {
             throw new WebDriverException("Unsupported pdf type");
         }

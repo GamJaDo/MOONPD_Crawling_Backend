@@ -26,7 +26,7 @@ public class PseudoLinkLstUtil {
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
         ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, String titleText) {
 
-        String pseudoLink;
+        String lstLink;
 
         try {
             String dataIdx = pseudoLinkElement.getAttribute("data-idx");
@@ -37,9 +37,9 @@ public class PseudoLinkLstUtil {
             String viewUrl = pageUrl.replace("list.do", "view.do");
 
             if (pageUrl.contains("?")) {
-                pseudoLink = viewUrl + "&idx=" + dataIdx;
+                lstLink = viewUrl + "&idx=" + dataIdx;
             } else {
-                pseudoLink = viewUrl + "?idx=" + dataIdx;
+                lstLink = viewUrl + "?idx=" + dataIdx;
             }
         } catch (Exception e) {
             throw new WebDriverException("Failed to navigate to view URL using pseudo link element.", e);
@@ -47,7 +47,7 @@ public class PseudoLinkLstUtil {
 
         lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType, parentExtendedPdfIdentifier,
             parentExtendedPdfTagType,
-            extendedPdfOrdinalNumber, pseudoLink, pdfType,
+            extendedPdfOrdinalNumber, lstLink, pdfType,
             parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
             pdfOrdinalNumber, titleText);
     }

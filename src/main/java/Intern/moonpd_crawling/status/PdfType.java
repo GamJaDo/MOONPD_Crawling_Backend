@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum PdfType {
     HAS_ONCLICK("HAS_ONCLICK"),  // onclick이 있는 경우
     NO_ONCLICK("NO_ONCLICK"),    // onclick이 없는 경우
+    PSEUDO_LINK("PSEUDO_LINK"),
     NONE("NONE");                // 기본값 (빈 값 또는 null)
 
     private final String value;

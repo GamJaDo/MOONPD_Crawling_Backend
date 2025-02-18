@@ -4,9 +4,11 @@ import Intern.moonpd_crawling.dto.response.TargetViewResponse;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.PdfType;
+import Intern.moonpd_crawling.status.YearType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.child.ChildTitleTagType;
+import Intern.moonpd_crawling.status.child.ChildYearTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentLstTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
@@ -14,6 +16,7 @@ import Intern.moonpd_crawling.status.NextPageType;
 import Intern.moonpd_crawling.status.OrganizationType;
 import Intern.moonpd_crawling.status.StructureType;
 import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
+import Intern.moonpd_crawling.status.parent.ParentYearTagType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -50,22 +53,45 @@ public class Target {
     @Column(name = "lst_type", nullable = true)
     private LstType lstType;
 
+    @Column(name = "parent_lst_identifier", nullable = true)
+    private String parentLstIdentifier;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "parent_lst_tag_type", nullable = true)
     private ParentLstTagType parentLstTagType;
 
-    @Column(name = "parent_lst_identifier", nullable = true)
-    private String parentLstIdentifier;
+    @Column(name = "child_lst_identifier", nullable = true)
+    private String childLstIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_lst_tag_type", nullable = true)
     private ChildLstTagType childLstTagType;
 
-    @Column(name = "child_lst_identifier", nullable = true)
-    private String childLstIdentifier;
-
     @Column(name = "lst_ordinal_number", nullable = true)
     private int lstOrdinalNumber;
+
+    // #############################################################################################
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "year_type", nullable = true)
+    private YearType yearType;
+
+    @Column(name = "parent_year_identifier", nullable = true)
+    private String parentYearIdentifier;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "parent_year_tag_type", nullable = true)
+    private ParentYearTagType parentYearTagType;
+
+    @Column(name = "child_year_identifier", nullable = true)
+    private String childYearIdentifier;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "child_year_tag_type", nullable = true)
+    private ChildYearTagType childYearTagType;
+
+    @Column(name = "year_ordinal_number", nullable = true)
+    private int yearOrdinalNumber;
 
     // #############################################################################################
 
@@ -160,6 +186,8 @@ public class Target {
         StructureType structureType,
         LstType lstType, ParentLstTagType parentLstTagType, String parentLstIdentifier,
         ChildLstTagType childLstTagType, String childLstIdentifier, int lstOrdinalNumber,
+        YearType yearType, String parentYearIdentifier, ParentYearTagType parentYearTagType,
+        String childYearIdentifier, ChildYearTagType childYearTagType, int yearOrdinalNumber,
         String pageUrl,
         int totalPage, ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
@@ -181,6 +209,12 @@ public class Target {
         this.childLstTagType = childLstTagType;
         this.childLstIdentifier = childLstIdentifier;
         this.lstOrdinalNumber = lstOrdinalNumber;
+        this.yearType = yearType;
+        this.parentYearIdentifier = parentYearIdentifier;
+        this.parentYearTagType = parentYearTagType;
+        this.childYearIdentifier = childYearIdentifier;
+        this.childYearTagType = childYearTagType;
+        this.yearOrdinalNumber = yearOrdinalNumber;
         this.pageUrl = pageUrl;
         this.totalPage = totalPage;
         this.extendedPdfType = extendedPdfType;
@@ -221,6 +255,12 @@ public class Target {
         this.childLstTagType = target.getChildLstTagType();
         this.childLstIdentifier = target.getChildLstIdentifier();
         this.lstOrdinalNumber = target.getLstOrdinalNumber();
+        this.yearType = target.getYearType();
+        this.parentYearIdentifier = target.getParentYearIdentifier();
+        this.parentYearTagType = target.getParentYearTagType();
+        this.childYearIdentifier = target.getChildYearIdentifier();
+        this.childYearTagType = target.getChildYearTagType();
+        this.yearOrdinalNumber = target.getYearOrdinalNumber();
         this.pageUrl = target.getPageUrl();
         this.totalPage = target.getTotalPage();
         this.extendedPdfType = target.getExtendedPdfType();

@@ -5,10 +5,12 @@ import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.YearType;
+import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.child.ChildTitleTagType;
 import Intern.moonpd_crawling.status.child.ChildYearTagType;
+import Intern.moonpd_crawling.status.parent.ParentNextPageTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentLstTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
@@ -99,9 +101,6 @@ public class Target {
     @Column(name = "page_url", nullable = true)
     private String pageUrl;
 
-    @Column(name = "total_page", nullable = true)
-    private int totalPage;
-
     // #############################################################################################
 
     @Enumerated(EnumType.STRING)
@@ -166,8 +165,22 @@ public class Target {
     @Column(name = "next_page_type", nullable = true)
     private NextPageType nextPageType;
 
-    @Column(name = "next_identifier", nullable = true)
-    private String nextIdentifier;
+    @Column(name = "parent_next_page_identifier", nullable = true)
+    private String parentNextPageIdentifier;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "parent_next_page_tag_type", nullable = true)
+    private ParentNextPageTagType parentNextPageTagType;
+
+    @Column(name = "child_deep_next_page_identifier", nullable = true)
+    private String childNextPageIdentifier;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "child_deep_next_page_tag_type", nullable = true)
+    private ChildNextPageTagType childNextPageTagType;
+
+    @Column(name = "next_page_ordinal_number", nullable = true)
+    private int nextPageOrdinalNumber;
 
     // #############################################################################################
 
@@ -183,22 +196,20 @@ public class Target {
     }
 
     public Target(OrganizationType organizationType, String region, String group,
-        StructureType structureType,
-        LstType lstType, ParentLstTagType parentLstTagType, String parentLstIdentifier,
-        ChildLstTagType childLstTagType, String childLstIdentifier, int lstOrdinalNumber,
-        YearType yearType, String parentYearIdentifier, ParentYearTagType parentYearTagType,
-        String childYearIdentifier, ChildYearTagType childYearTagType, int yearOrdinalNumber,
-        String pageUrl,
-        int totalPage, ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
+        StructureType structureType, LstType lstType, ParentLstTagType parentLstTagType,
+        String parentLstIdentifier, ChildLstTagType childLstTagType, String childLstIdentifier,
+        int lstOrdinalNumber, YearType yearType, String parentYearIdentifier,
+        ParentYearTagType parentYearTagType, String childYearIdentifier,
+        ChildYearTagType childYearTagType, int yearOrdinalNumber, String pageUrl,
+        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, int titleOrdinalNumber,
-        String parentTitleIdentifier,
-        ParentTitleTagType parentTitleTagType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType,
-        NextPageType nextPageType,
-        String nextIdentifier) {
+        String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
+        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
+        NextPageType nextPageType, String parentNextPageIdentifier,
+        ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
+        ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber) {
         this.organizationType = organizationType;
         this.region = region;
         this.group = group;
@@ -216,7 +227,6 @@ public class Target {
         this.childYearTagType = childYearTagType;
         this.yearOrdinalNumber = yearOrdinalNumber;
         this.pageUrl = pageUrl;
-        this.totalPage = totalPage;
         this.extendedPdfType = extendedPdfType;
         this.parentExtendedPdfIdentifier = parentExtendedPdfIdentifier;
         this.parentExtendedPdfTagType = parentExtendedPdfTagType;
@@ -233,7 +243,11 @@ public class Target {
         this.childTitleIdentifier = childTitleIdentifier;
         this.childTitleTagType = childTitleTagType;
         this.nextPageType = nextPageType;
-        this.nextIdentifier = nextIdentifier;
+        this.parentNextPageIdentifier = parentNextPageIdentifier;
+        this.parentNextPageTagType = parentNextPageTagType;
+        this.childNextPageIdentifier = childNextPageIdentifier;
+        this.childNextPageTagType = childNextPageTagType;
+        this.nextPageOrdinalNumber = nextPageOrdinalNumber;
     }
 
     public void setRegisterTime() {
@@ -262,7 +276,6 @@ public class Target {
         this.childYearTagType = target.getChildYearTagType();
         this.yearOrdinalNumber = target.getYearOrdinalNumber();
         this.pageUrl = target.getPageUrl();
-        this.totalPage = target.getTotalPage();
         this.extendedPdfType = target.getExtendedPdfType();
         this.parentExtendedPdfIdentifier = target.getParentExtendedPdfIdentifier();
         this.parentExtendedPdfTagType = target.getParentExtendedPdfTagType();
@@ -279,7 +292,11 @@ public class Target {
         this.childTitleIdentifier = target.getChildTitleIdentifier();
         this.childTitleTagType = target.getChildTitleTagType();
         this.nextPageType = target.getNextPageType();
-        this.nextIdentifier = target.getNextIdentifier();
+        this.parentNextPageIdentifier = target.getParentNextPageIdentifier();
+        this.parentNextPageTagType = target.getParentNextPageTagType();
+        this.childNextPageIdentifier = target.getChildNextPageIdentifier();
+        this.childNextPageTagType = target.getChildNextPageTagType();
+        this.nextPageOrdinalNumber = target.getNextPageOrdinalNumber();
     }
 
     public TargetViewResponse toDto() {

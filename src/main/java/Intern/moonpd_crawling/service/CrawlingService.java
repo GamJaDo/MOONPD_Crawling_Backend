@@ -7,10 +7,12 @@ import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.YearType;
+import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.child.ChildTitleTagType;
 import Intern.moonpd_crawling.status.child.ChildYearTagType;
+import Intern.moonpd_crawling.status.parent.ParentNextPageTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentLstTagType;
 import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
@@ -74,8 +76,6 @@ public class CrawlingService {
                 webDriver.get(pageUrl);
                 Thread.sleep(1000);
 
-                int totalPage = target.getTotalPage();
-
                 ExtendedPdfType extendedPdfType = target.getExtendedPdfType();
                 String parentExtendedPdfIdentifier = target.getParentExtendedPdfIdentifier();
                 ParentExtendedPdfTagType parentExtendedPdfTagType = target.getParentExtendedPdfTagType();
@@ -95,38 +95,42 @@ public class CrawlingService {
                 int titleOrdinalNumber = target.getTitleOrdinalNumber();
 
                 NextPageType nextPageType = target.getNextPageType();
-                String nextIdentifier = target.getNextIdentifier();
+                String parentNextPageIdentifier = target.getParentNextPageIdentifier();
+                ParentNextPageTagType parentNextPageTagType = target.getParentNextPageTagType();
+                String childNextPageIdentifier = target.getChildNextPageIdentifier();
+                ChildNextPageTagType childNextPageTagType = target.getChildNextPageTagType();
+                int nextPageOrdinalNumber = target.getNextPageOrdinalNumber();
 
                 if (structureType.equals(StructureType.SINGLE_PAGE)) {
-                    singlePageStructureUtil.crawl(webDriver, pageUrl, target, totalPage,
-                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber, pdfType,
-                        parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-                        pdfOrdinalNumber,
+                    singlePageStructureUtil.crawl(webDriver, pageUrl, target, extendedPdfType,
+                        parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+                        extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
+                        childPdfIdentifier, childPdfTagType, pdfOrdinalNumber,
                         parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-                        childTitleTagType, titleOrdinalNumber, nextPageType, nextIdentifier);
+                        childTitleTagType, titleOrdinalNumber, nextPageType,
+                        parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
+                        childNextPageTagType, nextPageOrdinalNumber);
                 } else if (structureType.equals(StructureType.YEAR_FILTERED)) {
-                    yearFilteredStructureUtil.crawl(webDriver, target, totalPage, yearType,
+                    yearFilteredStructureUtil.crawl(webDriver, pageUrl, target, yearType,
                         parentYearIdentifier, parentYearTagType, childYearIdentifier,
                         childYearTagType, yearOrdinalNumber, extendedPdfType,
                         parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                         extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
                         childPdfIdentifier, childPdfTagType, pdfOrdinalNumber,
-                        parentTitleIdentifier,
-                        parentTitleTagType, childTitleIdentifier, childTitleTagType,
-                        titleOrdinalNumber, nextPageType, nextIdentifier);
-                } else if (structureType.equals(StructureType.LISTED_CONTENT)) {
-                    listedContentStructureUtil.crawl(webDriver, pageUrl, target,
-                        lstType,
-                        parentLstIdentifier,
-                        parentLstTagType, childLstIdentifier, childLstTagType, lstOrdinalNumber,
-                        totalPage,
-                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber, pdfType,
-                        parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-                        pdfOrdinalNumber,
                         parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-                        childTitleTagType, titleOrdinalNumber, nextPageType, nextIdentifier);
+                        childTitleTagType, titleOrdinalNumber, nextPageType,
+                        parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
+                        childNextPageTagType, nextPageOrdinalNumber);
+                } else if (structureType.equals(StructureType.LISTED_CONTENT)) {
+                    listedContentStructureUtil.crawl(webDriver, pageUrl, target, lstType,
+                        parentLstIdentifier, parentLstTagType, childLstIdentifier, childLstTagType,
+                        lstOrdinalNumber, extendedPdfType, parentExtendedPdfIdentifier,
+                        parentExtendedPdfTagType, extendedPdfOrdinalNumber, pdfType,
+                        parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
+                        pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType,
+                        childTitleIdentifier, childTitleTagType, titleOrdinalNumber, nextPageType,
+                        parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
+                        childNextPageTagType, nextPageOrdinalNumber);
                 }
             }
         } catch (InterruptedException e) {

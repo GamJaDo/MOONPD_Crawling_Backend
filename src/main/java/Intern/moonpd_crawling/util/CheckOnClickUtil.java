@@ -6,6 +6,7 @@ import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.NextPageType;
 import Intern.moonpd_crawling.status.PdfType;
+import Intern.moonpd_crawling.status.YearType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
@@ -15,6 +16,8 @@ import Intern.moonpd_crawling.util.lstCrawling.NoOnClickLstUtil;
 import Intern.moonpd_crawling.util.lstCrawling.PseudoLinkLstUtil;
 import Intern.moonpd_crawling.util.nextPageCrawling.HasOnClickNextPageUtil;
 import Intern.moonpd_crawling.util.nextPageCrawling.NoOnClickNextPageUtil;
+import Intern.moonpd_crawling.util.yearCrawling.HasOnClickYearUtil;
+import Intern.moonpd_crawling.util.yearCrawling.NoOnClickYearUtil;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -26,17 +29,21 @@ public class CheckOnClickUtil {
     private final HasOnClickLstUtil hasOnClickLstUtil;
     private final NoOnClickLstUtil noOnClickLstUtil;
     private final PseudoLinkLstUtil pseudoLinkLstUtil;
+    private final HasOnClickYearUtil hasOnClickYearUtil;
+    private final NoOnClickYearUtil noOnClickYearUtil;
     private final HasOnClickNextPageUtil hasOnClickNextPageUtil;
     private final NoOnClickNextPageUtil noOnClickNextPageUtil;
     private final ElementFinderUtil elementFinderUtil;
 
     public CheckOnClickUtil(HasOnClickLstUtil hasOnClickLstUtil, NoOnClickLstUtil noOnClickLstUtil,
-        PseudoLinkLstUtil pseudoLinkLstUtil,
-        HasOnClickNextPageUtil hasOnClickNextPageUtil, NoOnClickNextPageUtil noOnClickNextPageUtil,
-        ElementFinderUtil elementFinderUtil) {
+        PseudoLinkLstUtil pseudoLinkLstUtil, HasOnClickYearUtil hasOnClickYearUtil,
+        NoOnClickYearUtil noOnClickYearUtil, HasOnClickNextPageUtil hasOnClickNextPageUtil,
+        NoOnClickNextPageUtil noOnClickNextPageUtil, ElementFinderUtil elementFinderUtil) {
         this.hasOnClickLstUtil = hasOnClickLstUtil;
         this.noOnClickLstUtil = noOnClickLstUtil;
         this.pseudoLinkLstUtil = pseudoLinkLstUtil;
+        this.hasOnClickYearUtil = hasOnClickYearUtil;
+        this.noOnClickYearUtil = noOnClickYearUtil;
         this.hasOnClickNextPageUtil = hasOnClickNextPageUtil;
         this.noOnClickNextPageUtil = noOnClickNextPageUtil;
         this.elementFinderUtil = elementFinderUtil;
@@ -45,8 +52,7 @@ public class CheckOnClickUtil {
     public void checkOnClickLst(String pageUrl, Target target,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        List<WebElement> lstLinks,
-        LstType lstType, ChildLstTagType childLstTagType,
+        List<WebElement> lstLinks, LstType lstType, ChildLstTagType childLstTagType,
         PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
         String titleText, int index) {
@@ -62,7 +68,7 @@ public class CheckOnClickUtil {
                 pdfOrdinalNumber, titleText);
         } else if (lstType.equals(LstType.NO_ONCLICK)) {
 
-            String lstLink = elementFinderUtil.getLstLink(lstLinks, childLstTagType, index);
+            String lstLink = lstLinks.get(index).getAttribute("href");
 
             noOnClickLstUtil.goToLstByElement(pageUrl, target, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
@@ -82,19 +88,38 @@ public class CheckOnClickUtil {
         }
     }
 
+    public void checkOnClickYear(WebDriver webDriver, YearType yearType, List<WebElement> yearLinks,
+        int currentYear) {
+
+        if (yearType.equals(YearType.HAS_ONCLICK)) {
+            hasOnClickYearUtil.goToYearByOnclick();
+        } else if (yearType.equals(YearType.NO_ONCLICK)) {
+
+            WebElement yearLink = yearLinks.get(currentYear);
+
+            noOnClickYearUtil.goToYearByElement(webDriver, yearLink);
+        } else {
+            throw new WebDriverException("Unsupported year type");
+        }
+    }
+
     public void checkOnClickNextPage(WebDriver webDriver, NextPageType nextPageType,
-        String nextIdentifier, int currentPage) throws InterruptedException {
+        List<WebElement> nextPageLinks, int currentPage) throws InterruptedException {
 
         if (nextPageType.equals(NextPageType.HAS_ONCLICK)) {
-            hasOnClickNextPageUtil.goToNextPageByOnclick(webDriver, nextIdentifier,
-                currentPage + 1);
+
+            String onClickNextPageScript = nextPageLinks.get(currentPage).getAttribute("onclick");
+
+            hasOnClickNextPageUtil.goToNextPageByOnclick(webDriver, onClickNextPageScript);
             Thread.sleep(500);
         } else if (nextPageType.equals(NextPageType.NO_ONCLICK)) {
-            noOnClickNextPageUtil.goToNextPageByElement(webDriver, nextIdentifier,
-                currentPage + 1);
+
+            String nextPageLink = nextPageLinks.get(currentPage).getAttribute("href");
+
+            noOnClickNextPageUtil.goToNextPageByElement(webDriver, nextPageLink);
             Thread.sleep(500);
         } else {
-            throw new WebDriverException("No nextPage found for identifier: " + nextIdentifier);
+            throw new WebDriverException("Unsupported nextPage type");
         }
     }
 }

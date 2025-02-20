@@ -14,6 +14,7 @@ public enum ParentNextPageTagType {
     TR("TR"),
     LI("LI"),
     DD("DD"),
+    FORM("FORM"),
     NONE("NONE");   // 기본값 (빈 값 또는 null)
 
     private final String value;

@@ -13,6 +13,7 @@ public enum ChildNextPageTagType {
     SPAN("SPAN"),
     LI("LI"),
     DD("DD"),
+    FORM("FORM"),
     NONE("NONE");   // 기본값 (빈 값 또는 null)
 
     private final String value;

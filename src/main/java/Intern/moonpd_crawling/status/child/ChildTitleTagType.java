@@ -7,12 +7,14 @@ public enum ChildTitleTagType {
     P("P"), // p 태그
     SPAN("SPAN"), // span 태그
     STRONG("STRONG"), // strong 태그
-    H3("H3"), // h3 태그
     DIV("DIV"), // div 태그
     A("A"), // 앵커 태그
+    H1("H1"),
+    H2("H2"),
+    H3("H3"),
+    H4("H4"),
     H5("H5"),
     LI("LI"),
-    H2("H2"),
     TR("TR"),
     TD("TD"),
     EM("EM"),

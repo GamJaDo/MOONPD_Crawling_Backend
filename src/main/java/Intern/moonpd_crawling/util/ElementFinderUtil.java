@@ -153,7 +153,11 @@ public class ElementFinderUtil {
 
         return webDriver.findElements(By.cssSelector(cssSelector));
     }
+/*
+    public List<WebElement> getPdfElementWithLink() {
 
+    }
+*/
     public List<WebElement> getTitleElements(WebDriver webDriver, String parentTitleIdentifier,
         ParentTitleTagType parentTitleTagType,
         String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber) {
@@ -185,7 +189,11 @@ public class ElementFinderUtil {
 
         return webDriver.findElements(By.cssSelector(cssSelector));
     }
+/*
+    public List<WebElement> getTitleElementWithText() {
 
+    }
+*/
     public List<WebElement> getNextPageElements(WebDriver webDriver, NextPageType nextPageType,
         String parentNextPageIdentifier, ParentNextPageTagType parentNextPageTagType,
         String childNextPageIdentifier, ChildNextPageTagType childNextPageTagType,

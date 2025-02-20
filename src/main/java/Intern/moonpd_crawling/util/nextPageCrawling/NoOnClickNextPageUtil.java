@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class NoOnClickNextPageUtil {
 
-    public void goToNextPageByElement(WebDriver webDriver, String nextPageLink) {
+    public void goToNextPageByHref(WebDriver webDriver, String nextPageLink) {
 
         try {
             ((JavascriptExecutor) webDriver).executeScript(

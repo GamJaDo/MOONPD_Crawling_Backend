@@ -15,6 +15,13 @@ public enum ChildNextPageTagType {
     DD("DD"),
     FORM("FORM"),
     ARTICLE("ARTICLE"),
+    H1("H1"),
+    H2("H2"),
+    H3("H3"),
+    H4("H4"),
+    H5("H5"),
+    FIGURE("FIGURE"),
+    NAV("NAV"),
     NONE("NONE");   // 기본값 (빈 값 또는 null)
 
     private final String value;

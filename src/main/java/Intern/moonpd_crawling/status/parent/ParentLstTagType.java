@@ -10,6 +10,13 @@ public enum ParentLstTagType {
     LI("LI"),
     FORM("FORM"),
     ARTICLE("ARTICLE"),
+    H1("H1"),
+    H2("H2"),
+    H3("H3"),
+    H4("H4"),
+    H5("H5"),
+    FIGURE("FIGURE"),
+    NAV("NAV"),
     NONE("NONE"); // 기본값으로 사용할 항목
 
     private final String value;

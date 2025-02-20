@@ -18,7 +18,7 @@ public class NoOnClickLstUtil {
         this.lstCrawlingService = lstCrawlingService;
     }
 
-    public void goToLstByElement(String pageUrl, Target target, ExtendedPdfType extendedPdfType,
+    public void goToLstByHref(String pageUrl, Target target, ExtendedPdfType extendedPdfType,
         String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
         int extendedPdfOrdinalNumber, String lstLink, PdfType pdfType,
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,

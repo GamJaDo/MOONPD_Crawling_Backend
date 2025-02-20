@@ -56,6 +56,7 @@ public class SinglePageStructureUtil {
 
         List<WebElement> titleElements = null;
         List<WebElement> pdfElements = null;
+        List<WebElement> pdfLinkIncludeElements = null;
 
         List<WebElement> nextPageElements = elementFinderUtil.getNextPageElements(webDriver,
             nextPageType, parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
@@ -83,6 +84,9 @@ public class SinglePageStructureUtil {
                     parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
                     parentPdfIdentifier, parentPdfTagType,
                     childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
+
+                pdfLinkIncludeElements =
+
                 /*
                 if (pdfLinks.isEmpty()) {
                     throw new WebDriverException(

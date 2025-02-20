@@ -109,7 +109,7 @@ public class ListedContentStructureUtil {
 
                     String titleText = titleElements.get(i).getText();
 
-                    checkOnClickUtil.checkOnClickLst(pageUrl, target,
+                    checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target,
                         extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                         extendedPdfOrdinalNumber, lstElements, lstType, pdfType,
                         parentPdfIdentifier,

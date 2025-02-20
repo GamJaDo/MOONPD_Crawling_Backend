@@ -1,4 +1,4 @@
-package Intern.moonpd_crawling.util.yearCrawling;
+package Intern.moonpd_crawling.util.lstCrawling;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NotFoundException;
@@ -6,9 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NoOnClickYearUtil {
+public class JavaScriptLinkLstUtil {
 
-    public void goToYearByHref(WebDriver webDriver, String yearLink) {
+    public void goToJavaScriptLink(WebDriver webDriver, String yearLink) {
 
         try {
             ((JavascriptExecutor) webDriver).executeScript(

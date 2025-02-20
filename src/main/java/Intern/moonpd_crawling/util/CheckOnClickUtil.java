@@ -19,6 +19,7 @@ import Intern.moonpd_crawling.util.nextPageCrawling.NoOnClickNextPageUtil;
 import Intern.moonpd_crawling.util.yearCrawling.HasOnClickYearUtil;
 import Intern.moonpd_crawling.util.yearCrawling.NoOnClickYearUtil;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -55,10 +56,9 @@ public class CheckOnClickUtil {
     public void checkOnClickLst(String pageUrl, Target target,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        List<WebElement> lstLinks, LstType lstType, ChildLstTagType childLstTagType,
-        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
-        String titleText, int index) {
+        List<WebElement> lstLinks, LstType lstType, PdfType pdfType, String parentPdfIdentifier,
+        ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
+        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, String titleText, int index) {
 
         if (lstType.equals(LstType.HAS_ONCLICK)) {
 
@@ -107,16 +107,44 @@ public class CheckOnClickUtil {
         }
     }
 
-    public void checkOnClickNextPage(WebDriver webDriver, NextPageType nextPageType,
-        String nextPageLinkByOnClick, String nextPageLinkByHref) throws InterruptedException {
+    public List<String> checkOnClickNextPageLink(NextPageType nextPageType,
+        List<WebElement> nextPageElements) {
 
         if (nextPageType.equals(NextPageType.HAS_ONCLICK)) {
 
-            hasOnClickNextPageUtil.goToNextPageByOnclick(webDriver, nextPageLinkByOnClick);
+            List<String> nextPageLinksByOnClick = new ArrayList<>();
+
+            for (WebElement nextPageElement : nextPageElements) {
+                nextPageLinksByOnClick.add(nextPageElement.getAttribute("onclick"));
+            }
+
+            return nextPageLinksByOnClick;
+        } else if (nextPageType.equals(NextPageType.NO_ONCLICK)) {
+
+            List<String> nextPageLinksByHref = new ArrayList<>();
+
+            for (WebElement nextPageElement : nextPageElements) {
+                nextPageLinksByHref.add(nextPageElement.getAttribute("href"));
+            }
+
+            return nextPageLinksByHref;
+        } else if (nextPageType.equals(NextPageType.NONE)) {
+            return new ArrayList<>();
+        } else {
+            throw new WebDriverException("Unsupported nextPage type");
+        }
+    }
+
+    public void checkOnClickNextPage(WebDriver webDriver, NextPageType nextPageType,
+        String nextPageLink) throws InterruptedException {
+
+        if (nextPageType.equals(NextPageType.HAS_ONCLICK)) {
+
+            hasOnClickNextPageUtil.goToNextPageByOnclick(webDriver, nextPageLink);
             Thread.sleep(500);
         } else if (nextPageType.equals(NextPageType.NO_ONCLICK)) {
 
-            noOnClickNextPageUtil.goToNextPageByElement(webDriver, nextPageLinkByHref);
+            noOnClickNextPageUtil.goToNextPageByElement(webDriver, nextPageLink);
             Thread.sleep(500);
         } else {
             throw new WebDriverException("Unsupported nextPage type");

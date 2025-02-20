@@ -1,5 +1,6 @@
 package Intern.moonpd_crawling.util;
 
+import Intern.moonpd_crawling.status.NextPageType;
 import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.child.ChildYearTagType;
 import Intern.moonpd_crawling.status.parent.ParentNextPageTagType;
@@ -26,15 +27,16 @@ public class ElementCountUtil {
             childYearIdentifier, childYearTagType, yearOrdinalNumber).size();
     }
 
-    public int getTotalPageCnt(WebDriver webDriver, String parentNextPageIdentifier,
-        ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
-        ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber) {
+    public int getTotalPageCnt(WebDriver webDriver, NextPageType nextPageType,
+        String parentNextPageIdentifier, ParentNextPageTagType parentNextPageTagType,
+        String childNextPageIdentifier, ChildNextPageTagType childNextPageTagType,
+        int nextPageOrdinalNumber) {
 
-        int totalNextPageCount = elementFinderUtil.getNextPageElements(webDriver, parentNextPageIdentifier,
-            parentNextPageTagType, childNextPageIdentifier, childNextPageTagType,
-            nextPageOrdinalNumber).size();
+        int totalNextPageCount = elementFinderUtil.getNextPageElements(webDriver, nextPageType,
+            parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
+            childNextPageTagType, nextPageOrdinalNumber).size();
 
-        if (totalNextPageCount == 0){
+        if (totalNextPageCount == 0) {
             return 1;
         }
         return totalNextPageCount;

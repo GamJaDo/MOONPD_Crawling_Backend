@@ -55,25 +55,23 @@ public class ListedContentStructureUtil {
         List<WebElement> titleElements = null;
 
         List<WebElement> nextPageElements = elementFinderUtil.getNextPageElements(webDriver,
-            parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
+            nextPageType, parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
             childNextPageTagType, nextPageOrdinalNumber);
+        /*
         if (nextPageElements.isEmpty()) {
             throw new WebDriverException(
                 "No NextPageElement found for identifier: " + parentNextPageIdentifier + " or "
                     + childNextPageIdentifier);
         }
+        */
 
-        List<String> nextPageLinksByOnClick = new ArrayList<>();
-        List<String> nextPageLinksByHref = new ArrayList<>();
-        for (WebElement nextPageElement : nextPageElements) {
-            nextPageLinksByOnClick.add(nextPageElement.getAttribute("onclick"));
-            nextPageLinksByHref.add(nextPageElement.getAttribute("href"));
-        }
+        List<String> nextPageLinks = checkOnClickUtil.checkOnClickNextPageLink(nextPageType,
+            nextPageElements);
 
         try {
-            int totalPage = elementCountUtil.getTotalPageCnt(webDriver, parentNextPageIdentifier,
-                parentNextPageTagType, childNextPageIdentifier, childNextPageTagType,
-                nextPageOrdinalNumber);
+            int totalPage = elementCountUtil.getTotalPageCnt(webDriver, nextPageType,
+                parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
+                childNextPageTagType, nextPageOrdinalNumber);
 
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
                 Thread.sleep(500);
@@ -113,7 +111,7 @@ public class ListedContentStructureUtil {
 
                     checkOnClickUtil.checkOnClickLst(pageUrl, target,
                         extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber, lstElements, lstType, childLstTagType, pdfType,
+                        extendedPdfOrdinalNumber, lstElements, lstType, pdfType,
                         parentPdfIdentifier,
                         parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber,
                         titleText, i);
@@ -121,8 +119,7 @@ public class ListedContentStructureUtil {
 
                 if (currentPage < totalPage) {
                     checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType,
-                        nextPageLinksByOnClick.get(currentPage),
-                        nextPageLinksByHref.get(currentPage));
+                        nextPageLinks.get(currentPage));
                 }
             }
         } catch (InterruptedException e) {

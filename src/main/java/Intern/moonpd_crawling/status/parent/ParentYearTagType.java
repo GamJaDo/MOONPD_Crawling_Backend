@@ -10,6 +10,7 @@ public enum ParentYearTagType {
     LI("LI"),
     UL("UL"),
     FORM("FORM"),
+    ARTICLE("ARTICLE"),
     NONE("NONE"); // 기본값으로 사용할 항목
 
     private final String value;

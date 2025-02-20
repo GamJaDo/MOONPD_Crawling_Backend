@@ -100,10 +100,6 @@ public class CheckOnClickUtil {
             Thread.sleep(500);
         } else if (yearType.equals(YearType.NO_ONCLICK)) {
 
-            System.out.println("###############################");
-            System.out.println(yearLink);
-            System.out.println("###############################");
-
             noOnClickYearUtil.goToYearByElement(webDriver, yearLink);
             Thread.sleep(500);
         } else {
@@ -112,18 +108,15 @@ public class CheckOnClickUtil {
     }
 
     public void checkOnClickNextPage(WebDriver webDriver, NextPageType nextPageType,
-        String nextPageLink) throws InterruptedException {
+        String nextPageLinkByOnClick, String nextPageLinkByHref) throws InterruptedException {
 
         if (nextPageType.equals(NextPageType.HAS_ONCLICK)) {
-            /*
-            String onClickNextPageScript = nextPageLinks.get(currentPage).getAttribute("onclick");
 
-            hasOnClickNextPageUtil.goToNextPageByOnclick(webDriver, onClickNextPageScript);
+            hasOnClickNextPageUtil.goToNextPageByOnclick(webDriver, nextPageLinkByOnClick);
             Thread.sleep(500);
-             */
         } else if (nextPageType.equals(NextPageType.NO_ONCLICK)) {
 
-            noOnClickNextPageUtil.goToNextPageByElement(webDriver, nextPageLink);
+            noOnClickNextPageUtil.goToNextPageByElement(webDriver, nextPageLinkByHref);
             Thread.sleep(500);
         } else {
             throw new WebDriverException("Unsupported nextPage type");

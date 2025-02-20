@@ -75,13 +75,7 @@ public class YearFilteredStructureUtil {
 
             for (int currentYear = 1; currentYear <= totalYear; currentYear++) {
                 Thread.sleep(500);
-/*
-                System.out.println("###############################");
-                for (int i = 0; i < yearElements.size(); i++) {
-                    System.out.println("yearLinks[" + i + "]: " + yearElements.get(i).getAttribute("href"));
-                }
-                System.out.println("###############################");
-*/
+
                 singlePageStructureUtil.crawl(webDriver, pageUrl, target, extendedPdfType,
                     parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                     extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,

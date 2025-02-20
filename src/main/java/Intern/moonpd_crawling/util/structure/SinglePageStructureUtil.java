@@ -66,9 +66,11 @@ public class SinglePageStructureUtil {
                     + childNextPageIdentifier);
         }
 
-        List<String> nextPageLinks = new ArrayList<>();
+        List<String> nextPageLinksByOnClick = new ArrayList<>();
+        List<String> nextPageLinksByHref = new ArrayList<>();
         for (WebElement nextPageElement : nextPageElements) {
-            nextPageLinks.add(nextPageElement.getAttribute("href"));
+            nextPageLinksByOnClick.add(nextPageElement.getAttribute("onclick"));
+            nextPageLinksByHref.add(nextPageElement.getAttribute("href"));
         }
 
         try {
@@ -128,7 +130,9 @@ public class SinglePageStructureUtil {
                 }
 
                 if (currentPage < totalPage) {
-                    checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType, nextPageLinks.get(currentPage));
+                    checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType,
+                        nextPageLinksByOnClick.get(currentPage),
+                        nextPageLinksByHref.get(currentPage));
                 }
             }
         } catch (InterruptedException e) {

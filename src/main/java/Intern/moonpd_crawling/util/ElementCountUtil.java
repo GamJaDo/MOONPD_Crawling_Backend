@@ -30,8 +30,13 @@ public class ElementCountUtil {
         ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
         ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber) {
 
-        return elementFinderUtil.getNextPageElements(webDriver, parentNextPageIdentifier,
+        int totalNextPageCount = elementFinderUtil.getNextPageElements(webDriver, parentNextPageIdentifier,
             parentNextPageTagType, childNextPageIdentifier, childNextPageTagType,
             nextPageOrdinalNumber).size();
+
+        if (totalNextPageCount == 0){
+            return 1;
+        }
+        return totalNextPageCount;
     }
 }

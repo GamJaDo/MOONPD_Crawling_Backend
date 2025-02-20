@@ -172,11 +172,11 @@ public class Target {
     @Column(name = "parent_next_page_tag_type", nullable = true)
     private ParentNextPageTagType parentNextPageTagType;
 
-    @Column(name = "child_deep_next_page_identifier", nullable = true)
+    @Column(name = "child_next_page_identifier", nullable = true)
     private String childNextPageIdentifier;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "child_deep_next_page_tag_type", nullable = true)
+    @Column(name = "child_next_page_tag_type", nullable = true)
     private ChildNextPageTagType childNextPageTagType;
 
     @Column(name = "next_page_ordinal_number", nullable = true)

@@ -18,9 +18,12 @@ import Intern.moonpd_crawling.util.nextPageCrawling.HasOnClickNextPageUtil;
 import Intern.moonpd_crawling.util.nextPageCrawling.NoOnClickNextPageUtil;
 import Intern.moonpd_crawling.util.yearCrawling.HasOnClickYearUtil;
 import Intern.moonpd_crawling.util.yearCrawling.NoOnClickYearUtil;
+import java.time.Duration;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -88,33 +91,37 @@ public class CheckOnClickUtil {
         }
     }
 
-    public void checkOnClickYear(WebDriver webDriver, YearType yearType, List<WebElement> yearLinks,
-        int currentYear) {
+    public void checkOnClickYear(WebDriver webDriver, YearType yearType, String yearLink)
+        throws InterruptedException {
 
         if (yearType.equals(YearType.HAS_ONCLICK)) {
+
             hasOnClickYearUtil.goToYearByOnclick();
+            Thread.sleep(500);
         } else if (yearType.equals(YearType.NO_ONCLICK)) {
 
-            WebElement yearLink = yearLinks.get(currentYear);
+            System.out.println("###############################");
+            System.out.println(yearLink);
+            System.out.println("###############################");
 
             noOnClickYearUtil.goToYearByElement(webDriver, yearLink);
+            Thread.sleep(500);
         } else {
             throw new WebDriverException("Unsupported year type");
         }
     }
 
     public void checkOnClickNextPage(WebDriver webDriver, NextPageType nextPageType,
-        List<WebElement> nextPageLinks, int currentPage) throws InterruptedException {
+        String nextPageLink) throws InterruptedException {
 
         if (nextPageType.equals(NextPageType.HAS_ONCLICK)) {
-
+            /*
             String onClickNextPageScript = nextPageLinks.get(currentPage).getAttribute("onclick");
 
             hasOnClickNextPageUtil.goToNextPageByOnclick(webDriver, onClickNextPageScript);
             Thread.sleep(500);
+             */
         } else if (nextPageType.equals(NextPageType.NO_ONCLICK)) {
-
-            String nextPageLink = nextPageLinks.get(currentPage).getAttribute("href");
 
             noOnClickNextPageUtil.goToNextPageByElement(webDriver, nextPageLink);
             Thread.sleep(500);

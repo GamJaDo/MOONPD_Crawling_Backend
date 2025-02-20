@@ -6,30 +6,32 @@ import Intern.moonpd_crawling.status.parent.ParentNextPageTagType;
 import Intern.moonpd_crawling.status.parent.ParentYearTagType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ElementCountUtil {
 
-    public int getTotalPageCnt(WebDriver webDriver, String parentNextPageIdentifier,
-        ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
-        ChildNextPageTagType childNextPageTagType) {
+    private final ElementFinderUtil elementFinderUtil;
 
-        String parentSelector = parentNextPageTagType + "." + parentNextPageIdentifier;
-        String childSelector = childNextPageTagType + "." + childNextPageIdentifier;
-        String fullSelector = parentSelector + " " + childSelector;
-
-        return webDriver.findElements(By.cssSelector(fullSelector)).size();
+    public ElementCountUtil(ElementFinderUtil elementFinderUtil) {
+        this.elementFinderUtil = elementFinderUtil;
     }
 
     public int getTotalYearCnt(WebDriver webDriver, String parentYearIdentifier,
         ParentYearTagType parentYearTagType, String childYearIdentifier,
-        ChildYearTagType childYearTagType) {
+        ChildYearTagType childYearTagType, int yearOrdinalNumber) {
 
-        String parentSelector = parentYearTagType + "." + parentYearIdentifier;
-        String childSelector = childYearTagType + "." + childYearIdentifier;
-        String fullSelector = parentSelector + " " + childSelector;
+        return elementFinderUtil.getYearElements(webDriver, parentYearIdentifier, parentYearTagType,
+            childYearIdentifier, childYearTagType, yearOrdinalNumber).size();
+    }
 
-        return webDriver.findElements(By.cssSelector(fullSelector)).size();
+    public int getTotalPageCnt(WebDriver webDriver, String parentNextPageIdentifier,
+        ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
+        ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber) {
+
+        return elementFinderUtil.getNextPageElements(webDriver, parentNextPageIdentifier,
+            parentNextPageTagType, childNextPageIdentifier, childNextPageTagType,
+            nextPageOrdinalNumber).size();
     }
 }

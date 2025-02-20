@@ -18,6 +18,7 @@ import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
 import Intern.moonpd_crawling.util.CheckOnClickUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -50,70 +51,74 @@ public class ListedContentStructureUtil {
         ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
         ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber) {
 
-        List<WebElement> lstLinks = null;
-        List<WebElement> titles = null;
+        List<WebElement> lstElements = null;
+        List<WebElement> titleElements = null;
 
-        List<WebElement> nextPageLinks = elementFinderUtil.getNextPageElements(webDriver,
+        List<WebElement> nextPageElements = elementFinderUtil.getNextPageElements(webDriver,
             parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
             childNextPageTagType, nextPageOrdinalNumber);
+        if (nextPageElements.isEmpty()) {
+            throw new WebDriverException(
+                "No NextPageElement found for identifier: " + parentNextPageIdentifier + " or "
+                    + childNextPageIdentifier);
+        }
+
+        List<String> nextPageLinks = new ArrayList<>();
+        for (WebElement nextPageElement : nextPageElements) {
+            nextPageLinks.add(nextPageElement.getAttribute("href"));
+        }
 
         try {
             int totalPage = elementCountUtil.getTotalPageCnt(webDriver, parentNextPageIdentifier,
-                parentNextPageTagType, childNextPageIdentifier, childNextPageTagType);
+                parentNextPageTagType, childNextPageIdentifier, childNextPageTagType,
+                nextPageOrdinalNumber);
 
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
                 Thread.sleep(500);
 
-                lstLinks = elementFinderUtil.getLstElements(webDriver,
+                lstElements = elementFinderUtil.getLstElements(webDriver,
                     parentLstIdentifier, parentLstTagType, childLstIdentifier, childLstTagType,
                     lstOrdinalNumber);
-                if (lstLinks.isEmpty()) {
+                if (lstElements.isEmpty()) {
                     throw new WebDriverException(
-                        "No lst links found for identifier: " + parentLstIdentifier + " or "
+                        "No LstElements found for identifier: " + parentLstIdentifier + " or "
                             + childLstIdentifier);
                 }
 
-                titles = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
+                titleElements = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
                     parentTitleTagType, childTitleIdentifier, childTitleTagType,
                     titleOrdinalNumber);
-                if (titles.isEmpty()) {
+                if (titleElements.isEmpty()) {
                     throw new WebDriverException(
-                        "No titles found for identifier: " + parentTitleIdentifier + " or "
+                        "No TitleElements found for identifier: " + parentTitleIdentifier + " or "
                             + childTitleIdentifier);
                 }
 
-                if (lstLinks.size() != titles.size()) {
-                    int diff = Math.abs(lstLinks.size() - titles.size());
+                if (lstElements.size() != titleElements.size()) {
+                    int diff = Math.abs(lstElements.size() - titleElements.size());
 
-                    if (lstLinks.size() > titles.size()) {
-                        lstLinks = lstLinks.subList(diff, lstLinks.size());
+                    if (lstElements.size() > titleElements.size()) {
+                        lstElements = lstElements.subList(diff, lstElements.size());
                     } else {
-                        titles = titles.subList(diff, titles.size());
+                        titleElements = titleElements.subList(diff, titleElements.size());
                     }
                 }
 
-                for (int i = 0; i < lstLinks.size(); i++) {
-                    /*
-                    lstLinks = elementFinderUtil.getLstElements(webDriver,
-                        parentLstIdentifier, parentLstTagType,
-                        childLstIdentifier, childLstTagType, lstOrdinalNumber);
+                for (int i = 0; i < lstElements.size(); i++) {
+                    Thread.sleep(100);
 
-                    stLinks 리스트는 페이지가 업데이트되거나 DOM이 변경될 때 "stale" 상태가 되어 이전에 저장된 요소 참조가 더 이상 유효하지 않게되므로
-                    새로 조회(re-fetch) 함...
-
-                    */
-                    String titleText = titles.get(i).getText();
+                    String titleText = titleElements.get(i).getText();
 
                     checkOnClickUtil.checkOnClickLst(pageUrl, target,
                         extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber, lstLinks, lstType, childLstTagType, pdfType, parentPdfIdentifier,
+                        extendedPdfOrdinalNumber, lstElements, lstType, childLstTagType, pdfType,
+                        parentPdfIdentifier,
                         parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber,
                         titleText, i);
                 }
 
                 if (currentPage < totalPage) {
-                    checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType, nextPageLinks,
-                        currentPage);
+                    checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType, nextPageLinks.get(currentPage));
                 }
             }
         } catch (InterruptedException e) {

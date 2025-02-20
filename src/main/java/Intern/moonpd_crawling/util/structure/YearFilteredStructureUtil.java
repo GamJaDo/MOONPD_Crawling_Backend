@@ -18,6 +18,7 @@ import Intern.moonpd_crawling.status.parent.ParentYearTagType;
 import Intern.moonpd_crawling.util.CheckOnClickUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -51,25 +52,36 @@ public class YearFilteredStructureUtil {
         String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
         NextPageType nextPageType, String parentNextPageIdentifier,
         ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
-        ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber) {
+        ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber)
+        throws InterruptedException {
 
-        List<WebElement> yearLinks = null;
+        List<WebElement> yearElements = elementFinderUtil.getYearElements(webDriver,
+            parentYearIdentifier,
+            parentYearTagType, childYearIdentifier, childYearTagType, yearOrdinalNumber);
+        if (yearElements.isEmpty()) {
+            throw new WebDriverException(
+                "No YearElement found for identifier: " + parentYearIdentifier + " or "
+                    + childYearIdentifier);
+        }
+
+        List<String> yearLinks = new ArrayList<>();
+        for (WebElement yearElement : yearElements) {
+            yearLinks.add(yearElement.getAttribute("href"));
+        }
 
         try {
             int totalYear = elementCountUtil.getTotalYearCnt(webDriver, parentYearIdentifier,
-                parentYearTagType, childYearIdentifier, childYearTagType);
+                parentYearTagType, childYearIdentifier, childYearTagType, yearOrdinalNumber);
 
             for (int currentYear = 1; currentYear <= totalYear; currentYear++) {
                 Thread.sleep(500);
-
-                yearLinks = elementFinderUtil.getYearElements(webDriver, parentYearIdentifier,
-                    parentYearTagType, childYearIdentifier, childYearTagType, yearOrdinalNumber);
-                if (yearLinks.isEmpty()) {
-                    throw new WebDriverException(
-                        "No lst links found for identifier: " + parentYearIdentifier + " or "
-                            + childYearIdentifier);
+/*
+                System.out.println("###############################");
+                for (int i = 0; i < yearElements.size(); i++) {
+                    System.out.println("yearLinks[" + i + "]: " + yearElements.get(i).getAttribute("href"));
                 }
-
+                System.out.println("###############################");
+*/
                 singlePageStructureUtil.crawl(webDriver, pageUrl, target, extendedPdfType,
                     parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                     extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
@@ -80,11 +92,10 @@ public class YearFilteredStructureUtil {
                     childNextPageTagType, nextPageOrdinalNumber);
 
                 if (currentYear < totalYear) {
-                    checkOnClickUtil.checkOnClickYear(webDriver, yearType, yearLinks,
-                        currentYear);
+                    checkOnClickUtil.checkOnClickYear(webDriver, yearType,
+                        yearLinks.get(currentYear));
                 }
             }
-
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new WebDriverException("Crawling interrupted");

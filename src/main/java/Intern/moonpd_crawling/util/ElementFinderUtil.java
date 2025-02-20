@@ -111,7 +111,8 @@ public class ElementFinderUtil {
             cssSelector = childYearTagType + "." + childYearIdentifier;
         }
 
-        return webDriver.findElements(By.cssSelector(cssSelector + " a"));
+        WebElement parentElement = webDriver.findElement(By.cssSelector(cssSelector));
+        return parentElement.findElements(By.tagName("a"));
     }
 
     public List<WebElement> getPdfElements(WebDriver webDriver,
@@ -216,6 +217,7 @@ public class ElementFinderUtil {
             cssSelector = childNextPageTagType + "." + childNextPageIdentifier;
         }
 
-        return webDriver.findElements(By.cssSelector(cssSelector + " a"));
+        WebElement parentElement = webDriver.findElement(By.cssSelector(cssSelector));
+        return parentElement.findElements(By.tagName("a"));
     }
 }

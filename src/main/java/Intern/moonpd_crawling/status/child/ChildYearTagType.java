@@ -8,6 +8,7 @@ public enum ChildYearTagType {
     TD("TD"),
     IMG("IMG"),
     LI("LI"),
+    UL("UL"),
     NONE("NONE"); // 기본값으로 사용할 항목
 
     private final String value;

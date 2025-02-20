@@ -18,6 +18,7 @@ import Intern.moonpd_crawling.util.CheckOnClickPdfUtil;
 import Intern.moonpd_crawling.util.CheckOnClickUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -53,21 +54,32 @@ public class SinglePageStructureUtil {
         ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
         ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber) {
 
-        List<WebElement> titles = null;
-        List<WebElement> pdfLinks = null;
+        List<WebElement> titleElements = null;
+        List<WebElement> pdfElements = null;
 
-        List<WebElement> nextPageLinks = elementFinderUtil.getNextPageElements(webDriver,
+        List<WebElement> nextPageElements = elementFinderUtil.getNextPageElements(webDriver,
             parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
             childNextPageTagType, nextPageOrdinalNumber);
+        if (nextPageElements.isEmpty()) {
+            throw new WebDriverException(
+                "No NextPageElement found for identifier: " + parentNextPageIdentifier + " or "
+                    + childNextPageIdentifier);
+        }
+
+        List<String> nextPageLinks = new ArrayList<>();
+        for (WebElement nextPageElement : nextPageElements) {
+            nextPageLinks.add(nextPageElement.getAttribute("href"));
+        }
 
         try {
             int totalPage = elementCountUtil.getTotalPageCnt(webDriver, parentNextPageIdentifier,
-                parentNextPageTagType, childNextPageIdentifier, childNextPageTagType);
+                parentNextPageTagType, childNextPageIdentifier, childNextPageTagType,
+                nextPageOrdinalNumber);
 
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
                 Thread.sleep(500);
 
-                pdfLinks = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
+                pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
                     parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
                     parentPdfIdentifier, parentPdfTagType,
                     childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
@@ -78,7 +90,7 @@ public class SinglePageStructureUtil {
                             + childPdfIdentifier);
                 }
                 */
-                titles = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
+                titleElements = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
                     parentTitleTagType,
                     childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
                 /*
@@ -89,21 +101,21 @@ public class SinglePageStructureUtil {
                 }
                 */
 
-                if (pdfLinks.size() != titles.size()) {
-                    int diff = Math.abs(pdfLinks.size() - titles.size());
+                if (pdfElements.size() != titleElements.size()) {
+                    int diff = Math.abs(pdfElements.size() - titleElements.size());
 
-                    if (pdfLinks.size() > titles.size()) {
-                        pdfLinks = pdfLinks.subList(diff, pdfLinks.size());
+                    if (pdfElements.size() > titleElements.size()) {
+                        pdfElements = pdfElements.subList(diff, pdfElements.size());
                     } else {
-                        titles = titles.subList(0, titles.size() - diff);
+                        titleElements = titleElements.subList(0, titleElements.size() - diff);
                     }
                 }
 
-                for (int i = 0; i < pdfLinks.size(); i++) {
+                for (int i = 0; i < pdfElements.size(); i++) {
 
                     String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl,
-                        pdfType, pdfLinks, childPdfTagType, i);
-                    String titleText = titles.get(i).getText();
+                        pdfType, pdfElements, childPdfTagType, i);
+                    String titleText = titleElements.get(i).getText();
 
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
                         continue;
@@ -116,8 +128,7 @@ public class SinglePageStructureUtil {
                 }
 
                 if (currentPage < totalPage) {
-                    checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType, nextPageLinks,
-                        currentPage);
+                    checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType, nextPageLinks.get(currentPage));
                 }
             }
         } catch (InterruptedException e) {

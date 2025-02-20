@@ -43,22 +43,22 @@ public class LstCrawlingService {
 
         WebDriver webDriver = new ChromeDriver();
 
-        List<WebElement> pdfLinks = null;
+        List<WebElement> pdfElements = null;
 
         try {
             webDriver.get(lstLink);
             Thread.sleep(500);
 
-            pdfLinks = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
+            pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 extendedPdfOrdinalNumber, parentPdfIdentifier,
                 parentPdfTagType,
                 childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
 
-            if (!pdfLinks.isEmpty()) {
-                for (int i = 0; i < pdfLinks.size(); i++) {
+            if (!pdfElements.isEmpty()) {
+                for (int i = 0; i < pdfElements.size(); i++) {
                     String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl, pdfType,
-                        pdfLinks, childPdfTagType, i);
+                        pdfElements, childPdfTagType, i);
 
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
                         continue;

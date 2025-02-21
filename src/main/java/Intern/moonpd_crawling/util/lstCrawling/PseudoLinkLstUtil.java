@@ -23,44 +23,38 @@ public class PseudoLinkLstUtil {
         this.lstCrawlingService = lstCrawlingService;
     }
 
-    public void goToPseudoLinkWithTitle(String pageUrl, ExtendedPdfType extendedPdfType,
-        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
-        int extendedPdfOrdinalNumber, Target target, WebElement pseudoLinkElement, PdfType pdfType,
-        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, String titleText) {
-
-        String lstLink = getLstLink(pageUrl, pseudoLinkElement);
-
-        lstCrawlingService.crawlLstWithTitle(pageUrl, target, extendedPdfType,
-            parentExtendedPdfIdentifier,
-            parentExtendedPdfTagType,
-            extendedPdfOrdinalNumber, lstLink, pdfType,
-            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-            pdfOrdinalNumber, titleText);
-    }
-
     public void goToPseudoLink(String pageUrl, Target target, ExtendedPdfType extendedPdfType,
         String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
         int extendedPdfOrdinalNumber, WebElement pseudoLinkElement, PdfType pdfType,
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, String parentTitleIdentifier,
-        ParentTitleTagType parentTitleTagType, String childTitleIdentifier,
-        ChildTitleTagType childTitleTagType, int titleOrdinalNumber) {
+        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, TitleType titleType,
+        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
+        String titleText) {
 
         String lstLink = getLstLink(pageUrl, pseudoLinkElement);
 
-        lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType, parentExtendedPdfIdentifier,
-            parentExtendedPdfTagType, extendedPdfOrdinalNumber, lstLink, pdfType,
-            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-            pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-            childTitleTagType, titleOrdinalNumber);
+        if (titleType.equals(TitleType.OUT)) {
+            lstCrawlingService.crawlLstWithTitle(pageUrl, target, extendedPdfType,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
+                childPdfTagType, pdfOrdinalNumber, titleText);
+        } else if (titleType.equals(TitleType.IN)) {
+            lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType,
+                parentExtendedPdfIdentifier,
+                parentExtendedPdfTagType, extendedPdfOrdinalNumber, lstLink, pdfType,
+                parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
+                pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
+                childTitleTagType, titleOrdinalNumber);
+        }
     }
 
     private String getLstLink(String pageUrl, WebElement pseudoLinkElement) {
         try {
             String dataIdx = pseudoLinkElement.getAttribute("data-idx");
             if (dataIdx == null || dataIdx.trim().isEmpty()) {
-                throw new WebDriverException("data-idx attribute is missing in pseudo link element.");
+                throw new WebDriverException(
+                    "data-idx attribute is missing in pseudo link element.");
             }
 
             String viewUrl = pageUrl.replace("list.do", "view.do");
@@ -71,7 +65,8 @@ public class PseudoLinkLstUtil {
                 return viewUrl + "?idx=" + dataIdx;
             }
         } catch (Exception e) {
-            throw new WebDriverException("Failed to navigate to view URL using pseudo link element.", e);
+            throw new WebDriverException(
+                "Failed to navigate to view URL using pseudo link element.", e);
         }
     }
 }

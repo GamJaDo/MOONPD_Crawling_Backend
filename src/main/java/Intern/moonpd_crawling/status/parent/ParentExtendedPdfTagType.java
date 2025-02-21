@@ -16,6 +16,7 @@ public enum ParentExtendedPdfTagType {
     UL("UL"),
     FORM("FORM"),
     ARTICLE("ARTICLE"),
+    TBODY("TBODY"),
     NONE("NONE");                // 기본값 (빈 값 또는 null)
 
     private final String value;

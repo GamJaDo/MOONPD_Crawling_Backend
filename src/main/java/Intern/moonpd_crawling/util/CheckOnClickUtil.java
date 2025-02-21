@@ -54,64 +54,6 @@ public class CheckOnClickUtil {
         this.noOnClickNextPageUtil = noOnClickNextPageUtil;
     }
 
-    public void checkOnClickLstWithTitle(WebDriver webDriver, String pageUrl, Target target,
-        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        List<WebElement> lstLinks, LstType lstType, PdfType pdfType, String parentPdfIdentifier,
-        ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, String titleText, int index) {
-
-        if (lstType.equals(LstType.HAS_ONCLICK)) {
-
-            String onClickLstScript = lstLinks.get(index).getAttribute("onclick");
-
-            hasOnClickLstUtil.goToLstByOnclickWithTitle(pageUrl, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                extendedPdfOrdinalNumber, target, onClickLstScript, pdfType,
-                parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-                pdfOrdinalNumber, titleText);
-        } else if (lstType.equals(LstType.NO_ONCLICK)) {
-
-            String lstLink = lstLinks.get(index).getAttribute("href");
-
-            noOnClickLstUtil.goToLstByHrefWithTitle(pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
-                lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
-                childPdfTagType, pdfOrdinalNumber, titleText);
-        } else if (lstType.equals(LstType.PSEUDO_LINK)) {
-
-            WebElement pseudoLinkElement = lstLinks.get(index);
-
-            pseudoLinkLstUtil.goToPseudoLinkWithTitle(pageUrl, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                extendedPdfOrdinalNumber, target, pseudoLinkElement, pdfType,
-                parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-                pdfOrdinalNumber, titleText);
-        } else if (lstType.equals(LstType.JAVASCRIPT_LINK)) {
-
-            String javaScriptLink = lstLinks.get(index).getAttribute("href");
-/*
-            javaScriptLinkLstUtil.goToJavaScriptLinkWithTitle(webDriver, pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
-                javaScriptLink, pdfType, parentPdfIdentifier, parentPdfTagType,
-                childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleText);
-*/
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            webDriver.navigate().back();
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            throw new WebDriverException("Unsupported lst type");
-        }
-    }
-
     public void checkOnClickLst(WebDriver webDriver, String pageUrl, Target target,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
@@ -120,7 +62,7 @@ public class CheckOnClickUtil {
         ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, TitleType titleType,
         String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
         String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
-        int index) {
+        String titleText, int index) {
 
         if (lstType.equals(LstType.HAS_ONCLICK)) {
 
@@ -130,8 +72,8 @@ public class CheckOnClickUtil {
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 extendedPdfOrdinalNumber, onClickLstScript, pdfType,
                 parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-                pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-                childTitleTagType, titleOrdinalNumber);
+                pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
+                childTitleIdentifier, childTitleTagType, titleOrdinalNumber, titleText);
         } else if (lstType.equals(LstType.NO_ONCLICK)) {
 
             String lstLink = lstLinks.get(index).getAttribute("href");
@@ -139,8 +81,9 @@ public class CheckOnClickUtil {
             noOnClickLstUtil.goToLstByHref(pageUrl, target, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
                 lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
-                childPdfTagType, pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType,
-                childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
+                childPdfTagType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
+                parentTitleTagType, childTitleIdentifier, childTitleTagType, titleOrdinalNumber,
+                titleText);
         } else if (lstType.equals(LstType.PSEUDO_LINK)) {
 
             WebElement pseudoLinkElement = lstLinks.get(index);
@@ -149,8 +92,8 @@ public class CheckOnClickUtil {
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 extendedPdfOrdinalNumber, pseudoLinkElement, pdfType,
                 parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-                pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-                childTitleTagType, titleOrdinalNumber);
+                pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
+                childTitleIdentifier, childTitleTagType, titleOrdinalNumber, titleText);
         } else if (lstType.equals(LstType.JAVASCRIPT_LINK)) {
 
             String javaScriptLink = lstLinks.get(index).getAttribute("href");
@@ -158,8 +101,9 @@ public class CheckOnClickUtil {
             javaScriptLinkLstUtil.goToJavaScriptLink(webDriver, pageUrl, target, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
                 javaScriptLink, pdfType, parentPdfIdentifier, parentPdfTagType,
-                childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, parentTitleIdentifier,
-                parentTitleTagType, childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
+                childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleType,
+                parentTitleIdentifier, parentTitleTagType, childTitleIdentifier, childTitleTagType,
+                titleOrdinalNumber, titleText);
         } else {
             throw new WebDriverException("Unsupported lst type");
         }

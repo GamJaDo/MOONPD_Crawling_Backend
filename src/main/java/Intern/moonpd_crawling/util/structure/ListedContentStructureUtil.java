@@ -54,25 +54,14 @@ public class ListedContentStructureUtil {
 
         List<WebElement> lstElements = null;
         List<WebElement> titleElements = null;
+        String titleText = null;
 
         List<WebElement> nextPageElements = elementFinderUtil.getNextPageElements(webDriver,
             nextPageType, parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
             childNextPageTagType, nextPageOrdinalNumber);
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
-        for (int i = 0; i < nextPageElements.size(); i++) {
-            System.out.println("nextPageElements[" + i + "]: " + nextPageElements.get(i).getText());
-        }
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
-
-        System.out.println("-------------------------------------------------");
 
         List<String> nextPageLinks = checkOnClickUtil.getNextPageLink(nextPageType,
             nextPageElements);
-        System.out.println("##########################");
-        for (int i = 0; i < nextPageLinks.size(); i++) {
-            System.out.println("nextPageLinks[" + i + "]: " + nextPageLinks.get(i));
-        }
-        System.out.println("##########################");
 
         try {
             int totalPage = elementCountUtil.getTotalPageCnt(nextPageLinks);
@@ -121,24 +110,16 @@ public class ListedContentStructureUtil {
                     Thread.sleep(100);
 
                     if (titleType.equals(TitleType.OUT)) {
-                        String titleText = titleElements.get(i).getText();
-
-                        checkOnClickUtil.checkOnClickLstWithTitle(webDriver, pageUrl, target,
-                            extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                            extendedPdfOrdinalNumber, lstElements, lstType, pdfType,
-                            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
-                            childPdfTagType, pdfOrdinalNumber, titleText, i);
-                    } else if (titleType.equals(TitleType.IN)) {
-                        checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target,
-                            extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                            extendedPdfOrdinalNumber, lstElements, lstType, pdfType,
-                            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
-                            childPdfTagType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
-                            parentTitleTagType, childTitleIdentifier, childTitleTagType,
-                            titleOrdinalNumber, i);
-                    } else {
-                        throw new WebDriverException("Unsupported title type");
+                        titleText = titleElements.get(i).getText();
                     }
+
+                    checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target,
+                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+                        extendedPdfOrdinalNumber, lstElements, lstType, pdfType,
+                        parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
+                        childPdfTagType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
+                        parentTitleTagType, childTitleIdentifier, childTitleTagType,
+                        titleOrdinalNumber, titleText, i);
                 }
 
                 if (currentPage < totalPage) {

@@ -25,98 +25,35 @@ import org.springframework.stereotype.Component;
 public class JavaScriptLinkLstUtil {
 
     private final LstCrawlingService lstCrawlingService;
-    private final CrawlingDataRepository crawlingDataRepository;
-    private final CheckOnClickPdfUtil checkOnClickPdfUtil;
-    private final ElementFinderUtil elementFinderUtil;
 
-    public JavaScriptLinkLstUtil(LstCrawlingService lstCrawlingService,
-        CrawlingDataRepository crawlingDataRepository,
-        CheckOnClickPdfUtil checkOnClickPdfUtil, ElementFinderUtil elementFinderUtil) {
+    public JavaScriptLinkLstUtil(LstCrawlingService lstCrawlingService) {
         this.lstCrawlingService = lstCrawlingService;
-        this.crawlingDataRepository = crawlingDataRepository;
-        this.checkOnClickPdfUtil = checkOnClickPdfUtil;
-        this.elementFinderUtil = elementFinderUtil;
     }
-/*
-    public void goToJavaScriptLinkWithTitle(WebDriver webDriver, String pageUrl, Target target,
-        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        String javaScriptLink, PdfType pdfType, String parentPdfIdentifier,
-        ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, String titleText) {
-
-        String lstLink = javascriptLinkExecutor(webDriver, javaScriptLink);
-
-        List<WebElement> pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
-            parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
-            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-            pdfOrdinalNumber);
-
-        if (!pdfElements.isEmpty()) {
-            for (int i = 0; i < pdfElements.size(); i++) {
-                String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl, pdfType,
-                    pdfElements, childPdfTagType, i);
-
-                if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
-                    continue;
-                }
-
-                CrawlingData crawlingData = new CrawlingData(target, pdfLink, titleText);
-                crawlingData.setCrawlingTime();
-
-                crawlingDataRepository.save(crawlingData);
-            }
-        }
-
-    }
-    */
 
     public void goToJavaScriptLink(WebDriver webDriver, String pageUrl, Target target,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         String javaScriptLink, PdfType pdfType, String parentPdfIdentifier,
         ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, String parentTitleIdentifier,
-        ParentTitleTagType parentTitleTagType, String childTitleIdentifier,
-        ChildTitleTagType childTitleTagType, int titleOrdinalNumber) {
+        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, TitleType titleType,
+        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
+        String titleText) {
 
         String lstLink = javascriptLinkExecutor(webDriver, javaScriptLink);
 
-        lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType, parentExtendedPdfIdentifier,
-            parentExtendedPdfTagType, extendedPdfOrdinalNumber, lstLink, pdfType,
-            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-            pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-            childTitleTagType, titleOrdinalNumber);
-/*
-        System.out.println("@@@@@@@@@@@@@@@@@@");
-        System.out.println("lstLink: " + lstLink);
-        System.out.println("@@@@@@@@@@@@@@@@@@");
-
-        List<WebElement> pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
-            parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
-            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-            pdfOrdinalNumber);
-        List<WebElement> titleElements = elementFinderUtil.getTitleElements(webDriver,
-            parentTitleIdentifier, parentTitleTagType, childTitleIdentifier, childTitleTagType,
-            titleOrdinalNumber);
-
-        if (!pdfElements.isEmpty()) {
-            for (int i = 0; i < pdfElements.size(); i++) {
-                String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl, pdfType,
-                    pdfElements, childPdfTagType, i);
-                String titleText = titleElements.get(i).getText();
-
-                if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
-                    continue;
-                }
-
-                CrawlingData crawlingData = new CrawlingData(target, pdfLink, titleText);
-                crawlingData.setCrawlingTime();
-
-                crawlingDataRepository.save(crawlingData);
-            }
+        if (titleType.equals(TitleType.OUT)) {
+            lstCrawlingService.crawlLstWithTitle(pageUrl, target, extendedPdfType,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
+                childPdfTagType, pdfOrdinalNumber, titleText);
+        } else if (titleType.equals(TitleType.IN)) {
+            lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
+                childPdfTagType, pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType,
+                childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
         }
- */
     }
 
     private String javascriptLinkExecutor(WebDriver webDriver, String javaScriptLink) {
@@ -127,7 +64,8 @@ public class JavaScriptLinkLstUtil {
             String script = javaScriptLink.substring("javascript:".length());
             ((JavascriptExecutor) webDriver).executeScript(script);
         } else {
-            ((JavascriptExecutor) webDriver).executeScript("window.location.href='" + javaScriptLink + "'");
+            ((JavascriptExecutor) webDriver).executeScript(
+                "window.location.href='" + javaScriptLink + "'");
         }
 
         lstLink = webDriver.getCurrentUrl();

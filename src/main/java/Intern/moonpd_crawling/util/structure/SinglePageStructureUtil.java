@@ -83,8 +83,6 @@ public class SinglePageStructureUtil {
                     parentPdfIdentifier, parentPdfTagType,
                     childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
 
-                pdfLinkIncludeElements =
-
                 /*
                 if (pdfLinks.isEmpty()) {
                     throw new WebDriverException(

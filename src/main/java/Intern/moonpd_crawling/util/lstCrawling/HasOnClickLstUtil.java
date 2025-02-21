@@ -25,36 +25,29 @@ public class HasOnClickLstUtil {
         this.lstCrawlingService = lstCrawlingService;
     }
 
-    public void goToLstByOnclickWithTitle(String pageUrl, ExtendedPdfType extendedPdfType,
-        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
-        int extendedPdfOrdinalNumber, Target target, String onClickLstScript, PdfType pdfType,
-        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, String titleText) {
-
-        String lstLink = getLstLink(pageUrl, onClickLstScript);
-
-        lstCrawlingService.crawlLstWithTitle(pageUrl, target, extendedPdfType, parentExtendedPdfIdentifier,
-            parentExtendedPdfTagType,
-            extendedPdfOrdinalNumber, lstLink, pdfType,
-            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-            pdfOrdinalNumber, titleText);
-    }
-
     public void goToLstByOnclick(String pageUrl, Target target, ExtendedPdfType extendedPdfType,
         String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
         int extendedPdfOrdinalNumber, String onClickLstScript, PdfType pdfType,
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, String parentTitleIdentifier,
-        ParentTitleTagType parentTitleTagType, String childTitleIdentifier,
-        ChildTitleTagType childTitleTagType, int titleOrdinalNumber) {
+        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, TitleType titleType,
+        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
+        String titleText) {
 
         String lstLink = getLstLink(pageUrl, onClickLstScript);
 
-        lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType, parentExtendedPdfIdentifier,
-            parentExtendedPdfTagType, extendedPdfOrdinalNumber, lstLink, pdfType,
-            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-            pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-            childTitleTagType, titleOrdinalNumber);
+        if (titleType.equals(TitleType.OUT)) {
+            lstCrawlingService.crawlLstWithTitle (pageUrl, target, extendedPdfType,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
+                childPdfTagType, pdfOrdinalNumber, titleText);
+        } else if (titleType.equals(TitleType.IN)) {
+            lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
+                childPdfTagType, pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType,
+                childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
+        }
     }
 
     private String getLstLink(String pageUrl, String onClickLstScript) {

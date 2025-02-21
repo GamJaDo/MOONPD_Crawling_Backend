@@ -90,12 +90,12 @@ public class CheckOnClickUtil {
         } else if (lstType.equals(LstType.JAVASCRIPT_LINK)) {
 
             String javaScriptLink = lstLinks.get(index).getAttribute("href");
-
+/*
             javaScriptLinkLstUtil.goToJavaScriptLinkWithTitle(webDriver, pageUrl, target, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
                 javaScriptLink, pdfType, parentPdfIdentifier, parentPdfTagType,
                 childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleText);
-
+*/
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -160,18 +160,6 @@ public class CheckOnClickUtil {
                 javaScriptLink, pdfType, parentPdfIdentifier, parentPdfTagType,
                 childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, parentTitleIdentifier,
                 parentTitleTagType, childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
-
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            webDriver.navigate().back();
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
         } else {
             throw new WebDriverException("Unsupported lst type");
         }
@@ -193,38 +181,35 @@ public class CheckOnClickUtil {
         }
     }
 
-    public List<String> checkOnClickNextPageLink(NextPageType nextPageType,
+    public List<String> getNextPageLink(NextPageType nextPageType,
         List<WebElement> nextPageElements) {
+
+        List<String> nextPageLinks = new ArrayList<>();
+        // nextPageLinks.add("1");
 
         if (nextPageType.equals(NextPageType.HAS_ONCLICK)) {
 
-            List<String> nextPageLinksByOnClick = new ArrayList<>();
-            nextPageLinksByOnClick.add("1");
-
             for (WebElement nextPageElement : nextPageElements) {
                 String text = nextPageElement.getText().trim();
-                if (!text.isEmpty() && text.chars().allMatch(Character::isDigit)) {
-                    nextPageLinksByOnClick.add(nextPageElement.getAttribute("onclick"));
+                if (!text.isEmpty() && text.trim().matches("\\d+")) {
+                    nextPageLinks.add(nextPageElement.getAttribute("onclick"));
                 }
             }
 
-            return nextPageLinksByOnClick;
+            return nextPageLinks;
         } else if (nextPageType.equals(NextPageType.NO_ONCLICK) || nextPageType.equals(
             NextPageType.JAVASCRIPT_LINK)) {
 
-            List<String> nextPageLinksByHref = new ArrayList<>();
-            nextPageLinksByHref.add("1");
-
             for (WebElement nextPageElement : nextPageElements) {
                 String text = nextPageElement.getText().trim();
-                if (!text.isEmpty() && text.chars().allMatch(Character::isDigit)) {
-                    nextPageLinksByHref.add(nextPageElement.getAttribute("href"));
+                if (!text.isEmpty() && text.trim().matches("\\d+")) {
+                    nextPageLinks.add(nextPageElement.getAttribute("href"));
                 }
             }
 
-            return nextPageLinksByHref;
+            return nextPageLinks;
         } else if (nextPageType.equals(NextPageType.NONE)) {
-            return new ArrayList<>();
+            return nextPageLinks;
         } else {
             throw new WebDriverException("Unsupported nextPage type");
         }

@@ -27,6 +27,7 @@ import Intern.moonpd_crawling.util.structure.YearFilteredStructureUtil;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -55,6 +56,12 @@ public class CrawlingService {
             "C:\\tools\\chromedriver-win64\\chromedriver.exe");
 
         WebDriver webDriver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized");
+        options.addArguments("--disable-popup-blocking");
+
+        webDriver = new ChromeDriver(options);
+
         try {
             for (Target target : targetList) {
                 StructureType structureType = target.getStructureType();

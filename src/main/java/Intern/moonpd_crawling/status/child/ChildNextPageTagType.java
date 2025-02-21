@@ -23,6 +23,7 @@ public enum ChildNextPageTagType {
     FIGURE("FIGURE"),
     NAV("NAV"),
     UL("UL"),
+    P("P"),
     NONE("NONE");   // 기본값 (빈 값 또는 null)
 
     private final String value;

@@ -58,26 +58,24 @@ public class ListedContentStructureUtil {
         List<WebElement> nextPageElements = elementFinderUtil.getNextPageElements(webDriver,
             nextPageType, parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
             childNextPageTagType, nextPageOrdinalNumber);
-        /*
-        if (nextPageElements.isEmpty()) {
-            throw new WebDriverException(
-                "No NextPageElement found for identifier: " + parentNextPageIdentifier + " or "
-                    + childNextPageIdentifier);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
+        for (int i = 0; i < nextPageElements.size(); i++) {
+            System.out.println("nextPageElements[" + i + "]: " + nextPageElements.get(i).getText());
         }
-        */
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
 
-        List<String> nextPageLinks = checkOnClickUtil.checkOnClickNextPageLink(nextPageType,
+        System.out.println("-------------------------------------------------");
+
+        List<String> nextPageLinks = checkOnClickUtil.getNextPageLink(nextPageType,
             nextPageElements);
         System.out.println("##########################");
-        System.out.println("nextPageLinks.size(): " + nextPageLinks.size());
+        for (int i = 0; i < nextPageLinks.size(); i++) {
+            System.out.println("nextPageLinks[" + i + "]: " + nextPageLinks.get(i));
+        }
         System.out.println("##########################");
 
         try {
             int totalPage = elementCountUtil.getTotalPageCnt(nextPageLinks);
-
-            System.out.println("##########################");
-            System.out.println("totalPage: " + totalPage);
-            System.out.println("##########################");
 
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
                 Thread.sleep(500);

@@ -13,11 +13,11 @@ public class ElementCountUtil {
 
     public int getTotalPageCnt(List<String> nextPageLinks) {
 
-        int totalNextPageCount = nextPageLinks.size();
-
-        if (totalNextPageCount == 0) {
+        if (nextPageLinks.isEmpty()){
             return 1;
         }
-        return totalNextPageCount;
+        else {
+            return nextPageLinks.size();
+        }
     }
 }

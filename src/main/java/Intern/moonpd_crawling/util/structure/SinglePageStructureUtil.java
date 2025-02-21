@@ -69,7 +69,7 @@ public class SinglePageStructureUtil {
         }
          */
 
-        List<String> nextPageLinks = checkOnClickUtil.checkOnClickNextPageLink(nextPageType,
+        List<String> nextPageLinks = checkOnClickUtil.getNextPageLink(nextPageType,
             nextPageElements);
 
         try {

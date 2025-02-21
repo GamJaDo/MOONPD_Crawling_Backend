@@ -3,6 +3,7 @@ package Intern.moonpd_crawling.util.lstCrawling;
 import Intern.moonpd_crawling.entity.CrawlingData;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.repository.CrawlingDataRepository;
+import Intern.moonpd_crawling.service.LstCrawlingService;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.PdfType;
 import Intern.moonpd_crawling.status.TitleType;
@@ -16,23 +17,27 @@ import Intern.moonpd_crawling.util.ElementFinderUtil;
 import java.util.List;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JavaScriptLinkLstUtil {
 
+    private final LstCrawlingService lstCrawlingService;
     private final CrawlingDataRepository crawlingDataRepository;
     private final CheckOnClickPdfUtil checkOnClickPdfUtil;
     private final ElementFinderUtil elementFinderUtil;
 
-    public JavaScriptLinkLstUtil(CrawlingDataRepository crawlingDataRepository,
+    public JavaScriptLinkLstUtil(LstCrawlingService lstCrawlingService,
+        CrawlingDataRepository crawlingDataRepository,
         CheckOnClickPdfUtil checkOnClickPdfUtil, ElementFinderUtil elementFinderUtil) {
+        this.lstCrawlingService = lstCrawlingService;
         this.crawlingDataRepository = crawlingDataRepository;
         this.checkOnClickPdfUtil = checkOnClickPdfUtil;
         this.elementFinderUtil = elementFinderUtil;
     }
-
+/*
     public void goToJavaScriptLinkWithTitle(WebDriver webDriver, String pageUrl, Target target,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
@@ -40,7 +45,7 @@ public class JavaScriptLinkLstUtil {
         ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
         ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, String titleText) {
 
-        javascriptLinkExecutor(webDriver, javaScriptLink);
+        String lstLink = javascriptLinkExecutor(webDriver, javaScriptLink);
 
         List<WebElement> pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
             parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
@@ -62,7 +67,9 @@ public class JavaScriptLinkLstUtil {
                 crawlingDataRepository.save(crawlingData);
             }
         }
+
     }
+    */
 
     public void goToJavaScriptLink(WebDriver webDriver, String pageUrl, Target target,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
@@ -73,7 +80,17 @@ public class JavaScriptLinkLstUtil {
         ParentTitleTagType parentTitleTagType, String childTitleIdentifier,
         ChildTitleTagType childTitleTagType, int titleOrdinalNumber) {
 
-        javascriptLinkExecutor(webDriver, javaScriptLink);
+        String lstLink = javascriptLinkExecutor(webDriver, javaScriptLink);
+
+        lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType, parentExtendedPdfIdentifier,
+            parentExtendedPdfTagType, extendedPdfOrdinalNumber, lstLink, pdfType,
+            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
+            pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
+            childTitleTagType, titleOrdinalNumber);
+/*
+        System.out.println("@@@@@@@@@@@@@@@@@@");
+        System.out.println("lstLink: " + lstLink);
+        System.out.println("@@@@@@@@@@@@@@@@@@");
 
         List<WebElement> pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
             parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
@@ -99,19 +116,29 @@ public class JavaScriptLinkLstUtil {
                 crawlingDataRepository.save(crawlingData);
             }
         }
+ */
     }
 
-    private void javascriptLinkExecutor(WebDriver webDriver, String javaScriptLink) {
-        try {
-            if (javaScriptLink != null && javaScriptLink.startsWith("javascript:")) {
-                String script = javaScriptLink.substring("javascript:".length());
-                ((JavascriptExecutor) webDriver).executeScript(script);
-            } else {
-                ((JavascriptExecutor) webDriver).executeScript(
-                    "window.location.href=\"" + javaScriptLink + "\"");
-            }
-        } catch (Exception e) {
-            System.out.println("Skipping href: " + javaScriptLink + " - " + e.getMessage());
+    private String javascriptLinkExecutor(WebDriver webDriver, String javaScriptLink) {
+
+        String lstLink;
+
+        if (javaScriptLink != null && javaScriptLink.startsWith("javascript:")) {
+            String script = javaScriptLink.substring("javascript:".length());
+            ((JavascriptExecutor) webDriver).executeScript(script);
+        } else {
+            ((JavascriptExecutor) webDriver).executeScript("window.location.href='" + javaScriptLink + "'");
         }
+
+        lstLink = webDriver.getCurrentUrl();
+        webDriver.navigate().back();
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return lstLink;
     }
 }

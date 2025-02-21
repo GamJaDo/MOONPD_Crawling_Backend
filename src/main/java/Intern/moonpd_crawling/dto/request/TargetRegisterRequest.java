@@ -4,6 +4,7 @@ import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.PdfType;
+import Intern.moonpd_crawling.status.TitleType;
 import Intern.moonpd_crawling.status.YearType;
 import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
@@ -35,7 +36,8 @@ public record TargetRegisterRequest(OrganizationType organizationType, String re
                                     int extendedPdfOrdinalNumber, PdfType pdfType,
                                     String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
                                     String childPdfIdentifier, ChildPdfTagType childPdfTagType,
-                                    int pdfOrdinalNumber, String parentTitleIdentifier,
+                                    int pdfOrdinalNumber, TitleType titleType,
+                                    String parentTitleIdentifier,
                                     ParentTitleTagType parentTitleTagType,
                                     String childTitleIdentifier,
                                     ChildTitleTagType childTitleTagType,
@@ -53,9 +55,9 @@ public record TargetRegisterRequest(OrganizationType organizationType, String re
             childYearIdentifier, childYearTagType, yearOrdinalNumber, pageUrl, extendedPdfType,
             parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
             pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-            pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-            childTitleTagType, titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
-            parentNextPageTagType, childNextPageIdentifier, childNextPageTagType,
-            nextPageOrdinalNumber);
+            pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
+            childTitleIdentifier, childTitleTagType, titleOrdinalNumber, nextPageType,
+            parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
+            childNextPageTagType, nextPageOrdinalNumber);
     }
 }

@@ -6,6 +6,7 @@ import Intern.moonpd_crawling.repository.TargetRepository;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.PdfType;
+import Intern.moonpd_crawling.status.TitleType;
 import Intern.moonpd_crawling.status.YearType;
 import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
@@ -88,6 +89,7 @@ public class CrawlingService {
                 ChildPdfTagType childPdfTagType = target.getChildPdfTagType();
                 int pdfOrdinalNumber = target.getPdfOrdinalNumber();
 
+                TitleType titleType = target.getTitleType();
                 String parentTitleIdentifier = target.getParentTitleIdentifier();
                 ParentTitleTagType parentTitleTagType = target.getParentTitleTagType();
                 String childTitleIdentifier = target.getChildTitleIdentifier();
@@ -117,7 +119,7 @@ public class CrawlingService {
                         childYearIdentifier, childYearTagType, yearOrdinalNumber, extendedPdfType,
                         parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                         extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
-                        childPdfIdentifier, childPdfTagType, pdfOrdinalNumber,
+                        childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleType,
                         parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
                         childTitleTagType, titleOrdinalNumber, nextPageType,
                         parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
@@ -128,7 +130,7 @@ public class CrawlingService {
                         lstOrdinalNumber, extendedPdfType, parentExtendedPdfIdentifier,
                         parentExtendedPdfTagType, extendedPdfOrdinalNumber, pdfType,
                         parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-                        pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType,
+                        pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
                         childTitleIdentifier, childTitleTagType, titleOrdinalNumber, nextPageType,
                         parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
                         childNextPageTagType, nextPageOrdinalNumber);

@@ -4,6 +4,7 @@ import Intern.moonpd_crawling.dto.response.TargetViewResponse;
 import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.PdfType;
+import Intern.moonpd_crawling.status.TitleType;
 import Intern.moonpd_crawling.status.YearType;
 import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
@@ -142,6 +143,10 @@ public class Target {
 
     // #############################################################################################
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "title_type", nullable = true)
+    private TitleType titleType;
+
     @Column(name = "parent_title_identifier", nullable = true)
     private String parentTitleIdentifier;
 
@@ -205,7 +210,7 @@ public class Target {
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
-        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        TitleType titleType, String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
         String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
         NextPageType nextPageType, String parentNextPageIdentifier,
         ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
@@ -237,6 +242,7 @@ public class Target {
         this.childPdfIdentifier = childPdfIdentifier;
         this.childPdfTagType = childPdfTagType;
         this.pdfOrdinalNumber = pdfOrdinalNumber;
+        this.titleType = titleType;
         this.titleOrdinalNumber = titleOrdinalNumber;
         this.parentTitleIdentifier = parentTitleIdentifier;
         this.parentTitleTagType = parentTitleTagType;
@@ -286,11 +292,12 @@ public class Target {
         this.childPdfIdentifier = target.getChildPdfIdentifier();
         this.childPdfTagType = target.getChildPdfTagType();
         this.pdfOrdinalNumber = target.getPdfOrdinalNumber();
-        this.titleOrdinalNumber = target.getTitleOrdinalNumber();
+        this.titleType = target.getTitleType();
         this.parentTitleIdentifier = target.getParentTitleIdentifier();
         this.parentTitleTagType = target.getParentTitleTagType();
         this.childTitleIdentifier = target.getChildTitleIdentifier();
         this.childTitleTagType = target.getChildTitleTagType();
+        this.titleOrdinalNumber = target.getTitleOrdinalNumber();
         this.nextPageType = target.getNextPageType();
         this.parentNextPageIdentifier = target.getParentNextPageIdentifier();
         this.parentNextPageTagType = target.getParentNextPageTagType();

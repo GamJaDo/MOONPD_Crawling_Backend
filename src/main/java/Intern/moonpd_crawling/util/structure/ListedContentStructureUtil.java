@@ -6,6 +6,7 @@ import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.NextPageType;
 import Intern.moonpd_crawling.status.PdfType;
+import Intern.moonpd_crawling.status.TitleType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.child.ChildPdfTagType;
@@ -45,7 +46,7 @@ public class ListedContentStructureUtil {
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
-        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        TitleType titleType, String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
         String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
         NextPageType nextPageType, String parentNextPageIdentifier,
         ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
@@ -67,11 +68,16 @@ public class ListedContentStructureUtil {
 
         List<String> nextPageLinks = checkOnClickUtil.checkOnClickNextPageLink(nextPageType,
             nextPageElements);
+        System.out.println("##########################");
+        System.out.println("nextPageLinks.size(): " + nextPageLinks.size());
+        System.out.println("##########################");
 
         try {
-            int totalPage = elementCountUtil.getTotalPageCnt(webDriver, nextPageType,
-                parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
-                childNextPageTagType, nextPageOrdinalNumber);
+            int totalPage = elementCountUtil.getTotalPageCnt(nextPageLinks);
+
+            System.out.println("##########################");
+            System.out.println("totalPage: " + totalPage);
+            System.out.println("##########################");
 
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
                 Thread.sleep(500);
@@ -85,15 +91,23 @@ public class ListedContentStructureUtil {
                             + childLstIdentifier);
                 }
 
-                titleElements = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
-                    parentTitleTagType, childTitleIdentifier, childTitleTagType,
-                    titleOrdinalNumber);
-                if (titleElements.isEmpty()) {
-                    throw new WebDriverException(
-                        "No TitleElements found for identifier: " + parentTitleIdentifier + " or "
-                            + childTitleIdentifier);
+                if (titleType.equals(TitleType.OUT)) {
+                    titleElements = elementFinderUtil.getTitleElements(webDriver,
+                        parentTitleIdentifier,
+                        parentTitleTagType, childTitleIdentifier, childTitleTagType,
+                        titleOrdinalNumber);
+                    if (titleElements.isEmpty()) {
+                        throw new WebDriverException(
+                            "No TitleElements found for identifier: " + parentTitleIdentifier
+                                + " or "
+                                + childTitleIdentifier);
+                    }
+
+                    System.out.println("lstElements.size(): " + lstElements.size());
+                    System.out.println("titleElements.size(): " + titleElements.size());
                 }
 
+                /*
                 if (lstElements.size() != titleElements.size()) {
                     int diff = Math.abs(lstElements.size() - titleElements.size());
 
@@ -103,18 +117,30 @@ public class ListedContentStructureUtil {
                         titleElements = titleElements.subList(diff, titleElements.size());
                     }
                 }
+                 */
 
                 for (int i = 0; i < lstElements.size(); i++) {
                     Thread.sleep(100);
 
-                    String titleText = titleElements.get(i).getText();
+                    if (titleType.equals(TitleType.OUT)) {
+                        String titleText = titleElements.get(i).getText();
 
-                    checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target,
-                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber, lstElements, lstType, pdfType,
-                        parentPdfIdentifier,
-                        parentPdfTagType, childPdfIdentifier, childPdfTagType, pdfOrdinalNumber,
-                        titleText, i);
+                        checkOnClickUtil.checkOnClickLstWithTitle(webDriver, pageUrl, target,
+                            extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+                            extendedPdfOrdinalNumber, lstElements, lstType, pdfType,
+                            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
+                            childPdfTagType, pdfOrdinalNumber, titleText, i);
+                    } else if (titleType.equals(TitleType.IN)) {
+                        checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target,
+                            extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+                            extendedPdfOrdinalNumber, lstElements, lstType, pdfType,
+                            parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
+                            childPdfTagType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
+                            parentTitleTagType, childTitleIdentifier, childTitleTagType,
+                            titleOrdinalNumber, i);
+                    } else {
+                        throw new WebDriverException("Unsupported title type");
+                    }
                 }
 
                 if (currentPage < totalPage) {

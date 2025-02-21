@@ -73,9 +73,7 @@ public class SinglePageStructureUtil {
             nextPageElements);
 
         try {
-            int totalPage = elementCountUtil.getTotalPageCnt(webDriver, nextPageType,
-                parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
-                childNextPageTagType, nextPageOrdinalNumber);
+            int totalPage = elementCountUtil.getTotalPageCnt(nextPageLinks);
 
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
                 Thread.sleep(500);

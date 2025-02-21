@@ -1,40 +1,19 @@
 package Intern.moonpd_crawling.util;
 
-import Intern.moonpd_crawling.status.NextPageType;
-import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
-import Intern.moonpd_crawling.status.child.ChildYearTagType;
-import Intern.moonpd_crawling.status.parent.ParentNextPageTagType;
-import Intern.moonpd_crawling.status.parent.ParentYearTagType;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ElementCountUtil {
 
-    private final ElementFinderUtil elementFinderUtil;
+    public int getTotalYearCnt(List<String> yearLinks) {
 
-    public ElementCountUtil(ElementFinderUtil elementFinderUtil) {
-        this.elementFinderUtil = elementFinderUtil;
+        return yearLinks.size();
     }
 
-    public int getTotalYearCnt(WebDriver webDriver, String parentYearIdentifier,
-        ParentYearTagType parentYearTagType, String childYearIdentifier,
-        ChildYearTagType childYearTagType, int yearOrdinalNumber) {
+    public int getTotalPageCnt(List<String> nextPageLinks) {
 
-        return elementFinderUtil.getYearElements(webDriver, parentYearIdentifier, parentYearTagType,
-            childYearIdentifier, childYearTagType, yearOrdinalNumber).size();
-    }
-
-    public int getTotalPageCnt(WebDriver webDriver, NextPageType nextPageType,
-        String parentNextPageIdentifier, ParentNextPageTagType parentNextPageTagType,
-        String childNextPageIdentifier, ChildNextPageTagType childNextPageTagType,
-        int nextPageOrdinalNumber) {
-
-        int totalNextPageCount = elementFinderUtil.getNextPageElements(webDriver, nextPageType,
-            parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
-            childNextPageTagType, nextPageOrdinalNumber).size();
+        int totalNextPageCount = nextPageLinks.size();
 
         if (totalNextPageCount == 0) {
             return 1;

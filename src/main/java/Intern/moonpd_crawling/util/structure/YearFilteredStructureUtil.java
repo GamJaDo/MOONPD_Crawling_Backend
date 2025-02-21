@@ -6,6 +6,7 @@ import Intern.moonpd_crawling.status.ExtendedPdfType;
 import Intern.moonpd_crawling.status.LstType;
 import Intern.moonpd_crawling.status.NextPageType;
 import Intern.moonpd_crawling.status.PdfType;
+import Intern.moonpd_crawling.status.TitleType;
 import Intern.moonpd_crawling.status.YearType;
 import Intern.moonpd_crawling.status.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
@@ -55,7 +56,7 @@ public class YearFilteredStructureUtil {
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
-        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        TitleType titleType, String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
         String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
         NextPageType nextPageType, String parentNextPageIdentifier,
         ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
@@ -83,8 +84,7 @@ public class YearFilteredStructureUtil {
         System.out.println("############################");
 */
         try {
-            int totalYear = elementCountUtil.getTotalYearCnt(webDriver, parentYearIdentifier,
-                parentYearTagType, childYearIdentifier, childYearTagType, yearOrdinalNumber);
+            int totalYear = elementCountUtil.getTotalYearCnt(yearLinks);
 
             for (int currentYear = 1; currentYear <= totalYear; currentYear++) {
                 Thread.sleep(500);
@@ -104,7 +104,7 @@ public class YearFilteredStructureUtil {
                         lstOrdinalNumber, extendedPdfType, parentExtendedPdfIdentifier,
                         parentExtendedPdfTagType, extendedPdfOrdinalNumber, pdfType,
                         parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-                        pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType,
+                        pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
                         childTitleIdentifier, childTitleTagType, titleOrdinalNumber, nextPageType,
                         parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
                         childNextPageTagType, nextPageOrdinalNumber);

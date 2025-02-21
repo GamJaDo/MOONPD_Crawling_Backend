@@ -22,6 +22,7 @@ public enum ParentNextPageTagType {
     H4("H4"),
     H5("H5"),
     NAV("NAV"),
+    UL("UL"),
     NONE("NONE");   // 기본값 (빈 값 또는 null)
 
     private final String value;

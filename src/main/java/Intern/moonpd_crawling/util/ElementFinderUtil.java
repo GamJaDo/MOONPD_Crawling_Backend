@@ -31,14 +31,16 @@ public class ElementFinderUtil {
     private final ButtonTagPdfUtil buttonTagPdfUtil;
     private final ImgTagPdfUtil imgTagPdfUtil;
     private final ElementExtendedUtil elementExtendedUtil;
+    private final ElementFinderFilterUtil elementFinderFilterUtil;
 
     public ElementFinderUtil(AnchorTagPdfUtil anchorTagPdfUtil,
-        ButtonTagPdfUtil buttonTagPdfUtil,
-        ImgTagPdfUtil imgTagPdfUtil, ElementExtendedUtil elementExtendedUtil) {
+        ButtonTagPdfUtil buttonTagPdfUtil, ImgTagPdfUtil imgTagPdfUtil,
+        ElementExtendedUtil elementExtendedUtil, ElementFinderFilterUtil elementFinderFilterUtil) {
         this.anchorTagPdfUtil = anchorTagPdfUtil;
         this.buttonTagPdfUtil = buttonTagPdfUtil;
         this.imgTagPdfUtil = imgTagPdfUtil;
         this.elementExtendedUtil = elementExtendedUtil;
+        this.elementFinderFilterUtil = elementFinderFilterUtil;
     }
 
     public String getPdfLink(WebDriver webDriver, List<WebElement> pdfLinks,
@@ -81,7 +83,8 @@ public class ElementFinderUtil {
             cssSelector = childLstTagType + "." + childLstIdentifier;
         }
 
-        return webDriver.findElements(By.cssSelector(cssSelector));
+        List<WebElement> lstElements = webDriver.findElements(By.cssSelector(cssSelector));
+        return elementFinderFilterUtil.getLstElementWithLink(lstElements);
     }
 
     public List<WebElement> getYearElements(WebDriver webDriver, String parentYearIdentifier,
@@ -151,13 +154,10 @@ public class ElementFinderUtil {
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber);
         }
 
-        return webDriver.findElements(By.cssSelector(cssSelector));
+        List<WebElement> pdfElements = webDriver.findElements(By.cssSelector(cssSelector));
+        return elementFinderFilterUtil.getPdfElementWithLink(pdfElements);
     }
-/*
-    public List<WebElement> getPdfElementWithLink() {
 
-    }
-*/
     public List<WebElement> getTitleElements(WebDriver webDriver, String parentTitleIdentifier,
         ParentTitleTagType parentTitleTagType,
         String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber) {
@@ -189,11 +189,7 @@ public class ElementFinderUtil {
 
         return webDriver.findElements(By.cssSelector(cssSelector));
     }
-/*
-    public List<WebElement> getTitleElementWithText() {
 
-    }
-*/
     public List<WebElement> getNextPageElements(WebDriver webDriver, NextPageType nextPageType,
         String parentNextPageIdentifier, ParentNextPageTagType parentNextPageTagType,
         String childNextPageIdentifier, ChildNextPageTagType childNextPageTagType,

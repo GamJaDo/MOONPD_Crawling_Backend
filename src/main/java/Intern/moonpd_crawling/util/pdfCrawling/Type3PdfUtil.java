@@ -1,6 +1,6 @@
 package Intern.moonpd_crawling.util.pdfCrawling;
 
-import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NotFoundException;

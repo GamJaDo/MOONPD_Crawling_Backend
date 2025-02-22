@@ -1,8 +1,8 @@
 package Intern.moonpd_crawling.util;
 
 import Intern.moonpd_crawling.exception.WebDriverException;
-import Intern.moonpd_crawling.status.PdfType;
-import Intern.moonpd_crawling.status.child.ChildPdfTagType;
+import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
 import Intern.moonpd_crawling.util.pdfCrawling.HasOnClickPdfUtil;
 import Intern.moonpd_crawling.util.pdfCrawling.JavaScriptLinkPdfUtil;
 import Intern.moonpd_crawling.util.pdfCrawling.NoOnclickPdfUtil;
@@ -36,28 +36,28 @@ public class CheckOnClickPdfUtil {
         this.javaScriptLinkPdfUtil = javaScriptLinkPdfUtil;
     }
 
-    public String checkOnClickPdf(
-        WebDriver webDriver, String pageUrl, PdfType pdfType, List<WebElement> pdfLinks,
-        ChildPdfTagType childPdfTagType, int index) {
+    public String checkOnClickPdf(WebDriver webDriver, String pageUrl, PdfType pdfType,
+        List<WebElement> pdfLinks, ChildPdfTagType childPdfTagType, int index) {
 
         if (pdfType.equals(PdfType.HAS_ONCLICK)) {
 
             String onClickPdfScript = pdfLinks.get(index).getAttribute("onclick");
 
             return hasOnClickPdfUtil.getPdfLinkByOnClick(pageUrl, onClickPdfScript);
-        } else if (pdfType.equals(PdfType.NO_ONCLICK)) {
+        } else if (pdfType.equals(PdfType.NO_ONCLICK) || pdfType.equals(PdfType.JAVASCRIPT_LINK)) {
+
             return noOnclickPdfUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType, index);
         } else if (pdfType.equals(PdfType.PSEUDO_LINK)) {
 
             WebElement pseudoLinkElement = pdfLinks.get(index);
 
             return pseudoLinkPdfUtil.getPdfLinkByPseudoLink(pageUrl, pseudoLinkElement);
-        } else if (pdfType.equals(PdfType.JAVASCRIPT_LINK)) {
+        } /*else if (pdfType.equals(PdfType.JAVASCRIPT_LINK)) {
 
-            WebElement javaScriptLink = pdfLinks.get(index);
+            String javaScriptLink = pdfLinks.get(index).getAttribute("href");
 
-            return javaScriptLinkPdfUtil.getPdfLinkByJavaScriptLink();
-        } else {
+            return javaScriptLinkPdfUtil.getPdfLinkByJavaScriptLink(webDriver, javaScriptLink);
+        } */else {
             throw new WebDriverException("Unsupported pdf type");
         }
     }

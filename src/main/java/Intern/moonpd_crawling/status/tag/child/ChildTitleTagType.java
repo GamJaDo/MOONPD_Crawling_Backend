@@ -1,21 +1,33 @@
-package Intern.moonpd_crawling.status.parent;
+package Intern.moonpd_crawling.status.tag.child;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ParentYearTagType {
+public enum ChildTitleTagType {
+    P("P"), // p 태그
+    SPAN("SPAN"), // span 태그
+    STRONG("STRONG"), // strong 태그
+    DIV("DIV"), // div 태그
     A("A"), // 앵커 태그
-    DIV("DIV"),
-    TD("TD"),
+    H1("H1"),
+    H2("H2"),
+    H3("H3"),
+    H4("H4"),
+    H5("H5"),
     LI("LI"),
-    UL("UL"),
-    FORM("FORM"),
+    TR("TR"),
+    TD("TD"),
+    EM("EM"),
     ARTICLE("ARTICLE"),
-    NONE("NONE"); // 기본값으로 사용할 항목
+    FIGCAPTION("FIGCAPTION"),
+    B("B"),
+    FORM("FORM"),
+    DT("DT"),
+    NONE("NONE"); // 기본값
 
     private final String value;
 
-    ParentYearTagType(String value) {
+    ChildTitleTagType(String value) {
         this.value = value;
     }
 
@@ -30,11 +42,11 @@ public enum ParentYearTagType {
     }
 
     @JsonCreator
-    public static ParentYearTagType fromValue(String value) {
+    public static ChildTitleTagType fromValue(String value) {
         if (value == null || value.isEmpty()) {
             return NONE; // null 또는 빈 문자열에 대해 기본값 반환
         }
-        for (ParentYearTagType type : values()) {
+        for (ChildTitleTagType type : values()) {
             if (type.value.equalsIgnoreCase(value)) {
                 return type; // 일치하는 값 반환
             }

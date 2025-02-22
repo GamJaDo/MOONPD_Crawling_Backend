@@ -1,6 +1,6 @@
 package Intern.moonpd_crawling.util;
 
-import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
 import org.springframework.stereotype.Component;
 
 @Component

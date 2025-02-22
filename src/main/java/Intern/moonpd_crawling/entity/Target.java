@@ -1,25 +1,31 @@
 package Intern.moonpd_crawling.entity;
 
 import Intern.moonpd_crawling.dto.response.TargetViewResponse;
-import Intern.moonpd_crawling.status.ExtendedPdfType;
-import Intern.moonpd_crawling.status.LstType;
-import Intern.moonpd_crawling.status.PdfType;
-import Intern.moonpd_crawling.status.TitleType;
-import Intern.moonpd_crawling.status.YearType;
-import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
-import Intern.moonpd_crawling.status.child.ChildLstTagType;
-import Intern.moonpd_crawling.status.child.ChildPdfTagType;
-import Intern.moonpd_crawling.status.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.child.ChildYearTagType;
-import Intern.moonpd_crawling.status.parent.ParentNextPageTagType;
-import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
-import Intern.moonpd_crawling.status.parent.ParentLstTagType;
-import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
-import Intern.moonpd_crawling.status.NextPageType;
-import Intern.moonpd_crawling.status.OrganizationType;
-import Intern.moonpd_crawling.status.StructureType;
-import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
-import Intern.moonpd_crawling.status.parent.ParentYearTagType;
+import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
+import Intern.moonpd_crawling.status.type.ExtendedPdfType;
+import Intern.moonpd_crawling.status.type.LstType;
+import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.type.TitleType;
+import Intern.moonpd_crawling.status.type.YearType;
+import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildYearTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentLstTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
+import Intern.moonpd_crawling.status.type.NextPageType;
+import Intern.moonpd_crawling.status.type.OrganizationType;
+import Intern.moonpd_crawling.status.type.StructureType;
+import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -63,12 +69,20 @@ public class Target {
     @Column(name = "parent_lst_tag_type", nullable = true)
     private ParentLstTagType parentLstTagType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "parent_lst_selector_type", nullable = true)
+    private ParentLstSelectorType parentLstSelectorType;
+
     @Column(name = "child_lst_identifier", nullable = true)
     private String childLstIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_lst_tag_type", nullable = true)
     private ChildLstTagType childLstTagType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "child_lst_selector_type", nullable = true)
+    private ChildLstSelectorType childLstSelectorType;
 
     @Column(name = "lst_ordinal_number", nullable = true)
     private int lstOrdinalNumber;
@@ -131,12 +145,20 @@ public class Target {
     @Column(name = "parent_pdf_tag_type", nullable = true)
     private ParentPdfTagType parentPdfTagType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "parent_pdf_selector_type", nullable = true)
+    private ParentPdfSelectorType parentPdfSelectorType;
+
     @Column(name = "child_pdf_identifier", nullable = true)
     private String childPdfIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_pdf_tag_type", nullable = true)
     private ChildPdfTagType childPdfTagType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "child_pdf_selector_type", nullable = true)
+    private ChildPdfSelectorType childPdfSelectorType;
 
     @Column(name = "pdf_ordinal_number", nullable = true)
     private int pdfOrdinalNumber;
@@ -154,12 +176,20 @@ public class Target {
     @Column(name = "parent_title_tag_type", nullable = true)
     private ParentTitleTagType parentTitleTagType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "parent_title_selector_type", nullable = true)
+    private ParentTitleSelectorType parentTitleSelectorType;
+
     @Column(name = "child_title_identifier", nullable = true)
     private String childTitleIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_title_tag_type", nullable = true)
     private ChildTitleTagType childTitleTagType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "child_title_selector_type", nullable = true)
+    private ChildTitleSelectorType childTitleSelectorType;
 
     @Column(name = "title_ordinal_number", nullable = true)
     private int titleOrdinalNumber;
@@ -201,17 +231,21 @@ public class Target {
     }
 
     public Target(OrganizationType organizationType, String region, String group,
-        StructureType structureType, LstType lstType, ParentLstTagType parentLstTagType,
-        String parentLstIdentifier, ChildLstTagType childLstTagType, String childLstIdentifier,
-        int lstOrdinalNumber, YearType yearType, String parentYearIdentifier,
-        ParentYearTagType parentYearTagType, String childYearIdentifier,
+        StructureType structureType, LstType lstType, String parentLstIdentifier,
+        ParentLstTagType parentLstTagType, ParentLstSelectorType parentLstSelectorType,
+        String childLstIdentifier, ChildLstTagType childLstTagType,
+        ChildLstSelectorType childLstSelectorType, int lstOrdinalNumber, YearType yearType,
+        String parentYearIdentifier, ParentYearTagType parentYearTagType, String childYearIdentifier,
         ChildYearTagType childYearTagType, int yearOrdinalNumber, String pageUrl,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
-        TitleType titleType, String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
+        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
+        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
+        int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier,
+        ParentTitleTagType parentTitleTagType, ParentTitleSelectorType parentTitleSelectorType,
+        String childTitleIdentifier, ChildTitleTagType childTitleTagType,
+        ChildTitleSelectorType childTitleSelectorType, int titleOrdinalNumber,
         NextPageType nextPageType, String parentNextPageIdentifier,
         ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
         ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber) {
@@ -220,10 +254,12 @@ public class Target {
         this.group = group;
         this.structureType = structureType;
         this.lstType = lstType;
-        this.parentLstTagType = parentLstTagType;
         this.parentLstIdentifier = parentLstIdentifier;
-        this.childLstTagType = childLstTagType;
+        this.parentLstTagType = parentLstTagType;
+        this.parentLstSelectorType = parentLstSelectorType;
         this.childLstIdentifier = childLstIdentifier;
+        this.childLstTagType = childLstTagType;
+        this.childLstSelectorType = childLstSelectorType;
         this.lstOrdinalNumber = lstOrdinalNumber;
         this.yearType = yearType;
         this.parentYearIdentifier = parentYearIdentifier;
@@ -239,15 +275,19 @@ public class Target {
         this.pdfType = pdfType;
         this.parentPdfIdentifier = parentPdfIdentifier;
         this.parentPdfTagType = parentPdfTagType;
+        this.parentPdfSelectorType = parentPdfSelectorType;
         this.childPdfIdentifier = childPdfIdentifier;
         this.childPdfTagType = childPdfTagType;
+        this.childPdfSelectorType = childPdfSelectorType;
         this.pdfOrdinalNumber = pdfOrdinalNumber;
         this.titleType = titleType;
         this.titleOrdinalNumber = titleOrdinalNumber;
         this.parentTitleIdentifier = parentTitleIdentifier;
         this.parentTitleTagType = parentTitleTagType;
+        this.parentTitleSelectorType = parentTitleSelectorType;
         this.childTitleIdentifier = childTitleIdentifier;
         this.childTitleTagType = childTitleTagType;
+        this.childTitleSelectorType = childTitleSelectorType;
         this.nextPageType = nextPageType;
         this.parentNextPageIdentifier = parentNextPageIdentifier;
         this.parentNextPageTagType = parentNextPageTagType;
@@ -270,10 +310,12 @@ public class Target {
         this.group = target.getGroup();
         this.structureType = target.getStructureType();
         this.lstType = target.getLstType();
-        this.parentLstTagType = target.getParentLstTagType();
         this.parentLstIdentifier = target.getParentLstIdentifier();
-        this.childLstTagType = target.getChildLstTagType();
+        this.parentLstTagType = target.getParentLstTagType();
+        this.parentLstSelectorType = target.getParentLstSelectorType();
         this.childLstIdentifier = target.getChildLstIdentifier();
+        this.childLstTagType = target.getChildLstTagType();
+        this.childLstSelectorType = target.getChildLstSelectorType();
         this.lstOrdinalNumber = target.getLstOrdinalNumber();
         this.yearType = target.getYearType();
         this.parentYearIdentifier = target.getParentYearIdentifier();
@@ -289,14 +331,18 @@ public class Target {
         this.pdfType = target.getPdfType();
         this.parentPdfIdentifier = target.getParentPdfIdentifier();
         this.parentPdfTagType = target.getParentPdfTagType();
+        this.parentPdfSelectorType = target.getParentPdfSelectorType();
         this.childPdfIdentifier = target.getChildPdfIdentifier();
         this.childPdfTagType = target.getChildPdfTagType();
+        this.childPdfSelectorType = target.getChildPdfSelectorType();
         this.pdfOrdinalNumber = target.getPdfOrdinalNumber();
         this.titleType = target.getTitleType();
         this.parentTitleIdentifier = target.getParentTitleIdentifier();
         this.parentTitleTagType = target.getParentTitleTagType();
+        this.parentTitleSelectorType = target.getParentTitleSelectorType();
         this.childTitleIdentifier = target.getChildTitleIdentifier();
         this.childTitleTagType = target.getChildTitleTagType();
+        this.childTitleSelectorType = target.getChildTitleSelectorType();
         this.titleOrdinalNumber = target.getTitleOrdinalNumber();
         this.nextPageType = target.getNextPageType();
         this.parentNextPageIdentifier = target.getParentNextPageIdentifier();

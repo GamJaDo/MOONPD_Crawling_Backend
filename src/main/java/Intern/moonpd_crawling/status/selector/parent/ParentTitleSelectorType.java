@@ -1,16 +1,17 @@
-package Intern.moonpd_crawling.status;
+package Intern.moonpd_crawling.status.selector.parent;
 
+import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum OrganizationType {
-    MUNICIPALITY("MUNICIPALITY"), // 지자체
-    CULTURE_FOUNDATION("CULTURE_FOUNDATION"), // 문화재단
-    NONE("NONE"); // 기본값 (빈 값 또는 null)
+public enum ParentTitleSelectorType {
+    CLASS("CLASS"),
+    STYLE("STYLE"),
+    NONE("NONE");
 
     private final String value;
 
-    OrganizationType(String value) {
+    ParentTitleSelectorType(String value) {
         this.value = value;
     }
 
@@ -25,11 +26,11 @@ public enum OrganizationType {
     }
 
     @JsonCreator
-    public static OrganizationType fromValue(String value) {
+    public static ParentTitleSelectorType fromValue(String value) {
         if (value == null || value.isEmpty()) {
             return NONE; // null 또는 빈 문자열에 대해 기본값 반환
         }
-        for (OrganizationType type : values()) {
+        for (ParentTitleSelectorType type : values()) {
             if (type.value.equalsIgnoreCase(value)) {
                 return type; // 일치하는 값 반환
             }

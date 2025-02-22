@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class HasOnClickPdfUtil {
 
     public String getPdfLinkByOnClick(String pageUrl, String onClickPdfScript) {
+
         try {
             URL url = new URL(pageUrl);
             String baseDomain = url.getProtocol() + "://" + url.getHost();

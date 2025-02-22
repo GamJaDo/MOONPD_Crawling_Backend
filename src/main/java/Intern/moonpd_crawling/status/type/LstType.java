@@ -1,4 +1,4 @@
-package Intern.moonpd_crawling.status;
+package Intern.moonpd_crawling.status.type;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

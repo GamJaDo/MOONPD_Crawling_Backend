@@ -2,24 +2,32 @@ package Intern.moonpd_crawling.util.structure;
 
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
-import Intern.moonpd_crawling.status.ExtendedPdfType;
-import Intern.moonpd_crawling.status.LstType;
-import Intern.moonpd_crawling.status.NextPageType;
-import Intern.moonpd_crawling.status.PdfType;
-import Intern.moonpd_crawling.status.TitleType;
-import Intern.moonpd_crawling.status.child.ChildLstTagType;
-import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
-import Intern.moonpd_crawling.status.child.ChildPdfTagType;
-import Intern.moonpd_crawling.status.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
-import Intern.moonpd_crawling.status.parent.ParentLstTagType;
-import Intern.moonpd_crawling.status.parent.ParentNextPageTagType;
-import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
-import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
+import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
+import Intern.moonpd_crawling.status.tag.child.ChildYearTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
+import Intern.moonpd_crawling.status.type.ExtendedPdfType;
+import Intern.moonpd_crawling.status.type.LstType;
+import Intern.moonpd_crawling.status.type.NextPageType;
+import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.type.TitleType;
+import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentLstTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
+import Intern.moonpd_crawling.status.type.YearType;
 import Intern.moonpd_crawling.util.CheckOnClickUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
-import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -41,14 +49,18 @@ public class ListedContentStructureUtil {
 
     public void crawl(WebDriver webDriver, String pageUrl, Target target, LstType lstType,
         String parentLstIdentifier, ParentLstTagType parentLstTagType,
-        String childLstIdentifier, ChildLstTagType childLstTagType, int lstOrdinalNumber,
-        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
+        ParentLstSelectorType parentLstSelectorType, String childLstIdentifier,
+        ChildLstTagType childLstTagType, ChildLstSelectorType childLstSelectorType,
+        int lstOrdinalNumber, ExtendedPdfType extendedPdfType,
+        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
+        int extendedPdfOrdinalNumber, PdfType pdfType, String parentPdfIdentifier,
+        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
+        String childPdfIdentifier, ChildPdfTagType childPdfTagType,
+        ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber,
         TitleType titleType, String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
-        NextPageType nextPageType, String parentNextPageIdentifier,
+        ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
+        ChildTitleTagType childTitleTagType, ChildTitleSelectorType childTitleSelectorType,
+        int titleOrdinalNumber, NextPageType nextPageType, String parentNextPageIdentifier,
         ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
         ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber) {
 
@@ -69,9 +81,9 @@ public class ListedContentStructureUtil {
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
                 Thread.sleep(500);
 
-                lstElements = elementFinderUtil.getLstElements(webDriver,
-                    parentLstIdentifier, parentLstTagType, childLstIdentifier, childLstTagType,
-                    lstOrdinalNumber);
+                lstElements = elementFinderUtil.getLstElements(webDriver, parentLstIdentifier,
+                    parentLstTagType, parentLstSelectorType, childLstIdentifier, childLstTagType,
+                    childLstSelectorType, lstOrdinalNumber);
                 if (lstElements.isEmpty()) {
                     throw new WebDriverException(
                         "No LstElements found for identifier: " + parentLstIdentifier + " or "
@@ -80,8 +92,8 @@ public class ListedContentStructureUtil {
 
                 if (titleType.equals(TitleType.OUT)) {
                     titleElements = elementFinderUtil.getTitleElements(webDriver,
-                        parentTitleIdentifier,
-                        parentTitleTagType, childTitleIdentifier, childTitleTagType,
+                        parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
+                        childTitleIdentifier, childTitleTagType, childTitleSelectorType,
                         titleOrdinalNumber);
                     if (titleElements.isEmpty()) {
                         throw new WebDriverException(
@@ -89,22 +101,33 @@ public class ListedContentStructureUtil {
                                 + " or "
                                 + childTitleIdentifier);
                     }
-
-                    System.out.println("lstElements.size(): " + lstElements.size());
-                    System.out.println("titleElements.size(): " + titleElements.size());
                 }
+/*
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
+                for (int i=0; i<lstElements.size(); i++){
+                    System.out.println("lstElements[" + i + "]: " + lstElements.get(i).getAttribute("onclick"));
+                }
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-                /*
-                if (lstElements.size() != titleElements.size()) {
-                    int diff = Math.abs(lstElements.size() - titleElements.size());
+                System.out.println("------------------------------");
 
-                    if (lstElements.size() > titleElements.size()) {
-                        lstElements = lstElements.subList(diff, lstElements.size());
-                    } else {
-                        titleElements = titleElements.subList(diff, titleElements.size());
+                System.out.println("#########################");
+                for (int i=0; i<titleElements.size(); i++){
+                    System.out.println("titleElements[" + i + "]: " + titleElements.get(i).getText());
+                }
+                System.out.println("#########################");
+*/
+                if (titleType.equals(TitleType.OUT)) {
+                    if (lstElements.size() != titleElements.size()) {
+                        int diff = Math.abs(lstElements.size() - titleElements.size());
+
+                        if (lstElements.size() > titleElements.size()) {
+                            lstElements = lstElements.subList(diff, lstElements.size());
+                        } else {
+                            titleElements = titleElements.subList(diff, titleElements.size());
+                        }
                     }
                 }
-                 */
 
                 for (int i = 0; i < lstElements.size(); i++) {
                     Thread.sleep(100);
@@ -116,10 +139,11 @@ public class ListedContentStructureUtil {
                     checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target,
                         extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                         extendedPdfOrdinalNumber, lstElements, lstType, pdfType,
-                        parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
-                        childPdfTagType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
-                        parentTitleTagType, childTitleIdentifier, childTitleTagType,
-                        titleOrdinalNumber, titleText, i);
+                        parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
+                        childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
+                        titleType, parentTitleIdentifier, parentTitleTagType,
+                        parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
+                        childTitleSelectorType, titleOrdinalNumber, titleText, i);
                 }
 
                 if (currentPage < totalPage) {

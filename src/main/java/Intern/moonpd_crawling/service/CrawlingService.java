@@ -3,24 +3,30 @@ package Intern.moonpd_crawling.service;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.repository.TargetRepository;
-import Intern.moonpd_crawling.status.ExtendedPdfType;
-import Intern.moonpd_crawling.status.LstType;
-import Intern.moonpd_crawling.status.PdfType;
-import Intern.moonpd_crawling.status.TitleType;
-import Intern.moonpd_crawling.status.YearType;
-import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
-import Intern.moonpd_crawling.status.child.ChildLstTagType;
-import Intern.moonpd_crawling.status.child.ChildPdfTagType;
-import Intern.moonpd_crawling.status.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.child.ChildYearTagType;
-import Intern.moonpd_crawling.status.parent.ParentNextPageTagType;
-import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
-import Intern.moonpd_crawling.status.parent.ParentLstTagType;
-import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
-import Intern.moonpd_crawling.status.NextPageType;
-import Intern.moonpd_crawling.status.StructureType;
-import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
-import Intern.moonpd_crawling.status.parent.ParentYearTagType;
+import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
+import Intern.moonpd_crawling.status.type.ExtendedPdfType;
+import Intern.moonpd_crawling.status.type.LstType;
+import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.type.TitleType;
+import Intern.moonpd_crawling.status.type.YearType;
+import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildYearTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentLstTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
+import Intern.moonpd_crawling.status.type.NextPageType;
+import Intern.moonpd_crawling.status.type.StructureType;
+import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
 import Intern.moonpd_crawling.util.structure.ListedContentStructureUtil;
 import Intern.moonpd_crawling.util.structure.SinglePageStructureUtil;
 import Intern.moonpd_crawling.util.structure.YearFilteredStructureUtil;
@@ -55,12 +61,11 @@ public class CrawlingService {
         System.setProperty("webdriver.chrome.driver",
             "C:\\tools\\chromedriver-win64\\chromedriver.exe");
 
-        WebDriver webDriver = new ChromeDriver();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
-        options.addArguments("--disable-popup-blocking");
+        // options.addArguments("--disable-popup-blocking");
 
-        webDriver = new ChromeDriver(options);
+        WebDriver webDriver = new ChromeDriver(options);
 
         try {
             for (Target target : targetList) {
@@ -69,8 +74,10 @@ public class CrawlingService {
                 LstType lstType = target.getLstType();
                 String parentLstIdentifier = target.getParentLstIdentifier();
                 ParentLstTagType parentLstTagType = target.getParentLstTagType();
+                ParentLstSelectorType parentLstSelectorType = target.getParentLstSelectorType();
                 String childLstIdentifier = target.getChildLstIdentifier();
                 ChildLstTagType childLstTagType = target.getChildLstTagType();
+                ChildLstSelectorType childLstSelectorType = target.getChildLstSelectorType();
                 int lstOrdinalNumber = target.getLstOrdinalNumber();
 
                 YearType yearType = target.getYearType();
@@ -92,15 +99,19 @@ public class CrawlingService {
                 PdfType pdfType = target.getPdfType();
                 String parentPdfIdentifier = target.getParentPdfIdentifier();
                 ParentPdfTagType parentPdfTagType = target.getParentPdfTagType();
+                ParentPdfSelectorType parentPdfSelectorType = target.getParentPdfSelectorType();
                 String childPdfIdentifier = target.getChildPdfIdentifier();
                 ChildPdfTagType childPdfTagType = target.getChildPdfTagType();
+                ChildPdfSelectorType childPdfSelectorType = target.getChildPdfSelectorType();
                 int pdfOrdinalNumber = target.getPdfOrdinalNumber();
 
                 TitleType titleType = target.getTitleType();
                 String parentTitleIdentifier = target.getParentTitleIdentifier();
                 ParentTitleTagType parentTitleTagType = target.getParentTitleTagType();
+                ParentTitleSelectorType parentTitleSelectorType = target.getParentTitleSelectorType();
                 String childTitleIdentifier = target.getChildTitleIdentifier();
                 ChildTitleTagType childTitleTagType = target.getChildTitleTagType();
+                ChildTitleSelectorType childTitleSelectorType = target.getChildTitleSelectorType();
                 int titleOrdinalNumber = target.getTitleOrdinalNumber();
 
                 NextPageType nextPageType = target.getNextPageType();
@@ -114,31 +125,36 @@ public class CrawlingService {
                     singlePageStructureUtil.crawl(webDriver, pageUrl, target, extendedPdfType,
                         parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                         extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
-                        childPdfIdentifier, childPdfTagType, pdfOrdinalNumber,
-                        parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-                        childTitleTagType, titleOrdinalNumber, nextPageType,
+                        parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
+                        childPdfSelectorType, pdfOrdinalNumber, parentTitleIdentifier,
+                        parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
+                        childTitleTagType, childTitleSelectorType, titleOrdinalNumber, nextPageType,
                         parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
                         childNextPageTagType, nextPageOrdinalNumber);
                 } else if (structureType.equals(StructureType.YEAR_FILTERED)) {
                     yearFilteredStructureUtil.crawl(webDriver, pageUrl, target, lstType,
-                        parentLstIdentifier, parentLstTagType, childLstIdentifier, childLstTagType,
-                        lstOrdinalNumber, yearType, parentYearIdentifier, parentYearTagType,
-                        childYearIdentifier, childYearTagType, yearOrdinalNumber, extendedPdfType,
+                        parentLstIdentifier, parentLstTagType, parentLstSelectorType,
+                        childLstIdentifier, childLstTagType, childLstSelectorType, lstOrdinalNumber,
+                        yearType, parentYearIdentifier, parentYearTagType, childYearIdentifier,
+                        childYearTagType, yearOrdinalNumber, extendedPdfType,
                         parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                         extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
-                        childPdfIdentifier, childPdfTagType, pdfOrdinalNumber, titleType,
-                        parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-                        childTitleTagType, titleOrdinalNumber, nextPageType,
+                        parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
+                        childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
+                        parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
+                        childTitleTagType, childTitleSelectorType, titleOrdinalNumber, nextPageType,
                         parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
                         childNextPageTagType, nextPageOrdinalNumber);
                 } else if (structureType.equals(StructureType.LISTED_CONTENT)) {
                     listedContentStructureUtil.crawl(webDriver, pageUrl, target, lstType,
-                        parentLstIdentifier, parentLstTagType, childLstIdentifier, childLstTagType,
-                        lstOrdinalNumber, extendedPdfType, parentExtendedPdfIdentifier,
-                        parentExtendedPdfTagType, extendedPdfOrdinalNumber, pdfType,
-                        parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
-                        pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
-                        childTitleIdentifier, childTitleTagType, titleOrdinalNumber, nextPageType,
+                        parentLstIdentifier, parentLstTagType, parentLstSelectorType,
+                        childLstIdentifier, childLstTagType, childLstSelectorType, lstOrdinalNumber,
+                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+                        extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
+                        parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
+                        childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
+                        parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
+                        childTitleTagType, childTitleSelectorType, titleOrdinalNumber, nextPageType,
                         parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
                         childNextPageTagType, nextPageOrdinalNumber);
                 }

@@ -1,26 +1,17 @@
-package Intern.moonpd_crawling.status.child;
+package Intern.moonpd_crawling.status.selector.child;
 
+import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChildLstTagType {
-    A("A"), // 앵커 태그
-    TD("TD"),
-    IMG("IMG"),
-    LI("LI"),
-    FORM("FORM"),
-    ARTICLE("ARTICLE"),
-    H1("H1"),
-    H2("H2"),
-    H3("H3"),
-    H4("H4"),
-    H5("H5"),
-    NAV("NAV"),
-    NONE("NONE"); // 기본값으로 사용할 항목
+public enum ChildLstSelectorType {
+    CLASS("CLASS"),
+    STYLE("STYLE"),
+    NONE("NONE");
 
     private final String value;
 
-    ChildLstTagType(String value) {
+    ChildLstSelectorType(String value) {
         this.value = value;
     }
 
@@ -35,11 +26,11 @@ public enum ChildLstTagType {
     }
 
     @JsonCreator
-    public static ChildLstTagType fromValue(String value) {
+    public static ChildLstSelectorType fromValue(String value) {
         if (value == null || value.isEmpty()) {
             return NONE; // null 또는 빈 문자열에 대해 기본값 반환
         }
-        for (ChildLstTagType type : values()) {
+        for (ChildLstSelectorType type : values()) {
             if (type.value.equalsIgnoreCase(value)) {
                 return type; // 일치하는 값 반환
             }

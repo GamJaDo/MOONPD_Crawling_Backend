@@ -1,4 +1,4 @@
-package Intern.moonpd_crawling.status.parent;
+package Intern.moonpd_crawling.status.tag.parent;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

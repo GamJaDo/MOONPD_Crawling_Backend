@@ -1,6 +1,6 @@
 package Intern.moonpd_crawling.util.pdfCrawling;
 
-import Intern.moonpd_crawling.status.child.ChildPdfTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import java.util.List;
 import org.openqa.selenium.WebDriver;

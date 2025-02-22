@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ElementFinderFilterUtil {
+public class ElementFilterUtil {
 
     public List<WebElement> getLstElementWithLink(List<WebElement> lstElements) {
 

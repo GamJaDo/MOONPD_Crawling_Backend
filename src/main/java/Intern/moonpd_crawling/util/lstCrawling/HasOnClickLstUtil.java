@@ -1,19 +1,24 @@
 package Intern.moonpd_crawling.util.lstCrawling;
 
 import Intern.moonpd_crawling.entity.Target;
-import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.service.LstCrawlingService;
-import Intern.moonpd_crawling.status.ExtendedPdfType;
-import Intern.moonpd_crawling.status.PdfType;
-import Intern.moonpd_crawling.status.TitleType;
-import Intern.moonpd_crawling.status.child.ChildPdfTagType;
-import Intern.moonpd_crawling.status.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
-import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
-import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
+import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
+import Intern.moonpd_crawling.status.type.ExtendedPdfType;
+import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.type.TitleType;
+import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,28 +30,34 @@ public class HasOnClickLstUtil {
         this.lstCrawlingService = lstCrawlingService;
     }
 
-    public void goToLstByOnclick(String pageUrl, Target target, ExtendedPdfType extendedPdfType,
+    public void goToLstByOnclick(WebDriver webDriver, String pageUrl, Target target,
+        ExtendedPdfType extendedPdfType,
         String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
         int extendedPdfOrdinalNumber, String onClickLstScript, PdfType pdfType,
-        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, int pdfOrdinalNumber, TitleType titleType,
-        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
-        String titleText) {
+        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
+        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
+        int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier,
+        ParentTitleTagType parentTitleTagType, ParentTitleSelectorType parentTitleSelectorType,
+        String childTitleIdentifier, ChildTitleTagType childTitleTagType,
+        ChildTitleSelectorType childTitleSelectorType, int titleOrdinalNumber, String titleText) {
 
         String lstLink = getLstLink(pageUrl, onClickLstScript);
 
         if (titleType.equals(TitleType.OUT)) {
-            lstCrawlingService.crawlLstWithTitle (pageUrl, target, extendedPdfType,
+            lstCrawlingService.crawlLstWithTitleText(pageUrl, target, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
-                lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
-                childPdfTagType, pdfOrdinalNumber, titleText);
+                lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
+                childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
+                titleText);
         } else if (titleType.equals(TitleType.IN)) {
             lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
-                lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, childPdfIdentifier,
-                childPdfTagType, pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType,
-                childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
+                parentExtendedPdfIdentifier,
+                parentExtendedPdfTagType, extendedPdfOrdinalNumber, lstLink, pdfType,
+                parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
+                childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, parentTitleIdentifier,
+                parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
+                childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
         }
     }
 
@@ -54,22 +65,36 @@ public class HasOnClickLstUtil {
         try {
             URL url = new URL(pageUrl);
             String baseDomain = url.getProtocol() + "://" + url.getHost();
-            String endpoint = "/portal/bbs/view.do";
-            Pattern pattern = Pattern.compile(
-                "goTo\\.view\\('list','([^']+)','([^']+)','([^']+)'\\)");
-            Matcher matcher = pattern.matcher(onClickLstScript);
-            if (matcher.find() && matcher.groupCount() == 3) {
-                String bIdx = matcher.group(1);
-                String ptIdx = matcher.group(2);
-                String mId = matcher.group(3);
 
-                return baseDomain + endpoint + "?mId=" + mId + "&bIdx=" + bIdx + "&ptIdx=" + ptIdx;
-            } else {
-                throw new WebDriverException(
-                    "Failed to extract parameters from onClick script: " + onClickLstScript);
+            // fn_view 케이스 처리
+            if (onClickLstScript.contains("fn_view(")) {
+                Pattern pattern = Pattern.compile("fn_view\\('([^']+)'\\s*,\\s*'([^']+)'\\)");
+                Matcher matcher = pattern.matcher(onClickLstScript);
+                if (matcher.find() && matcher.groupCount() == 2) {
+                    String nttId = matcher.group(1);
+                    String bbsId = matcher.group(2);
+                    return baseDomain + "/board/viewArticle.do?bbsId=" + bbsId + "&nttId=" + nttId + "&pageIndex=1";
+                } else {
+                    throw new WebDriverException(
+                        "Failed to extract parameters from fn_view script: " + onClickLstScript);
+                }
+            }
+            else {
+                String endpoint = "/portal/bbs/view.do";
+                Pattern pattern = Pattern.compile("goTo\\.view\\('list','([^']+)','([^']+)','([^']+)'\\)");
+                Matcher matcher = pattern.matcher(onClickLstScript);
+                if (matcher.find() && matcher.groupCount() == 3) {
+                    String bIdx = matcher.group(1);
+                    String ptIdx = matcher.group(2);
+                    String mId = matcher.group(3);
+                    return baseDomain + endpoint + "?mId=" + mId + "&bIdx=" + bIdx + "&ptIdx=" + ptIdx;
+                } else {
+                    throw new WebDriverException(
+                        "Failed to extract parameters from onClick script: " + onClickLstScript);
+                }
             }
         } catch (Exception e) {
-            throw new WebDriverException("Error processing pageUrl: " + pageUrl);
+            throw new WebDriverException("Error processing pageUrl: " + pageUrl, e);
         }
     }
 }

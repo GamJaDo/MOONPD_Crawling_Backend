@@ -2,23 +2,29 @@ package Intern.moonpd_crawling.util.structure;
 
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
-import Intern.moonpd_crawling.status.ExtendedPdfType;
-import Intern.moonpd_crawling.status.LstType;
-import Intern.moonpd_crawling.status.NextPageType;
-import Intern.moonpd_crawling.status.PdfType;
-import Intern.moonpd_crawling.status.TitleType;
-import Intern.moonpd_crawling.status.YearType;
-import Intern.moonpd_crawling.status.child.ChildLstTagType;
-import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
-import Intern.moonpd_crawling.status.child.ChildPdfTagType;
-import Intern.moonpd_crawling.status.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.child.ChildYearTagType;
-import Intern.moonpd_crawling.status.parent.ParentLstTagType;
-import Intern.moonpd_crawling.status.parent.ParentNextPageTagType;
-import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
-import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
-import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
-import Intern.moonpd_crawling.status.parent.ParentYearTagType;
+import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
+import Intern.moonpd_crawling.status.type.ExtendedPdfType;
+import Intern.moonpd_crawling.status.type.LstType;
+import Intern.moonpd_crawling.status.type.NextPageType;
+import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.type.TitleType;
+import Intern.moonpd_crawling.status.type.YearType;
+import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildYearTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentLstTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
 import Intern.moonpd_crawling.util.CheckOnClickUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
@@ -49,16 +55,20 @@ public class YearFilteredStructureUtil {
 
     public void crawl(WebDriver webDriver, String pageUrl, Target target, LstType lstType,
         String parentLstIdentifier, ParentLstTagType parentLstTagType,
-        String childLstIdentifier, ChildLstTagType childLstTagType, int lstOrdinalNumber,
-        YearType yearType, String parentYearIdentifier, ParentYearTagType parentYearTagType,
-        String childYearIdentifier, ChildYearTagType childYearTagType, int yearOrdinalNumber,
-        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
+        ParentLstSelectorType parentLstSelectorType, String childLstIdentifier,
+        ChildLstTagType childLstTagType, ChildLstSelectorType childLstSelectorType,
+        int lstOrdinalNumber, YearType yearType, String parentYearIdentifier,
+        ParentYearTagType parentYearTagType, String childYearIdentifier,
+        ChildYearTagType childYearTagType, int yearOrdinalNumber, ExtendedPdfType extendedPdfType,
+        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
+        int extendedPdfOrdinalNumber, PdfType pdfType, String parentPdfIdentifier,
+        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
+        String childPdfIdentifier, ChildPdfTagType childPdfTagType,
+        ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber,
         TitleType titleType, String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
-        NextPageType nextPageType, String parentNextPageIdentifier,
+        ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
+        ChildTitleTagType childTitleTagType, ChildTitleSelectorType childTitleSelectorType,
+        int titleOrdinalNumber, NextPageType nextPageType, String parentNextPageIdentifier,
         ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
         ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber)
         throws InterruptedException {
@@ -93,19 +103,25 @@ public class YearFilteredStructureUtil {
                     singlePageStructureUtil.crawl(webDriver, pageUrl, target, extendedPdfType,
                         parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                         extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
-                        childPdfIdentifier, childPdfTagType, pdfOrdinalNumber,
-                        parentTitleIdentifier, parentTitleTagType, childTitleIdentifier,
-                        childTitleTagType, titleOrdinalNumber, nextPageType,
+                        parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
+                        childPdfSelectorType, pdfOrdinalNumber, parentTitleIdentifier,
+                        parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
+                        childTitleTagType, childTitleSelectorType, titleOrdinalNumber, nextPageType,
                         parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
                         childNextPageTagType, nextPageOrdinalNumber);
                 } else {
                     listedContentStructureUtil.crawl(webDriver, pageUrl, target, lstType,
-                        parentLstIdentifier, parentLstTagType, childLstIdentifier, childLstTagType,
+                        parentLstIdentifier, parentLstTagType, parentLstSelectorType,
+                        childLstIdentifier, childLstTagType,
+                        childLstSelectorType,
                         lstOrdinalNumber, extendedPdfType, parentExtendedPdfIdentifier,
                         parentExtendedPdfTagType, extendedPdfOrdinalNumber, pdfType,
-                        parentPdfIdentifier, parentPdfTagType, childPdfIdentifier, childPdfTagType,
+                        parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
+                        childPdfIdentifier, childPdfTagType, childPdfSelectorType,
                         pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
-                        childTitleIdentifier, childTitleTagType, titleOrdinalNumber, nextPageType,
+                        parentTitleSelectorType,
+                        childTitleIdentifier, childTitleTagType, childTitleSelectorType,
+                        titleOrdinalNumber, nextPageType,
                         parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
                         childNextPageTagType, nextPageOrdinalNumber);
                 }

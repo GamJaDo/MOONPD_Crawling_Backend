@@ -4,21 +4,24 @@ import Intern.moonpd_crawling.entity.CrawlingData;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.repository.CrawlingDataRepository;
-import Intern.moonpd_crawling.status.ExtendedPdfType;
-import Intern.moonpd_crawling.status.NextPageType;
-import Intern.moonpd_crawling.status.PdfType;
-import Intern.moonpd_crawling.status.child.ChildNextPageTagType;
-import Intern.moonpd_crawling.status.child.ChildPdfTagType;
-import Intern.moonpd_crawling.status.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.parent.ParentExtendedPdfTagType;
-import Intern.moonpd_crawling.status.parent.ParentNextPageTagType;
-import Intern.moonpd_crawling.status.parent.ParentPdfTagType;
-import Intern.moonpd_crawling.status.parent.ParentTitleTagType;
+import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
+import Intern.moonpd_crawling.status.type.ExtendedPdfType;
+import Intern.moonpd_crawling.status.type.NextPageType;
+import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
+import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
 import Intern.moonpd_crawling.util.CheckOnClickPdfUtil;
 import Intern.moonpd_crawling.util.CheckOnClickUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
-import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -47,10 +50,12 @@ public class SinglePageStructureUtil {
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType, int pdfOrdinalNumber,
-        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType, int titleOrdinalNumber,
-        NextPageType nextPageType, String parentNextPageIdentifier,
+        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
+        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
+        int pdfOrdinalNumber, String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
+        ChildTitleTagType childTitleTagType, ChildTitleSelectorType childTitleSelectorType,
+        int titleOrdinalNumber, NextPageType nextPageType, String parentNextPageIdentifier,
         ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
         ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber) {
 
@@ -80,8 +85,8 @@ public class SinglePageStructureUtil {
 
                 pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
                     parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
-                    parentPdfIdentifier, parentPdfTagType,
-                    childPdfIdentifier, childPdfTagType, pdfOrdinalNumber);
+                    parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
+                    childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber);
 
                 /*
                 if (pdfLinks.isEmpty()) {
@@ -91,8 +96,8 @@ public class SinglePageStructureUtil {
                 }
                 */
                 titleElements = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
-                    parentTitleTagType,
-                    childTitleIdentifier, childTitleTagType, titleOrdinalNumber);
+                    parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
+                    childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
                 /*
                 if (titles.isEmpty()) {
                     throw new WebDriverException(
@@ -100,6 +105,20 @@ public class SinglePageStructureUtil {
                             + childTitleIdentifier);
                 }
                 */
+
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
+                for (int i=0; i<pdfElements.size(); i++){
+                    System.out.println("pdfElements[" + i + "]: " + pdfElements.get(i).getAttribute("href"));
+                }
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+                System.out.println("------------------------------");
+
+                System.out.println("#########################");
+                for (int i=0; i<titleElements.size(); i++){
+                    System.out.println("titleElements[" + i + "]: " + titleElements.get(i).getText());
+                }
+                System.out.println("#########################");
 
                 if (pdfElements.size() != titleElements.size()) {
                     int diff = Math.abs(pdfElements.size() - titleElements.size());

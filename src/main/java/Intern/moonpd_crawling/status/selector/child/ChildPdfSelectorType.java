@@ -1,18 +1,16 @@
-package Intern.moonpd_crawling.status;
+package Intern.moonpd_crawling.status.selector.child;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum NextPageType {
-    HAS_ONCLICK("HAS_ONCLICK"),  // onclick이 있는 경우
-    NO_ONCLICK("NO_ONCLICK"),    // onclick이 없는 경우
-    PSEUDO_LINK("PSEUDO_LINK"), // 실제 URL 대신에 자리만 차지하는 "의사 링크"
-    JAVASCRIPT_LINK("JAVASCRIPT_LINK"), // href 안에 js가 들어있는 경우
-    NONE("NONE");                // 기본값 (빈 값 또는 null)
+public enum ChildPdfSelectorType {
+    CLASS("CLASS"),
+    STYLE("STYLE"),
+    NONE("NONE");
 
     private final String value;
 
-    NextPageType(String value) {
+    ChildPdfSelectorType(String value) {
         this.value = value;
     }
 
@@ -27,11 +25,11 @@ public enum NextPageType {
     }
 
     @JsonCreator
-    public static NextPageType fromValue(String value) {
+    public static ChildPdfSelectorType fromValue(String value) {
         if (value == null || value.isEmpty()) {
             return NONE; // null 또는 빈 문자열에 대해 기본값 반환
         }
-        for (NextPageType type : values()) {
+        for (ChildPdfSelectorType type : values()) {
             if (type.value.equalsIgnoreCase(value)) {
                 return type; // 일치하는 값 반환
             }

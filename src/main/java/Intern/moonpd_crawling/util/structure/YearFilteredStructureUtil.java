@@ -10,6 +10,8 @@ import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
+import Intern.moonpd_crawling.status.type.ExtendedLstType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
 import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.NextPageType;
@@ -57,22 +59,23 @@ public class YearFilteredStructureUtil {
     }
 
     public void crawl(WebDriver webDriver, StructureType structureType, String pageUrl,
-        int totalPage, Target target, LstType lstType, String parentLstIdentifier,
-        ParentLstTagType parentLstTagType, ParentLstSelectorType parentLstSelectorType,
-        String childLstIdentifier, ChildLstTagType childLstTagType,
-        ChildLstSelectorType childLstSelectorType, int lstOrdinalNumber, YearType yearType,
-        String parentYearIdentifier, ParentYearTagType parentYearTagType,
-        String childYearIdentifier, ChildYearTagType childYearTagType, int yearOrdinalNumber,
-        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
-        int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier,
-        ParentTitleTagType parentTitleTagType, ParentTitleSelectorType parentTitleSelectorType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType,
-        ChildTitleSelectorType childTitleSelectorType, int titleOrdinalNumber,
-        NextPageType nextPageType, String parentNextPageIdentifier,
+        int totalPage, Target target, ExtendedLstType extendedLstType,
+        ParentExtendedLstTagType parentExtendedLstTagType, String parentExtendedLstIdentifier,
+        LstType lstType, String parentLstIdentifier, ParentLstTagType parentLstTagType,
+        ParentLstSelectorType parentLstSelectorType, String childLstIdentifier,
+        ChildLstTagType childLstTagType, ChildLstSelectorType childLstSelectorType,
+        int lstOrdinalNumber, YearType yearType, String parentYearIdentifier,
+        ParentYearTagType parentYearTagType, String childYearIdentifier,
+        ChildYearTagType childYearTagType, int yearOrdinalNumber, ExtendedPdfType extendedPdfType,
+        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
+        int extendedPdfOrdinalNumber, PdfType pdfType, String parentPdfIdentifier,
+        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
+        String childPdfIdentifier, ChildPdfTagType childPdfTagType,
+        ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
+        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
+        ChildTitleTagType childTitleTagType, ChildTitleSelectorType childTitleSelectorType,
+        int titleOrdinalNumber, NextPageType nextPageType, String parentNextPageIdentifier,
         ParentNextPageTagType parentNextPageTagType,
         ParentNextPageSelectorType parentNextPageSelectorType, String childNextPageIdentifier,
         ChildNextPageTagType childNextPageTagType,
@@ -118,7 +121,8 @@ public class YearFilteredStructureUtil {
                         childNextPageTagType, childNextPageSelectorType, nextPageOrdinalNumber);
                 } else {
                     listedContentStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
-                        target, lstType, parentLstIdentifier, parentLstTagType,
+                        target, extendedLstType, parentExtendedLstTagType,
+                        parentExtendedLstIdentifier, lstType, parentLstIdentifier, parentLstTagType,
                         parentLstSelectorType, childLstIdentifier, childLstTagType,
                         childLstSelectorType, lstOrdinalNumber, extendedPdfType,
                         parentExtendedPdfIdentifier, parentExtendedPdfTagType,

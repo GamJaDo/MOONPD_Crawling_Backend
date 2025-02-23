@@ -1,29 +1,55 @@
 package Intern.moonpd_crawling.util;
 
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import java.util.ArrayList;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ElementExtendedUtil {
 
-    public String getExtendedPdfElements(String cssSelector, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber) {
+    public List<WebElement> getExtendedLstElements(
+        ParentExtendedLstTagType parentExtendedLstTagType, String parentExtendedLstIdentifier,
+        List<WebElement> lstElements) {
 
-        String[] parts = cssSelector.split(">", 2);
-        String firstPart = parts[0].trim();
-        String remainder = parts.length > 1 ? " > " + parts[1].trim() : "";
+        List<WebElement> filteredElements = new ArrayList<>();
 
-        if (!firstPart.contains(":nth-child(")) {
-            firstPart = firstPart + ":nth-child(" + extendedPdfOrdinalNumber + ")";
+        String xpath = "ancestor::*[local-name()='" + parentExtendedLstTagType + "'";
+        if (parentExtendedLstIdentifier != null && !parentExtendedLstIdentifier.isEmpty()) {
+            xpath += " and contains(@class, '" + parentExtendedLstIdentifier + "')";
+        }
+        xpath += "]";
+
+        for (WebElement lstElement : lstElements) {
+            if (!lstElement.findElements(By.xpath(xpath)).isEmpty()) {
+                filteredElements.add(lstElement);
+            }
         }
 
-        String parentSelector;
-        if (!parentExtendedPdfIdentifier.isEmpty()) {
-            parentSelector = parentExtendedPdfTagType + "." + parentExtendedPdfIdentifier;
-        } else {
-            parentSelector = "" + parentExtendedPdfTagType;
-        }
-
-        return parentSelector + " > " + firstPart + remainder;
+        return filteredElements;
     }
+
+    public List<WebElement> getExtendedPdfElements(String parentExtendedPdfIdentifier,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
+        List<WebElement> pdfElements) {
+
+        String xpath = "ancestor::*[local-name()='" + parentExtendedPdfTagType.toString() + "'";
+        if (parentExtendedPdfIdentifier != null && !parentExtendedPdfIdentifier.isEmpty()) {
+            xpath += " and contains(@class, '" + parentExtendedPdfIdentifier + "')";
+        }
+        xpath += "]";
+
+        WebElement parentExtended = pdfElements.get(0).findElement(By.xpath(xpath));
+
+        String childTag = pdfElements.get(0).getTagName();
+        String childSelector = childTag + ":nth-child(" + extendedPdfOrdinalNumber + ")";
+
+        List<WebElement> extendedElements = parentExtended.findElements(By.cssSelector(childSelector));
+
+        return extendedElements;
+    }
+
 }

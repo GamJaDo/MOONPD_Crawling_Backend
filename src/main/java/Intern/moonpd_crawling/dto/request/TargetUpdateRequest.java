@@ -9,6 +9,8 @@ import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
+import Intern.moonpd_crawling.status.type.ExtendedLstType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
 import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.PdfType;
@@ -30,7 +32,9 @@ import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
 
 public record TargetUpdateRequest(OrganizationType organizationType, String region, String group,
-                                  StructureType structureType, LstType lstType,
+                                  StructureType structureType, ExtendedLstType extendedLstType,
+                                  ParentExtendedLstTagType parentExtendedLstTagType,
+                                  String parentExtendedLstIdentifier, LstType lstType,
                                   String parentLstIdentifier, ParentLstTagType parentLstTagType,
                                   ParentLstSelectorType parentLstSelectorType,
                                   String childLstIdentifier, ChildLstTagType childLstTagType,
@@ -65,9 +69,10 @@ public record TargetUpdateRequest(OrganizationType organizationType, String regi
                                   int nextPageOrdinalNumber) {
 
     public Target toEntity() {
-        return new Target(organizationType, region, group, structureType, lstType,
-            parentLstIdentifier, parentLstTagType, parentLstSelectorType, childLstIdentifier,
-            childLstTagType, childLstSelectorType, lstOrdinalNumber, yearType, parentYearIdentifier,
+        return new Target(organizationType, region, group, structureType, extendedLstType,
+            parentExtendedLstTagType, parentExtendedLstIdentifier, lstType, parentLstIdentifier,
+            parentLstTagType, parentLstSelectorType, childLstIdentifier, childLstTagType,
+            childLstSelectorType, lstOrdinalNumber, yearType, parentYearIdentifier,
             parentYearTagType, childYearIdentifier, childYearTagType, yearOrdinalNumber, pageUrl,
             totalPage, extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
             extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,

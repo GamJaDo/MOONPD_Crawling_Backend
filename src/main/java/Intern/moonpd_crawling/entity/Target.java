@@ -9,6 +9,8 @@ import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
+import Intern.moonpd_crawling.status.type.ExtendedLstType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
 import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.PdfType;
@@ -57,6 +59,19 @@ public class Target {
     @Enumerated(EnumType.STRING)
     @Column(name = "structure_type", nullable = true)
     private StructureType structureType;
+
+    // #############################################################################################
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "extended_lst_type", nullable = true)
+    private ExtendedLstType extendedLstType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "parent_extended_lst_tag_type", nullable = true)
+    private ParentExtendedLstTagType parentExtendedLstTagType;
+
+    @Column(name = "parent_extended_lst_identifier", nullable = true)
+    private String parentExtendedLstIdentifier;
 
     // #############################################################################################
 
@@ -244,11 +259,14 @@ public class Target {
     }
 
     public Target(OrganizationType organizationType, String region, String group,
-        StructureType structureType, LstType lstType, String parentLstIdentifier,
+        StructureType structureType, ExtendedLstType extendedLstType,
+        ParentExtendedLstTagType parentExtendedLstTagType,
+        String parentExtendedLstIdentifier, LstType lstType, String parentLstIdentifier,
         ParentLstTagType parentLstTagType, ParentLstSelectorType parentLstSelectorType,
         String childLstIdentifier, ChildLstTagType childLstTagType,
         ChildLstSelectorType childLstSelectorType, int lstOrdinalNumber, YearType yearType,
-        String parentYearIdentifier, ParentYearTagType parentYearTagType, String childYearIdentifier,
+        String parentYearIdentifier, ParentYearTagType parentYearTagType,
+        String childYearIdentifier,
         ChildYearTagType childYearTagType, int yearOrdinalNumber, String pageUrl, int totalPage,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
@@ -268,6 +286,9 @@ public class Target {
         this.region = region;
         this.group = group;
         this.structureType = structureType;
+        this.extendedLstType = extendedLstType;
+        this.parentExtendedLstTagType = parentExtendedLstTagType;
+        this.parentExtendedLstIdentifier = parentExtendedLstIdentifier;
         this.lstType = lstType;
         this.parentLstIdentifier = parentLstIdentifier;
         this.parentLstTagType = parentLstTagType;
@@ -327,6 +348,9 @@ public class Target {
         this.region = target.getRegion();
         this.group = target.getGroup();
         this.structureType = target.getStructureType();
+        this.extendedLstType = target.getExtendedLstType();
+        this.parentExtendedLstTagType = target.getParentExtendedLstTagType();
+        this.parentExtendedLstIdentifier = target.getParentExtendedLstIdentifier();
         this.lstType = target.getLstType();
         this.parentLstIdentifier = target.getParentLstIdentifier();
         this.parentLstTagType = target.getParentLstTagType();

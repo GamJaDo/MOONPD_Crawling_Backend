@@ -11,6 +11,8 @@ import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
+import Intern.moonpd_crawling.status.type.ExtendedLstType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
 import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.PdfType;
@@ -72,6 +74,10 @@ public class CrawlingService {
         try {
             for (Target target : targetList) {
                 StructureType structureType = target.getStructureType();
+
+                ExtendedLstType extendedLstType = target.getExtendedLstType();
+                ParentExtendedLstTagType parentExtendedLstTagType = target.getParentExtendedLstTagType();
+                String parentExtendedLstIdentifier = target.getParentExtendedLstIdentifier();
 
                 LstType lstType = target.getLstType();
                 String parentLstIdentifier = target.getParentLstIdentifier();
@@ -140,7 +146,8 @@ public class CrawlingService {
                         childNextPageTagType, childNextPageSelectorType, nextPageOrdinalNumber);
                 } else if (structureType.equals(StructureType.YEAR_FILTERED)) {
                     yearFilteredStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
-                        target, lstType, parentLstIdentifier, parentLstTagType,
+                        target, extendedLstType, parentExtendedLstTagType,
+                        parentExtendedLstIdentifier, lstType, parentLstIdentifier, parentLstTagType,
                         parentLstSelectorType, childLstIdentifier, childLstTagType,
                         childLstSelectorType, lstOrdinalNumber, yearType, parentYearIdentifier,
                         parentYearTagType, childYearIdentifier, childYearTagType, yearOrdinalNumber,
@@ -155,7 +162,8 @@ public class CrawlingService {
                         nextPageOrdinalNumber);
                 } else if (structureType.equals(StructureType.LISTED_CONTENT)) {
                     listedContentStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
-                        target, lstType, parentLstIdentifier, parentLstTagType,
+                        target, extendedLstType, parentExtendedLstTagType,
+                        parentExtendedLstIdentifier, lstType, parentLstIdentifier, parentLstTagType,
                         parentLstSelectorType, childLstIdentifier, childLstTagType,
                         childLstSelectorType, lstOrdinalNumber, extendedPdfType,
                         parentExtendedPdfIdentifier, parentExtendedPdfTagType,

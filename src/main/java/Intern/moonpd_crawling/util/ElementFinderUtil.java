@@ -1,5 +1,6 @@
 package Intern.moonpd_crawling.util;
 
+import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
@@ -8,7 +9,10 @@ import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
+import Intern.moonpd_crawling.status.type.ExtendedLstType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
+import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.NextPageType;
 import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
@@ -40,17 +44,19 @@ public class ElementFinderUtil {
         this.elementFilterUtil = elementFilterUtil;
     }
 
-    public List<WebElement> getLstElements(WebDriver webDriver, String parentLstIdentifier,
-        ParentLstTagType parentLstTagType, ParentLstSelectorType parentLstSelectorType,
-        String childLstIdentifier, ChildLstTagType childLstTagType,
-        ChildLstSelectorType childLstSelectorType, int lstOrdinalNumber) {
+    public List<WebElement> getLstElements(WebDriver webDriver, ExtendedLstType extendedLstType,
+        ParentExtendedLstTagType parentExtendedLstTagType, String parentExtendedLstIdentifier,
+        LstType lstType, String parentLstIdentifier, ParentLstTagType parentLstTagType,
+        ParentLstSelectorType parentLstSelectorType, String childLstIdentifier,
+        ChildLstTagType childLstTagType, ChildLstSelectorType childLstSelectorType,
+        int lstOrdinalNumber) {
 
         String parentSelector;
         if (!parentLstIdentifier.isEmpty()) {
             if (parentLstSelectorType == ParentLstSelectorType.CLASS) {
                 parentSelector = parentLstTagType + "." + parentLstIdentifier;
             } else if (parentLstSelectorType == ParentLstSelectorType.STYLE) {
-                parentSelector = parentLstTagType + "[style*='" + parentLstIdentifier + "']";
+                parentSelector = parentLstTagType + "[style*=\"" + parentLstIdentifier + "\"]";
             } else if (parentLstSelectorType == ParentLstSelectorType.ID) {
                 parentSelector = parentLstTagType + "#" + parentLstIdentifier;
             } else {
@@ -65,7 +71,7 @@ public class ElementFinderUtil {
             if (childLstSelectorType == ChildLstSelectorType.CLASS) {
                 childSelector = childLstTagType + "." + childLstIdentifier;
             } else if (childLstSelectorType == ChildLstSelectorType.STYLE) {
-                childSelector = childLstTagType + "[style*='" + childLstIdentifier + "']";
+                childSelector = childLstTagType + "[style*=\"" + childLstIdentifier + "\"]";
             } else if (parentLstSelectorType == ParentLstSelectorType.ID) {
                 childSelector = childLstTagType + "#" + childLstIdentifier;
             } else {
@@ -84,7 +90,12 @@ public class ElementFinderUtil {
         }
 
         List<WebElement> lstElements = webDriver.findElements(By.cssSelector(cssSelector));
-        return elementFilterUtil.getLstElementWithLink(lstElements);
+        if (extendedLstType.equals(ExtendedLstType.ON)) {
+            lstElements = elementExtendedUtil.getExtendedLstElements(parentExtendedLstTagType,
+                parentExtendedLstIdentifier, lstElements);
+        }
+
+        return elementFilterUtil.getLstElementWithLink(lstType, lstElements);
     }
 
     public List<WebElement> getYearElements(WebDriver webDriver, String parentYearIdentifier,
@@ -117,7 +128,13 @@ public class ElementFinderUtil {
         }
 
         WebElement parentElement = webDriver.findElement(By.cssSelector(cssSelector));
-        return parentElement.findElements(By.tagName("a"));
+        if (childYearTagType.equals(ChildYearTagType.A)) {
+            return parentElement.findElements(By.tagName("a"));
+        } else if (childYearTagType.equals(ChildYearTagType.BUTTON)) {
+            return parentElement.findElements(By.tagName("button"));
+        } else {
+            throw new WebDriverException("Unsupported year type");
+        }
     }
 
     public List<WebElement> getPdfElements(WebDriver webDriver,
@@ -133,7 +150,7 @@ public class ElementFinderUtil {
             if (parentPdfSelectorType == ParentPdfSelectorType.CLASS) {
                 parentSelector = parentPdfTagType + "." + parentPdfIdentifier;
             } else if (parentPdfSelectorType == ParentPdfSelectorType.STYLE) {
-                parentSelector = parentPdfTagType + "[style*='" + parentPdfIdentifier + "']";
+                parentSelector = parentPdfTagType + "[style*=\"" + parentPdfIdentifier + "\"]";
             } else if (parentPdfSelectorType == ParentPdfSelectorType.ID) {
                 parentSelector = parentPdfTagType + "#" + parentPdfIdentifier;
             } else {
@@ -148,7 +165,7 @@ public class ElementFinderUtil {
             if (childPdfSelectorType == ChildPdfSelectorType.CLASS) {
                 childSelector = childPdfTagType + "." + childPdfIdentifier;
             } else if (childPdfSelectorType == ChildPdfSelectorType.STYLE) {
-                childSelector = childPdfTagType + "[style*='" + childPdfIdentifier + "']";
+                childSelector = childPdfTagType + "[style*=\"" + childPdfIdentifier + "\"]";
             } else if (childPdfSelectorType == ChildPdfSelectorType.ID) {
                 childSelector = childPdfTagType + "#" + childPdfIdentifier;
             } else {
@@ -166,12 +183,15 @@ public class ElementFinderUtil {
             cssSelector = childSelector;
         }
 
+        List<WebElement> pdfElements = webDriver.findElements(By.cssSelector(cssSelector));
         if (extendedPdfType.equals(ExtendedPdfType.ON)) {
-            cssSelector = elementExtendedUtil.getExtendedPdfElements(cssSelector,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber);
+            if (pdfElements.size() != 1) {
+                pdfElements = elementExtendedUtil.getExtendedPdfElements(
+                    parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+                    extendedPdfOrdinalNumber, pdfElements);
+            }
         }
 
-        List<WebElement> pdfElements = webDriver.findElements(By.cssSelector(cssSelector));
         return elementFilterUtil.getPdfElementWithLink(pdfElements);
     }
 
@@ -185,7 +205,7 @@ public class ElementFinderUtil {
             if (parentTitleSelectorType == ParentTitleSelectorType.CLASS) {
                 parentSelector = parentTitleTagType + "." + parentTitleIdentifier;
             } else if (parentTitleSelectorType == ParentTitleSelectorType.STYLE) {
-                parentSelector = parentTitleTagType + "[style*='" + parentTitleIdentifier + "']";
+                parentSelector = parentTitleTagType + "[style*=\"" + parentTitleIdentifier + "\"]";
             } else if (parentTitleSelectorType == ParentTitleSelectorType.ID) {
                 parentSelector = parentTitleTagType + "#" + parentTitleIdentifier;
             } else {
@@ -200,7 +220,7 @@ public class ElementFinderUtil {
             if (childTitleSelectorType == ChildTitleSelectorType.CLASS) {
                 childSelector = childTitleTagType + "." + childTitleIdentifier;
             } else if (childTitleSelectorType == ChildTitleSelectorType.STYLE) {
-                childSelector = childTitleTagType + "[style*='" + childTitleIdentifier + "']";
+                childSelector = childTitleTagType + "[style*=\"" + childTitleIdentifier + "\"]";
             } else if (childTitleSelectorType == ChildTitleSelectorType.ID) {
                 childSelector = childTitleTagType + "#" + childTitleIdentifier;
             } else {
@@ -235,7 +255,7 @@ public class ElementFinderUtil {
                     parentSelector = parentNextPageTagType + "." + parentNextPageIdentifier;
                 } else if (parentNextPageSelectorType == ParentNextPageSelectorType.STYLE) {
                     parentSelector =
-                        parentNextPageTagType + "[style*='" + parentNextPageIdentifier + "']";
+                        parentNextPageTagType + "[style*=\"" + parentNextPageIdentifier + "\"]";
                 } else if (parentNextPageSelectorType == ParentNextPageSelectorType.ID) {
                     parentSelector = parentNextPageTagType + "#" + parentNextPageIdentifier;
                 } else {
@@ -251,7 +271,7 @@ public class ElementFinderUtil {
                     childSelector = childNextPageTagType + "." + childNextPageIdentifier;
                 } else if (childNextPageSelectorType == ChildNextPageSelectorType.STYLE) {
                     childSelector =
-                        childNextPageTagType + "[style*='" + childNextPageIdentifier + "']";
+                        childNextPageTagType + "[style*=\"" + childNextPageIdentifier + "\"";
                 } else if (childNextPageSelectorType == ChildNextPageSelectorType.ID) {
                     childSelector = childNextPageTagType + "#" + childNextPageIdentifier;
                 } else {

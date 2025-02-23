@@ -65,9 +65,11 @@ public class LstCrawlingService {
                     String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl,
                         pdfType,
                         pdfElements, childPdfTagType, i);
+                    /*
                     System.out.println("################");
                     System.out.println("pdfLink: " + pdfLink);
                     System.out.println("################");
+                     */
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
                         continue;
                     }

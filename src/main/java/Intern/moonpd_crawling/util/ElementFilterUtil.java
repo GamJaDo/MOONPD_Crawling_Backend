@@ -1,5 +1,6 @@
 package Intern.moonpd_crawling.util;
 
+import Intern.moonpd_crawling.status.type.LstType;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebElement;
@@ -8,14 +9,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class ElementFilterUtil {
 
-    public List<WebElement> getLstElementWithLink(List<WebElement> lstElements) {
+    public List<WebElement> getLstElementWithLink(LstType lstType, List<WebElement> lstElements) {
 
         List<WebElement> lstElementsWithLink = new ArrayList<>();
 
         for (WebElement lstElement : lstElements) {
             if (lstElement.getAttribute("href") != null
                 || lstElement.getAttribute("onclick") != null) {
-                lstElementsWithLink.add(lstElement);
+
+                if (lstType.equals(LstType.PSEUDO_LINK)) {
+                    if (lstElement.getAttribute("data-idx") != null) {
+                        lstElementsWithLink.add(lstElement);
+                    }
+                } else {
+                    lstElementsWithLink.add(lstElement);
+                }
             }
         }
 

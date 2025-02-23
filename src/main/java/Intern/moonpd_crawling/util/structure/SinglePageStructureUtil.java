@@ -76,13 +76,13 @@ public class SinglePageStructureUtil {
 
         List<Map<String, Integer>> nextPageLinks = checkOnClickUtil.getNextPageLinks(totalPage,
             nextPageType, nextPageElements);
-
+/*
         System.out.println("######################");
         for (int i = 0; i < nextPageLinks.size(); i++) {
             System.out.println("nextPageLink[" + i + "]: " + nextPageLinks.get(i).entrySet().iterator().next().getKey());
         }
         System.out.println("######################");
-
+*/
         try {
             if (structureType.equals(StructureType.YEAR_FILTERED)) {
                 totalPage = elementCountUtil.getTotalPageCnt(nextPageLinks);

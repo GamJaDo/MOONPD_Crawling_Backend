@@ -11,7 +11,9 @@ import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
 import Intern.moonpd_crawling.status.tag.child.ChildYearTagType;
+import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
+import Intern.moonpd_crawling.status.type.ExtendedLstType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
 import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.NextPageType;
@@ -52,11 +54,12 @@ public class ListedContentStructureUtil {
     }
 
     public void crawl(WebDriver webDriver, StructureType structureType, String pageUrl,
-        int totalPage, Target target, LstType lstType, String parentLstIdentifier,
-        ParentLstTagType parentLstTagType, ParentLstSelectorType parentLstSelectorType,
-        String childLstIdentifier, ChildLstTagType childLstTagType,
-        ChildLstSelectorType childLstSelectorType, int lstOrdinalNumber,
-        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
+        int totalPage, Target target, ExtendedLstType extendedLstType,
+        ParentExtendedLstTagType parentExtendedLstTagType, String parentExtendedLstIdentifier,
+        LstType lstType, String parentLstIdentifier, ParentLstTagType parentLstTagType,
+        ParentLstSelectorType parentLstSelectorType, String childLstIdentifier,
+        ChildLstTagType childLstTagType, ChildLstSelectorType childLstSelectorType,
+        int lstOrdinalNumber, ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
         PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
@@ -91,9 +94,10 @@ public class ListedContentStructureUtil {
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
                 Thread.sleep(500);
 
-                lstElements = elementFinderUtil.getLstElements(webDriver, parentLstIdentifier,
-                    parentLstTagType, parentLstSelectorType, childLstIdentifier, childLstTagType,
-                    childLstSelectorType, lstOrdinalNumber);
+                lstElements = elementFinderUtil.getLstElements(webDriver, extendedLstType,
+                    parentExtendedLstTagType, parentExtendedLstIdentifier, lstType,
+                    parentLstIdentifier, parentLstTagType, parentLstSelectorType,
+                    childLstIdentifier, childLstTagType, childLstSelectorType, lstOrdinalNumber);
                 if (lstElements.isEmpty()) {
                     throw new WebDriverException(
                         "No LstElements found for identifier: " + parentLstIdentifier + " or "

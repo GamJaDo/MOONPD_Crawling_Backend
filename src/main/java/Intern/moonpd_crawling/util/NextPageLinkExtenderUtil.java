@@ -15,7 +15,7 @@ public class NextPageLinkExtenderUtil {
         String[] keywords = {
             "p=", "pg=", "pageIndex=", "page=", "curPage=", "pno=", "page_no=", "pgno=",
             "CPAGE=", "goPage(", "noticeList(", "Page2(", "search(", "linkPage(", "pageMove(",
-            "Page_func(", "Pag("
+            "Page_func(", "Pag(", "movePage(", "Page(", "pageNo=", "Page="
         };
         String pageWord = null;
 

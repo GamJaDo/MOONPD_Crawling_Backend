@@ -1,10 +1,11 @@
 package Intern.moonpd_crawling.util;
 
-import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
@@ -20,9 +21,6 @@ import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
-import Intern.moonpd_crawling.util.pdfCrawling.AnchorTagPdfUtil;
-import Intern.moonpd_crawling.util.pdfCrawling.ButtonTagPdfUtil;
-import Intern.moonpd_crawling.util.pdfCrawling.ImgTagPdfUtil;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
@@ -33,33 +31,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ElementFinderUtil {
 
-    private final AnchorTagPdfUtil anchorTagPdfUtil;
-    private final ButtonTagPdfUtil buttonTagPdfUtil;
-    private final ImgTagPdfUtil imgTagPdfUtil;
     private final ElementExtendedUtil elementExtendedUtil;
     private final ElementFilterUtil elementFilterUtil;
 
-    public ElementFinderUtil(AnchorTagPdfUtil anchorTagPdfUtil,
-        ButtonTagPdfUtil buttonTagPdfUtil, ImgTagPdfUtil imgTagPdfUtil,
-        ElementExtendedUtil elementExtendedUtil, ElementFilterUtil elementFilterUtil) {
-        this.anchorTagPdfUtil = anchorTagPdfUtil;
-        this.buttonTagPdfUtil = buttonTagPdfUtil;
-        this.imgTagPdfUtil = imgTagPdfUtil;
+    public ElementFinderUtil(ElementExtendedUtil elementExtendedUtil,
+        ElementFilterUtil elementFilterUtil) {
         this.elementExtendedUtil = elementExtendedUtil;
         this.elementFilterUtil = elementFilterUtil;
-    }
-
-    public String getPdfLink(WebDriver webDriver, List<WebElement> pdfLinks,
-        ChildPdfTagType childPdfTagType, int index) {
-        if (childPdfTagType.equals(ChildPdfTagType.A)) {
-            return anchorTagPdfUtil.getPdfLink(pdfLinks, index);
-        } else if (childPdfTagType.equals(ChildPdfTagType.BUTTON)) {
-            return buttonTagPdfUtil.getPdfLink(pdfLinks, index);
-        } else if (childPdfTagType.equals(ChildPdfTagType.IMG)) {
-            return "";
-        } else {
-            throw new WebDriverException("Unsupported pdf type");
-        }
     }
 
     public List<WebElement> getLstElements(WebDriver webDriver, String parentLstIdentifier,
@@ -73,6 +51,8 @@ public class ElementFinderUtil {
                 parentSelector = parentLstTagType + "." + parentLstIdentifier;
             } else if (parentLstSelectorType == ParentLstSelectorType.STYLE) {
                 parentSelector = parentLstTagType + "[style*='" + parentLstIdentifier + "']";
+            } else if (parentLstSelectorType == ParentLstSelectorType.ID) {
+                parentSelector = parentLstTagType + "#" + parentLstIdentifier;
             } else {
                 parentSelector = parentLstTagType.toString();
             }
@@ -86,6 +66,8 @@ public class ElementFinderUtil {
                 childSelector = childLstTagType + "." + childLstIdentifier;
             } else if (childLstSelectorType == ChildLstSelectorType.STYLE) {
                 childSelector = childLstTagType + "[style*='" + childLstIdentifier + "']";
+            } else if (parentLstSelectorType == ParentLstSelectorType.ID) {
+                childSelector = childLstTagType + "#" + childLstIdentifier;
             } else {
                 childSelector = childLstTagType.toString();
             }
@@ -95,7 +77,8 @@ public class ElementFinderUtil {
 
         String cssSelector;
         if (lstOrdinalNumber != 0) {
-            cssSelector = parentSelector + " > " + childSelector + ":nth-child(" + lstOrdinalNumber + ")";
+            cssSelector =
+                parentSelector + " > " + childSelector + ":nth-child(" + lstOrdinalNumber + ")";
         } else {
             cssSelector = childSelector;
         }
@@ -151,6 +134,8 @@ public class ElementFinderUtil {
                 parentSelector = parentPdfTagType + "." + parentPdfIdentifier;
             } else if (parentPdfSelectorType == ParentPdfSelectorType.STYLE) {
                 parentSelector = parentPdfTagType + "[style*='" + parentPdfIdentifier + "']";
+            } else if (parentPdfSelectorType == ParentPdfSelectorType.ID) {
+                parentSelector = parentPdfTagType + "#" + parentPdfIdentifier;
             } else {
                 parentSelector = parentPdfTagType.toString();
             }
@@ -164,6 +149,8 @@ public class ElementFinderUtil {
                 childSelector = childPdfTagType + "." + childPdfIdentifier;
             } else if (childPdfSelectorType == ChildPdfSelectorType.STYLE) {
                 childSelector = childPdfTagType + "[style*='" + childPdfIdentifier + "']";
+            } else if (childPdfSelectorType == ChildPdfSelectorType.ID) {
+                childSelector = childPdfTagType + "#" + childPdfIdentifier;
             } else {
                 childSelector = childPdfTagType.toString();
             }
@@ -173,11 +160,11 @@ public class ElementFinderUtil {
 
         String cssSelector;
         if (pdfOrdinalNumber != 0) {
-            cssSelector = parentSelector + " > " + childSelector + ":nth-child(" + pdfOrdinalNumber + ")";
+            cssSelector =
+                parentSelector + " > " + childSelector + ":nth-child(" + pdfOrdinalNumber + ")";
         } else {
             cssSelector = childSelector;
         }
-
 
         if (extendedPdfType.equals(ExtendedPdfType.ON)) {
             cssSelector = elementExtendedUtil.getExtendedPdfElements(cssSelector,
@@ -199,6 +186,8 @@ public class ElementFinderUtil {
                 parentSelector = parentTitleTagType + "." + parentTitleIdentifier;
             } else if (parentTitleSelectorType == ParentTitleSelectorType.STYLE) {
                 parentSelector = parentTitleTagType + "[style*='" + parentTitleIdentifier + "']";
+            } else if (parentTitleSelectorType == ParentTitleSelectorType.ID) {
+                parentSelector = parentTitleTagType + "#" + parentTitleIdentifier;
             } else {
                 parentSelector = parentTitleTagType.toString();
             }
@@ -212,6 +201,8 @@ public class ElementFinderUtil {
                 childSelector = childTitleTagType + "." + childTitleIdentifier;
             } else if (childTitleSelectorType == ChildTitleSelectorType.STYLE) {
                 childSelector = childTitleTagType + "[style*='" + childTitleIdentifier + "']";
+            } else if (childTitleSelectorType == ChildTitleSelectorType.ID) {
+                childSelector = childTitleTagType + "#" + childTitleIdentifier;
             } else {
                 childSelector = childTitleTagType.toString();
             }
@@ -221,7 +212,8 @@ public class ElementFinderUtil {
 
         String cssSelector;
         if (titleOrdinalNumber != 0) {
-            cssSelector = parentSelector + " > " + childSelector + ":nth-child(" + titleOrdinalNumber + ")";
+            cssSelector =
+                parentSelector + " > " + childSelector + ":nth-child(" + titleOrdinalNumber + ")";
         } else {
             cssSelector = childSelector;
         }
@@ -231,37 +223,51 @@ public class ElementFinderUtil {
 
     public List<WebElement> getNextPageElements(WebDriver webDriver, NextPageType nextPageType,
         String parentNextPageIdentifier, ParentNextPageTagType parentNextPageTagType,
-        String childNextPageIdentifier, ChildNextPageTagType childNextPageTagType,
-        int nextPageOrdinalNumber) {
+        ParentNextPageSelectorType parentNextPageSelectorType, String childNextPageIdentifier,
+        ChildNextPageTagType childNextPageTagType,
+        ChildNextPageSelectorType childNextPageSelectorType, int nextPageOrdinalNumber) {
 
         if (!nextPageType.equals(NextPageType.NONE)) {
 
-            String cssSelector;
-
-            if (nextPageOrdinalNumber != 0) {
-                if (!parentNextPageIdentifier.isEmpty() && !childNextPageIdentifier.isEmpty()) {
-                    cssSelector =
-                        parentNextPageTagType + "." + parentNextPageIdentifier + " > "
-                            + childNextPageTagType
-                            + "."
-                            + childNextPageIdentifier + ":nth-child(" + nextPageOrdinalNumber + ")";
-                } else if (!parentNextPageIdentifier.isEmpty()) {
-                    cssSelector =
-                        parentNextPageTagType + "." + parentNextPageIdentifier + " > "
-                            + childNextPageTagType
-                            + ":nth-child(" + nextPageOrdinalNumber + ")";
-                } else if (!childNextPageIdentifier.isEmpty()) {
-                    cssSelector =
-                        parentNextPageTagType + " > " + childNextPageTagType + "."
-                            + childNextPageIdentifier
-                            + ":nth-child(" + nextPageOrdinalNumber + ")";
+            String parentSelector;
+            if (!parentNextPageIdentifier.isEmpty()) {
+                if (parentNextPageSelectorType == ParentNextPageSelectorType.CLASS) {
+                    parentSelector = parentNextPageTagType + "." + parentNextPageIdentifier;
+                } else if (parentNextPageSelectorType == ParentNextPageSelectorType.STYLE) {
+                    parentSelector =
+                        parentNextPageTagType + "[style*='" + parentNextPageIdentifier + "']";
+                } else if (parentNextPageSelectorType == ParentNextPageSelectorType.ID) {
+                    parentSelector = parentNextPageTagType + "#" + parentNextPageIdentifier;
                 } else {
-                    cssSelector =
-                        parentNextPageTagType + " > " + childNextPageTagType
-                            + ":nth-child(" + nextPageOrdinalNumber + ")";
+                    parentSelector = parentNextPageTagType.toString();
                 }
             } else {
-                cssSelector = childNextPageTagType + "." + childNextPageIdentifier;
+                parentSelector = parentNextPageTagType.toString();
+            }
+
+            String childSelector;
+            if (!childNextPageIdentifier.isEmpty()) {
+                if (childNextPageSelectorType == ChildNextPageSelectorType.CLASS) {
+                    childSelector = childNextPageTagType + "." + childNextPageIdentifier;
+                } else if (childNextPageSelectorType == ChildNextPageSelectorType.STYLE) {
+                    childSelector =
+                        childNextPageTagType + "[style*='" + childNextPageIdentifier + "']";
+                } else if (childNextPageSelectorType == ChildNextPageSelectorType.ID) {
+                    childSelector = childNextPageTagType + "#" + childNextPageIdentifier;
+                } else {
+                    childSelector = childNextPageTagType.toString();
+                }
+            } else {
+                childSelector = childNextPageTagType.toString();
+            }
+
+            String cssSelector;
+            if (nextPageOrdinalNumber != 0) {
+                cssSelector =
+                    parentSelector + " > " + childSelector + ":nth-child(" + nextPageOrdinalNumber
+                        + ")";
+            } else {
+                cssSelector = childSelector;
             }
 
             WebElement parentElement = webDriver.findElement(By.cssSelector(cssSelector));

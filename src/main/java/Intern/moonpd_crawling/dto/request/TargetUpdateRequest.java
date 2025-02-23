@@ -2,9 +2,11 @@ package Intern.moonpd_crawling.dto.request;
 
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
@@ -37,7 +39,7 @@ public record TargetUpdateRequest(OrganizationType organizationType, String regi
                                   String parentYearIdentifier,
                                   ParentYearTagType parentYearTagType,
                                   String childYearIdentifier, ChildYearTagType childYearTagType,
-                                  int yearOrdinalNumber, String pageUrl,
+                                  int yearOrdinalNumber, String pageUrl, int totalPage,
                                   ExtendedPdfType extendedPdfType,
                                   String parentExtendedPdfIdentifier,
                                   ParentExtendedPdfTagType parentExtendedPdfTagType,
@@ -56,8 +58,10 @@ public record TargetUpdateRequest(OrganizationType organizationType, String regi
                                   int titleOrdinalNumber, NextPageType nextPageType,
                                   String parentNextPageIdentifier,
                                   ParentNextPageTagType parentNextPageTagType,
+                                  ParentNextPageSelectorType parentNextPageSelectorType,
                                   String childNextPageIdentifier,
                                   ChildNextPageTagType childNextPageTagType,
+                                  ChildNextPageSelectorType childNextPageSelectorType,
                                   int nextPageOrdinalNumber) {
 
     public Target toEntity() {
@@ -65,13 +69,13 @@ public record TargetUpdateRequest(OrganizationType organizationType, String regi
             parentLstIdentifier, parentLstTagType, parentLstSelectorType, childLstIdentifier,
             childLstTagType, childLstSelectorType, lstOrdinalNumber, yearType, parentYearIdentifier,
             parentYearTagType, childYearIdentifier, childYearTagType, yearOrdinalNumber, pageUrl,
-            extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+            totalPage, extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
             extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
             parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
             pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
             parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
             childTitleSelectorType, titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
-            parentNextPageTagType, childNextPageIdentifier, childNextPageTagType,
-            nextPageOrdinalNumber);
+            parentNextPageTagType, parentNextPageSelectorType, childNextPageIdentifier,
+            childNextPageTagType, childNextPageSelectorType, nextPageOrdinalNumber);
     }
 }

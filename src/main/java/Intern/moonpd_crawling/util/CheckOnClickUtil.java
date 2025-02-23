@@ -26,7 +26,9 @@ import Intern.moonpd_crawling.util.nextPageCrawling.NoOnClickNextPageUtil;
 import Intern.moonpd_crawling.util.yearCrawling.HasOnClickYearUtil;
 import Intern.moonpd_crawling.util.yearCrawling.NoOnClickYearUtil;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
@@ -42,12 +44,14 @@ public class CheckOnClickUtil {
     private final NoOnClickYearUtil noOnClickYearUtil;
     private final HasOnClickNextPageUtil hasOnClickNextPageUtil;
     private final NoOnClickNextPageUtil noOnClickNextPageUtil;
+    private final ElementCountUtil elementCountUtil;
+    private final NextPageLinkExtenderUtil nextPageLinkExtenderUtil;
 
     public CheckOnClickUtil(HasOnClickLstUtil hasOnClickLstUtil, NoOnClickLstUtil noOnClickLstUtil,
         PseudoLinkLstUtil pseudoLinkLstUtil, JavaScriptLinkLstUtil javaScriptLinkLstUtil,
         HasOnClickYearUtil hasOnClickYearUtil, NoOnClickYearUtil noOnClickYearUtil,
-        HasOnClickNextPageUtil hasOnClickNextPageUtil,
-        NoOnClickNextPageUtil noOnClickNextPageUtil) {
+        HasOnClickNextPageUtil hasOnClickNextPageUtil, NoOnClickNextPageUtil noOnClickNextPageUtil,
+        ElementCountUtil elementCountUtil, NextPageLinkExtenderUtil nextPageLinkExtenderUtil) {
         this.hasOnClickLstUtil = hasOnClickLstUtil;
         this.noOnClickLstUtil = noOnClickLstUtil;
         this.pseudoLinkLstUtil = pseudoLinkLstUtil;
@@ -56,6 +60,8 @@ public class CheckOnClickUtil {
         this.noOnClickYearUtil = noOnClickYearUtil;
         this.hasOnClickNextPageUtil = hasOnClickNextPageUtil;
         this.noOnClickNextPageUtil = noOnClickNextPageUtil;
+        this.elementCountUtil = elementCountUtil;
+        this.nextPageLinkExtenderUtil = nextPageLinkExtenderUtil;
     }
 
     public void checkOnClickLst(WebDriver webDriver, String pageUrl, Target target,
@@ -135,19 +141,26 @@ public class CheckOnClickUtil {
         }
     }
 
-    public List<String> getNextPageLink(NextPageType nextPageType,
+    public List<Map<String, Integer>> getNextPageLinks(int totalPage, NextPageType nextPageType,
         List<WebElement> nextPageElements) {
 
-        List<String> nextPageLinks = new ArrayList<>();
+        List<Map<String, Integer>> nextPageLinks = new ArrayList<>();
 
         if (nextPageType.equals(NextPageType.HAS_ONCLICK)) {
 
             for (WebElement nextPageElement : nextPageElements) {
                 String text = nextPageElement.getText().trim();
                 if (!text.isEmpty() && text.trim().matches("\\d+")) {
-                    nextPageLinks.add(nextPageElement.getAttribute("onclick"));
+                    Map<String, Integer> map = new HashMap<>();
+                    map.put(nextPageElement.getAttribute("onclick"),
+                        Integer.valueOf(nextPageElement.getText().trim()));
+                    nextPageLinks.add(map);
                 }
             }
+
+            nextPageLinks = elementCountUtil.checkFirstNextPageLink(nextPageLinks);
+            nextPageLinks = nextPageLinkExtenderUtil.extendedNextPageLinks(totalPage,
+                nextPageLinks);
 
             return nextPageLinks;
         } else if (nextPageType.equals(NextPageType.NO_ONCLICK) || nextPageType.equals(
@@ -156,9 +169,16 @@ public class CheckOnClickUtil {
             for (WebElement nextPageElement : nextPageElements) {
                 String text = nextPageElement.getText().trim();
                 if (!text.isEmpty() && text.trim().matches("\\d+")) {
-                    nextPageLinks.add(nextPageElement.getAttribute("href"));
+                    Map<String, Integer> map = new HashMap<>();
+                    map.put(nextPageElement.getAttribute("href"),
+                        Integer.valueOf(nextPageElement.getText().trim()));
+                    nextPageLinks.add(map);
                 }
             }
+
+            nextPageLinks = elementCountUtil.checkFirstNextPageLink(nextPageLinks);
+            nextPageLinks = nextPageLinkExtenderUtil.extendedNextPageLinks(totalPage,
+                nextPageLinks);
 
             return nextPageLinks;
         } else if (nextPageType.equals(NextPageType.NONE)) {

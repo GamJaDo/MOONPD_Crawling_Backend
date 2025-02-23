@@ -1,9 +1,10 @@
-package Intern.moonpd_crawling.status.selector.child;
+package Intern.moonpd_crawling.status.selector.parent;
 
+import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChildPdfSelectorType {
+public enum ParentNextPageSelectorType {
     CLASS("CLASS"),
     STYLE("STYLE"),
     ID("ID"),
@@ -11,7 +12,7 @@ public enum ChildPdfSelectorType {
 
     private final String value;
 
-    ChildPdfSelectorType(String value) {
+    ParentNextPageSelectorType(String value) {
         this.value = value;
     }
 
@@ -26,11 +27,11 @@ public enum ChildPdfSelectorType {
     }
 
     @JsonCreator
-    public static ChildPdfSelectorType fromValue(String value) {
+    public static ParentNextPageSelectorType fromValue(String value) {
         if (value == null || value.isEmpty()) {
             return NONE; // null 또는 빈 문자열에 대해 기본값 반환
         }
-        for (ChildPdfSelectorType type : values()) {
+        for (ParentNextPageSelectorType type : values()) {
             if (type.value.equalsIgnoreCase(value)) {
                 return type; // 일치하는 값 반환
             }

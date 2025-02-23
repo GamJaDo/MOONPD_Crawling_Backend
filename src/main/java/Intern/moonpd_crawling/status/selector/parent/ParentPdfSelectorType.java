@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum ParentPdfSelectorType {
     CLASS("CLASS"),
     STYLE("STYLE"),
+    ID("ID"),
     NONE("NONE");
 
     private final String value;

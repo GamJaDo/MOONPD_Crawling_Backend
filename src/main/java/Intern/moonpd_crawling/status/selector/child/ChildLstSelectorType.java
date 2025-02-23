@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum ChildLstSelectorType {
     CLASS("CLASS"),
     STYLE("STYLE"),
+    ID("ID"),
     NONE("NONE");
 
     private final String value;

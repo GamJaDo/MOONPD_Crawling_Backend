@@ -46,7 +46,7 @@ public class CheckOnClickPdfUtil {
             return hasOnClickPdfUtil.getPdfLinkByOnClick(pageUrl, onClickPdfScript);
         } else if (pdfType.equals(PdfType.NO_ONCLICK) || pdfType.equals(PdfType.JAVASCRIPT_LINK)) {
 
-            return noOnclickPdfUtil.getPdfLink(webDriver, pdfLinks, childPdfTagType, index);
+            return noOnclickPdfUtil.getPdfLinkByHref(pdfLinks, index);
         } else if (pdfType.equals(PdfType.PSEUDO_LINK)) {
 
             WebElement pseudoLinkElement = pdfLinks.get(index);

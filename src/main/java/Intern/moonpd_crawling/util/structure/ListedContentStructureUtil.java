@@ -3,9 +3,11 @@ package Intern.moonpd_crawling.util.structure;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
 import Intern.moonpd_crawling.status.tag.child.ChildYearTagType;
@@ -14,6 +16,7 @@ import Intern.moonpd_crawling.status.type.ExtendedPdfType;
 import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.NextPageType;
 import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.type.StructureType;
 import Intern.moonpd_crawling.status.type.TitleType;
 import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
@@ -29,6 +32,7 @@ import Intern.moonpd_crawling.util.CheckOnClickUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
 import java.util.List;
+import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
@@ -47,36 +51,42 @@ public class ListedContentStructureUtil {
         this.elementCountUtil = elementCountUtil;
     }
 
-    public void crawl(WebDriver webDriver, String pageUrl, Target target, LstType lstType,
-        String parentLstIdentifier, ParentLstTagType parentLstTagType,
-        ParentLstSelectorType parentLstSelectorType, String childLstIdentifier,
-        ChildLstTagType childLstTagType, ChildLstSelectorType childLstSelectorType,
-        int lstOrdinalNumber, ExtendedPdfType extendedPdfType,
-        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
-        int extendedPdfOrdinalNumber, PdfType pdfType, String parentPdfIdentifier,
-        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType,
-        ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber,
-        TitleType titleType, String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
-        ChildTitleTagType childTitleTagType, ChildTitleSelectorType childTitleSelectorType,
-        int titleOrdinalNumber, NextPageType nextPageType, String parentNextPageIdentifier,
-        ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
-        ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber) {
+    public void crawl(WebDriver webDriver, StructureType structureType, String pageUrl,
+        int totalPage, Target target, LstType lstType, String parentLstIdentifier,
+        ParentLstTagType parentLstTagType, ParentLstSelectorType parentLstSelectorType,
+        String childLstIdentifier, ChildLstTagType childLstTagType,
+        ChildLstSelectorType childLstSelectorType, int lstOrdinalNumber,
+        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
+        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
+        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
+        int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier,
+        ParentTitleTagType parentTitleTagType, ParentTitleSelectorType parentTitleSelectorType,
+        String childTitleIdentifier, ChildTitleTagType childTitleTagType,
+        ChildTitleSelectorType childTitleSelectorType, int titleOrdinalNumber,
+        NextPageType nextPageType, String parentNextPageIdentifier,
+        ParentNextPageTagType parentNextPageTagType,
+        ParentNextPageSelectorType parentNextPageSelectorType, String childNextPageIdentifier,
+        ChildNextPageTagType childNextPageTagType,
+        ChildNextPageSelectorType childNextPageSelectorType,  int nextPageOrdinalNumber) {
 
         List<WebElement> lstElements = null;
         List<WebElement> titleElements = null;
         String titleText = null;
 
         List<WebElement> nextPageElements = elementFinderUtil.getNextPageElements(webDriver,
-            nextPageType, parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
-            childNextPageTagType, nextPageOrdinalNumber);
+            nextPageType, parentNextPageIdentifier, parentNextPageTagType,
+            parentNextPageSelectorType, childNextPageIdentifier, childNextPageTagType,
+            childNextPageSelectorType, nextPageOrdinalNumber);
 
-        List<String> nextPageLinks = checkOnClickUtil.getNextPageLink(nextPageType,
-            nextPageElements);
+        List<Map<String, Integer>> nextPageLinks = checkOnClickUtil.getNextPageLinks(totalPage,
+            nextPageType, nextPageElements);
 
         try {
-            int totalPage = elementCountUtil.getTotalPageCnt(nextPageLinks);
+            if (structureType.equals(StructureType.YEAR_FILTERED)) {
+                totalPage = elementCountUtil.getTotalPageCnt(nextPageLinks);
+            }
 
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
                 Thread.sleep(500);
@@ -147,8 +157,10 @@ public class ListedContentStructureUtil {
                 }
 
                 if (currentPage < totalPage) {
-                    checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType,
-                        nextPageLinks.get(currentPage));
+
+                    String nextPageLink = nextPageLinks.get(currentPage).keySet().iterator().next();
+
+                    checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType, nextPageLink);
                 }
             }
         } catch (InterruptedException e) {

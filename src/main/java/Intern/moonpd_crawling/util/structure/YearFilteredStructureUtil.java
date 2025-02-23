@@ -3,15 +3,18 @@ package Intern.moonpd_crawling.util.structure;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
+import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
+import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
 import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.NextPageType;
 import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.type.StructureType;
 import Intern.moonpd_crawling.status.type.TitleType;
 import Intern.moonpd_crawling.status.type.YearType;
 import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
@@ -53,24 +56,27 @@ public class YearFilteredStructureUtil {
         this.elementCountUtil = elementCountUtil;
     }
 
-    public void crawl(WebDriver webDriver, String pageUrl, Target target, LstType lstType,
-        String parentLstIdentifier, ParentLstTagType parentLstTagType,
-        ParentLstSelectorType parentLstSelectorType, String childLstIdentifier,
-        ChildLstTagType childLstTagType, ChildLstSelectorType childLstSelectorType,
-        int lstOrdinalNumber, YearType yearType, String parentYearIdentifier,
-        ParentYearTagType parentYearTagType, String childYearIdentifier,
-        ChildYearTagType childYearTagType, int yearOrdinalNumber, ExtendedPdfType extendedPdfType,
-        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
-        int extendedPdfOrdinalNumber, PdfType pdfType, String parentPdfIdentifier,
-        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType,
-        ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber,
-        TitleType titleType, String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
-        ChildTitleTagType childTitleTagType, ChildTitleSelectorType childTitleSelectorType,
-        int titleOrdinalNumber, NextPageType nextPageType, String parentNextPageIdentifier,
-        ParentNextPageTagType parentNextPageTagType, String childNextPageIdentifier,
-        ChildNextPageTagType childNextPageTagType, int nextPageOrdinalNumber)
+    public void crawl(WebDriver webDriver, StructureType structureType, String pageUrl,
+        int totalPage, Target target, LstType lstType, String parentLstIdentifier,
+        ParentLstTagType parentLstTagType, ParentLstSelectorType parentLstSelectorType,
+        String childLstIdentifier, ChildLstTagType childLstTagType,
+        ChildLstSelectorType childLstSelectorType, int lstOrdinalNumber, YearType yearType,
+        String parentYearIdentifier, ParentYearTagType parentYearTagType,
+        String childYearIdentifier, ChildYearTagType childYearTagType, int yearOrdinalNumber,
+        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
+        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
+        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
+        int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier,
+        ParentTitleTagType parentTitleTagType, ParentTitleSelectorType parentTitleSelectorType,
+        String childTitleIdentifier, ChildTitleTagType childTitleTagType,
+        ChildTitleSelectorType childTitleSelectorType, int titleOrdinalNumber,
+        NextPageType nextPageType, String parentNextPageIdentifier,
+        ParentNextPageTagType parentNextPageTagType,
+        ParentNextPageSelectorType parentNextPageSelectorType, String childNextPageIdentifier,
+        ChildNextPageTagType childNextPageTagType,
+        ChildNextPageSelectorType childNextPageSelectorType,  int nextPageOrdinalNumber)
         throws InterruptedException {
 
         List<WebElement> yearElements = elementFinderUtil.getYearElements(webDriver,
@@ -100,30 +106,30 @@ public class YearFilteredStructureUtil {
                 Thread.sleep(500);
 
                 if (lstType.equals(LstType.NONE)) {
-                    singlePageStructureUtil.crawl(webDriver, pageUrl, target, extendedPdfType,
+                    singlePageStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
+                        target, extendedPdfType, parentExtendedPdfIdentifier,
+                        parentExtendedPdfTagType, extendedPdfOrdinalNumber, pdfType,
+                        parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
+                        childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
+                        parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
+                        childTitleIdentifier, childTitleTagType, childTitleSelectorType,
+                        titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
+                        parentNextPageTagType, parentNextPageSelectorType, childNextPageIdentifier,
+                        childNextPageTagType, childNextPageSelectorType, nextPageOrdinalNumber);
+                } else {
+                    listedContentStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
+                        target, lstType, parentLstIdentifier, parentLstTagType,
+                        parentLstSelectorType, childLstIdentifier, childLstTagType,
+                        childLstSelectorType, lstOrdinalNumber, extendedPdfType,
                         parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                         extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
                         parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
-                        childPdfSelectorType, pdfOrdinalNumber, parentTitleIdentifier,
+                        childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
                         parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
                         childTitleTagType, childTitleSelectorType, titleOrdinalNumber, nextPageType,
-                        parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
-                        childNextPageTagType, nextPageOrdinalNumber);
-                } else {
-                    listedContentStructureUtil.crawl(webDriver, pageUrl, target, lstType,
-                        parentLstIdentifier, parentLstTagType, parentLstSelectorType,
-                        childLstIdentifier, childLstTagType,
-                        childLstSelectorType,
-                        lstOrdinalNumber, extendedPdfType, parentExtendedPdfIdentifier,
-                        parentExtendedPdfTagType, extendedPdfOrdinalNumber, pdfType,
-                        parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
-                        childPdfIdentifier, childPdfTagType, childPdfSelectorType,
-                        pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
-                        parentTitleSelectorType,
-                        childTitleIdentifier, childTitleTagType, childTitleSelectorType,
-                        titleOrdinalNumber, nextPageType,
-                        parentNextPageIdentifier, parentNextPageTagType, childNextPageIdentifier,
-                        childNextPageTagType, nextPageOrdinalNumber);
+                        parentNextPageIdentifier, parentNextPageTagType, parentNextPageSelectorType,
+                        childNextPageIdentifier, childNextPageTagType, childNextPageSelectorType,
+                        nextPageOrdinalNumber);
                 }
 
                 if (currentYear < totalYear) {

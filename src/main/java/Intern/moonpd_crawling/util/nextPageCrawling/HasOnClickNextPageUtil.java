@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class HasOnClickNextPageUtil {
 
     public void goToNextPageByOnclick(WebDriver webDriver, String onClickNextPageScript) {
+
         try {
             JavascriptExecutor js = (JavascriptExecutor) webDriver;
             js.executeScript(onClickNextPageScript);

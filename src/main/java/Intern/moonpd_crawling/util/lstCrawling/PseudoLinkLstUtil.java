@@ -48,33 +48,40 @@ public class PseudoLinkLstUtil {
                 titleText);
         } else if (titleType.equals(TitleType.IN)) {
             lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier,
-                parentExtendedPdfTagType, extendedPdfOrdinalNumber, lstLink, pdfType,
-                parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
-                childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, parentTitleIdentifier,
-                parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
+                childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
+                parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
                 childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
         }
     }
 
     private String getLstLink(String pageUrl, WebElement pseudoLinkElement) {
+
+        String[] keyWords = {"data-idx", "data-req-get-p-idx"};
+
         try {
-            String dataIdx = pseudoLinkElement.getAttribute("data-idx");
+            String dataIdx = null;
+            for (String keyword : keyWords) {
+                dataIdx = pseudoLinkElement.getAttribute(keyword);
+                if (dataIdx != null && !dataIdx.trim().isEmpty()) {
+                    break;
+                }
+            }
+
             if (dataIdx == null || dataIdx.trim().isEmpty()) {
-                throw new WebDriverException(
-                    "data-idx attribute is missing in pseudo link element.");
+                throw new WebDriverException("Neither idx attribute is present in pseudo link element.");
             }
 
             String viewUrl = pageUrl.replace("list.do", "view.do");
-
             if (pageUrl.contains("?")) {
                 return viewUrl + "&idx=" + dataIdx;
             } else {
                 return viewUrl + "?idx=" + dataIdx;
             }
         } catch (Exception e) {
-            throw new WebDriverException(
-                "Failed to navigate to view URL using pseudo link element.", e);
+            throw new WebDriverException("Failed to navigate to view URL using pseudo link element.", e);
         }
     }
+
 }

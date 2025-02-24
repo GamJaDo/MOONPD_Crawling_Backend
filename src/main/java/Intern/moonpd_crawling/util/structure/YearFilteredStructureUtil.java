@@ -35,6 +35,7 @@ import Intern.moonpd_crawling.util.ElementCountUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
@@ -91,17 +92,14 @@ public class YearFilteredStructureUtil {
                     + childYearIdentifier);
         }
 
-        List<String> yearLinks = new ArrayList<>();
-        for (WebElement yearElement : yearElements) {
-            yearLinks.add(yearElement.getAttribute("href"));
-        }
-/*
+        List<Map<String, Integer>> yearLinks = checkOnClickUtil.getYearLinks(yearType, yearElements);
+
         System.out.println("############################");
         for (int i = 0; i < yearElements.size(); i++) {
             System.out.println("yearLinks[" + i + "]: " + yearLinks.get(i));
         }
         System.out.println("############################");
-*/
+
         try {
             int totalYear = elementCountUtil.getTotalYearCnt(yearLinks);
 
@@ -137,8 +135,10 @@ public class YearFilteredStructureUtil {
                 }
 
                 if (currentYear < totalYear) {
-                    checkOnClickUtil.checkOnClickYear(webDriver, yearType,
-                        yearLinks.get(currentYear));
+
+                    String yearLink = yearLinks.get(currentYear).entrySet().iterator().next().getKey();
+
+                    checkOnClickUtil.checkOnClickYear(webDriver, yearType, yearLink);
                 }
             }
         } catch (InterruptedException e) {

@@ -57,7 +57,7 @@ public class LstCrawlingService {
 
             pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
-                parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
+                pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
                 childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber);
 
             if (!pdfElements.isEmpty()) {
@@ -112,7 +112,7 @@ public class LstCrawlingService {
             Thread.sleep(500);
 
             pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber, pdfType,
                 parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
                 childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber);
             titleElements = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,

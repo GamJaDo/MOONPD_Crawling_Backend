@@ -72,7 +72,7 @@ public class ListedContentStructureUtil {
         ParentNextPageTagType parentNextPageTagType,
         ParentNextPageSelectorType parentNextPageSelectorType, String childNextPageIdentifier,
         ChildNextPageTagType childNextPageTagType,
-        ChildNextPageSelectorType childNextPageSelectorType,  int nextPageOrdinalNumber) {
+        ChildNextPageSelectorType childNextPageSelectorType, int nextPageOrdinalNumber) {
 
         List<WebElement> lstElements = null;
         List<WebElement> titleElements = null;
@@ -162,7 +162,8 @@ public class ListedContentStructureUtil {
 
                 if (currentPage < totalPage) {
 
-                    String nextPageLink = nextPageLinks.get(currentPage).keySet().iterator().next();
+                    String nextPageLink = nextPageLinks.get(currentPage).entrySet().iterator().next()
+                        .getKey();
 
                     checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType, nextPageLink);
                 }

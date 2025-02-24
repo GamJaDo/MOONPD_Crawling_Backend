@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
@@ -125,12 +127,59 @@ public class CheckOnClickUtil {
         }
     }
 
+    public List<Map<String, Integer>> getYearLinks(YearType yearType, List<WebElement> yearElements) {
+
+        List<Map<String, Integer>> yearPageLinks = new ArrayList<>();
+
+        if (yearType.equals(YearType.HAS_ONCLICK)) {
+
+            for (WebElement yearElement : yearElements) {
+                String text = yearElement.getText().replaceAll("\"", "").trim();
+
+                Pattern p = Pattern.compile("(\\d+)");
+                Matcher m = p.matcher(text);
+                if (m.find()) {
+                    String numberStr = m.group(1);
+                    Map<String, Integer> map = new HashMap<>();
+
+                    map.put(yearElement.getAttribute("onclick"), Integer.valueOf(numberStr));
+                    yearPageLinks.add(map);
+                }
+            }
+
+            yearPageLinks = elementCountUtil.checkFirstNextPageLink(yearPageLinks);
+
+            return yearPageLinks;
+        } else if (yearType.equals(YearType.NO_ONCLICK) || yearType.equals(YearType.JAVASCRIPT_LINK)) {
+
+            for (WebElement yearElement : yearElements) {
+                String text = yearElement.getText().replaceAll("\"", "").trim();
+
+                Pattern p = Pattern.compile("(\\d+)");
+                Matcher m = p.matcher(text);
+                if (m.find()) {
+                    String numberStr = m.group(1);
+                    Map<String, Integer> map = new HashMap<>();
+
+                    map.put(yearElement.getAttribute("href"), Integer.valueOf(numberStr));
+                    yearPageLinks.add(map);
+                }
+            }
+
+            yearPageLinks = elementCountUtil.checkFirstNextPageLink(yearPageLinks);
+
+            return yearPageLinks;
+        } else {
+            throw new WebDriverException("Unsupported year type");
+        }
+    }
+
     public void checkOnClickYear(WebDriver webDriver, YearType yearType, String yearLink)
         throws InterruptedException {
 
         if (yearType.equals(YearType.HAS_ONCLICK)) {
 
-            hasOnClickYearUtil.goToYearByOnclick();
+            hasOnClickYearUtil.goToYearByOnclick(webDriver, yearLink);
             Thread.sleep(500);
         } else if (yearType.equals(YearType.NO_ONCLICK)) {
 
@@ -149,36 +198,42 @@ public class CheckOnClickUtil {
         if (nextPageType.equals(NextPageType.HAS_ONCLICK)) {
 
             for (WebElement nextPageElement : nextPageElements) {
-                String text = nextPageElement.getText().trim();
-                if (!text.isEmpty() && text.trim().matches("\\d+")) {
+                String text = nextPageElement.getText().replaceAll("\"", "").trim();
+
+                Pattern p = Pattern.compile("(\\d+)");
+                Matcher m = p.matcher(text);
+                if (m.find()) {
+                    String numberStr = m.group(1);
                     Map<String, Integer> map = new HashMap<>();
-                    map.put(nextPageElement.getAttribute("onclick"),
-                        Integer.valueOf(nextPageElement.getText().trim()));
+
+                    map.put(nextPageElement.getAttribute("onclick"), Integer.valueOf(numberStr));
                     nextPageLinks.add(map);
                 }
             }
 
             nextPageLinks = elementCountUtil.checkFirstNextPageLink(nextPageLinks);
-            nextPageLinks = nextPageLinkExtenderUtil.extendedNextPageLinks(totalPage,
-                nextPageLinks);
+            nextPageLinks = nextPageLinkExtenderUtil.extendedNextPageLinks(totalPage, nextPageLinks);
 
             return nextPageLinks;
         } else if (nextPageType.equals(NextPageType.NO_ONCLICK) || nextPageType.equals(
             NextPageType.JAVASCRIPT_LINK)) {
 
             for (WebElement nextPageElement : nextPageElements) {
-                String text = nextPageElement.getText().trim();
-                if (!text.isEmpty() && text.trim().matches("\\d+")) {
+                String text = nextPageElement.getText().replaceAll("\"", "").trim();
+
+                Pattern p = Pattern.compile("(\\d+)");
+                Matcher m = p.matcher(text);
+                if (m.find()) {
+                    String numberStr = m.group(1);
                     Map<String, Integer> map = new HashMap<>();
-                    map.put(nextPageElement.getAttribute("href"),
-                        Integer.valueOf(nextPageElement.getText().trim()));
+
+                    map.put(nextPageElement.getAttribute("href"), Integer.valueOf(numberStr));
                     nextPageLinks.add(map);
                 }
             }
 
             nextPageLinks = elementCountUtil.checkFirstNextPageLink(nextPageLinks);
-            nextPageLinks = nextPageLinkExtenderUtil.extendedNextPageLinks(totalPage,
-                nextPageLinks);
+            nextPageLinks = nextPageLinkExtenderUtil.extendedNextPageLinks(totalPage, nextPageLinks);
 
             return nextPageLinks;
         } else if (nextPageType.equals(NextPageType.NONE)) {

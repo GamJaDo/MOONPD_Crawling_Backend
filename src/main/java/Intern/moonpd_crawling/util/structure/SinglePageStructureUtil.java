@@ -92,7 +92,7 @@ public class SinglePageStructureUtil {
                 Thread.sleep(500);
 
                 pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
-                    parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                    parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber, pdfType,
                     parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
                     childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber);
 
@@ -156,7 +156,8 @@ public class SinglePageStructureUtil {
 
                 if (currentPage < totalPage) {
 
-                    String nextPageLink = nextPageLinks.get(currentPage).keySet().iterator().next();
+                    String nextPageLink = nextPageLinks.get(currentPage).entrySet().iterator().next()
+                        .getKey();
 
                     checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType, nextPageLink);
                 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ElementCountUtil {
 
-    public int getTotalYearCnt(List<String> yearLinks) {
+    public int getTotalYearCnt(List<Map<String, Integer>> yearLinks) {
 
         return yearLinks.size();
     }
@@ -19,8 +19,6 @@ public class ElementCountUtil {
 
             return 1;
         } else {
-
-            nextPageLinks = checkFirstNextPageLink(nextPageLinks);
 
             return nextPageLinks.size();
         }

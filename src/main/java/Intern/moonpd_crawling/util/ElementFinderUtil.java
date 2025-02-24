@@ -25,6 +25,7 @@ import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
+import Intern.moonpd_crawling.status.type.PdfType;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
@@ -72,7 +73,7 @@ public class ElementFinderUtil {
                 childSelector = childLstTagType + "." + childLstIdentifier;
             } else if (childLstSelectorType == ChildLstSelectorType.STYLE) {
                 childSelector = childLstTagType + "[style*=\"" + childLstIdentifier + "\"]";
-            } else if (parentLstSelectorType == ParentLstSelectorType.ID) {
+            } else if (childLstSelectorType == ChildLstSelectorType.ID) {
                 childSelector = childLstTagType + "#" + childLstIdentifier;
             } else {
                 childSelector = childLstTagType.toString();
@@ -99,8 +100,8 @@ public class ElementFinderUtil {
     }
 
     public List<WebElement> getYearElements(WebDriver webDriver, String parentYearIdentifier,
-        ParentYearTagType parentYearTagType, String childYearIdentifier,
-        ChildYearTagType childYearTagType, int yearOrdinalNumber) {
+        ParentYearTagType parentYearTagType, String childYearIdentifier, ChildYearTagType childYearTagType,
+        int yearOrdinalNumber) {
 
         String cssSelector;
 
@@ -128,18 +129,21 @@ public class ElementFinderUtil {
         }
 
         WebElement parentElement = webDriver.findElement(By.cssSelector(cssSelector));
-        if (childYearTagType.equals(ChildYearTagType.A)) {
-            return parentElement.findElements(By.tagName("a"));
-        } else if (childYearTagType.equals(ChildYearTagType.BUTTON)) {
-            return parentElement.findElements(By.tagName("button"));
-        } else {
-            throw new WebDriverException("Unsupported year type");
+
+        List<WebElement> result = parentElement.findElements(By.tagName("a"));
+        if (result.isEmpty()) {
+            result = parentElement.findElements(By.tagName("button"));
         }
+        if (result.isEmpty()) {
+            throw new WebDriverException("No matching tags");
+        }
+
+        return result;
     }
 
     public List<WebElement> getPdfElements(WebDriver webDriver,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber, PdfType pdfType,
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
         ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
@@ -192,7 +196,7 @@ public class ElementFinderUtil {
             }
         }
 
-        return elementFilterUtil.getPdfElementWithLink(pdfElements);
+        return elementFilterUtil.getPdfElementWithLink(pdfType, pdfElements);
     }
 
     public List<WebElement> getTitleElements(WebDriver webDriver, String parentTitleIdentifier,

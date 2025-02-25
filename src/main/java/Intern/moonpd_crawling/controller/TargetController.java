@@ -56,4 +56,13 @@ public class TargetController {
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    /*
+    @PostMapping("/download")
+    public ResponseEntity<Void> downloadTarget() {
+        targetService.downloadTarget();
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+     */
 }

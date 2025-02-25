@@ -45,6 +45,12 @@ public class TargetService {
         return new CrawlingResultResponse(targetId, latestCrawlingTime, totalCount);
     }
 
+    /*
+    public void downloadTarget() {
+
+    }
+     */
+
     private void registerEntity(Target target) {
         checkDuplicateGroup(target.getGroup());
         try {

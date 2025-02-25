@@ -135,13 +135,10 @@ public class CheckOnClickUtil {
             for (WebElement yearElement : yearElements) {
                 String text = yearElement.getText().replaceAll("\"", "").trim();
 
-                Pattern p = Pattern.compile("(\\d+)");
-                Matcher m = p.matcher(text);
-                if (m.find()) {
-                    String numberStr = m.group(1);
+                if (text.matches("^\\d+$")) {
+                    int pageNumber = Integer.parseInt(text);
                     Map<String, Integer> map = new HashMap<>();
-
-                    map.put(yearElement.getAttribute("onclick"), Integer.valueOf(numberStr));
+                    map.put(yearElement.getAttribute("onclick"), pageNumber);
                     yearPageLinks.add(map);
                 }
             }
@@ -154,13 +151,10 @@ public class CheckOnClickUtil {
             for (WebElement yearElement : yearElements) {
                 String text = yearElement.getText().replaceAll("\"", "").trim();
 
-                Pattern p = Pattern.compile("(\\d+)");
-                Matcher m = p.matcher(text);
-                if (m.find()) {
-                    String numberStr = m.group(1);
+                if (text.matches("^\\d+$")) {
+                    int pageNumber = Integer.parseInt(text);
                     Map<String, Integer> map = new HashMap<>();
-
-                    map.put(yearElement.getAttribute("href"), Integer.valueOf(numberStr));
+                    map.put(yearElement.getAttribute("href"), pageNumber);
                     yearPageLinks.add(map);
                 }
             }
@@ -199,13 +193,10 @@ public class CheckOnClickUtil {
             for (WebElement nextPageElement : nextPageElements) {
                 String text = nextPageElement.getText().replaceAll("\"", "").trim();
 
-                Pattern p = Pattern.compile("(\\d+)");
-                Matcher m = p.matcher(text);
-                if (m.find()) {
-                    String numberStr = m.group(1);
+                if (text.matches("^\\d+$")) {
+                    int pageNumber = Integer.parseInt(text);
                     Map<String, Integer> map = new HashMap<>();
-
-                    map.put(nextPageElement.getAttribute("onclick"), Integer.valueOf(numberStr));
+                    map.put(nextPageElement.getAttribute("onclick"), pageNumber);
                     nextPageLinks.add(map);
                 }
             }
@@ -220,13 +211,10 @@ public class CheckOnClickUtil {
             for (WebElement nextPageElement : nextPageElements) {
                 String text = nextPageElement.getText().replaceAll("\"", "").trim();
 
-                Pattern p = Pattern.compile("(\\d+)");
-                Matcher m = p.matcher(text);
-                if (m.find()) {
-                    String numberStr = m.group(1);
+                if (text.matches("^\\d+$")) {
+                    int pageNumber = Integer.parseInt(text);
                     Map<String, Integer> map = new HashMap<>();
-
-                    map.put(nextPageElement.getAttribute("href"), Integer.valueOf(numberStr));
+                    map.put(nextPageElement.getAttribute("href"), pageNumber);
                     nextPageLinks.add(map);
                 }
             }

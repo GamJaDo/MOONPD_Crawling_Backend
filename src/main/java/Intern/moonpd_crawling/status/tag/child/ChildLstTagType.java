@@ -16,6 +16,7 @@ public enum ChildLstTagType {
     H4("H4"),
     H5("H5"),
     NAV("NAV"),
+    FIGCAPTION("FIGCAPTION"),
     NONE("NONE"); // 기본값으로 사용할 항목
 
     private final String value;

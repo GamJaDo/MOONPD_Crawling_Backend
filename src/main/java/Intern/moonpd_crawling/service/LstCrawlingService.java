@@ -39,7 +39,7 @@ public class LstCrawlingService {
 
     public void crawlLstWithTitleText(String pageUrl, Target target, ExtendedPdfType extendedPdfType,
         String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
-        int extendedPdfOrdinalNumber, String lstLink, PdfType pdfType, String parentPdfIdentifier,
+        String lstLink, PdfType pdfType, String parentPdfIdentifier,
         ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
         ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber, String titleText) {
@@ -56,20 +56,21 @@ public class LstCrawlingService {
             Thread.sleep(500);
 
             pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
-                pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
-                childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber);
-
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType, pdfType, parentPdfIdentifier,
+                parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
+                childPdfSelectorType, pdfOrdinalNumber);
+/*
+            System.out.println("########################");
+            for (int i = 0; i < pdfElements.size(); i++) {
+                System.out.println("pdfLink[" + i + "]: " + pdfElements.get(i).getAttribute("onclick"));
+            }
+            System.out.println("########################");
+*/
             if (!pdfElements.isEmpty()) {
                 for (int i = 0; i < pdfElements.size(); i++) {
-                    String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl,
-                        pdfType,
+                    String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl, pdfType,
                         pdfElements, childPdfTagType, i);
-                    /*
-                    System.out.println("################");
-                    System.out.println("pdfLink: " + pdfLink);
-                    System.out.println("################");
-                     */
+
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
                         continue;
                     }
@@ -90,7 +91,7 @@ public class LstCrawlingService {
 
     public void crawlLst(String pageUrl, Target target, ExtendedPdfType extendedPdfType,
         String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
-        int extendedPdfOrdinalNumber, String lstLink, PdfType pdfType, String parentPdfIdentifier,
+        String lstLink, PdfType pdfType, String parentPdfIdentifier,
         ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
         ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber,
@@ -112,9 +113,9 @@ public class LstCrawlingService {
             Thread.sleep(500);
 
             pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber, pdfType,
-                parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
-                childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber);
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType, pdfType, parentPdfIdentifier,
+                parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
+                childPdfSelectorType, pdfOrdinalNumber);
             titleElements = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
                 parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
                 childTitleTagType, childTitleSelectorType, titleOrdinalNumber);

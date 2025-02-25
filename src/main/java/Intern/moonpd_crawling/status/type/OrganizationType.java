@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum OrganizationType {
     MUNICIPALITY("MUNICIPALITY"), // 지자체
     CULTURE_FOUNDATION("CULTURE_FOUNDATION"), // 문화재단
-    NONE("NONE"); // 기본값 (빈 값 또는 null)
+    NONE("NONE");
 
     private final String value;
 

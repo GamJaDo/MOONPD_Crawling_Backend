@@ -92,8 +92,8 @@ public class ElementFinderUtil {
 
         List<WebElement> lstElements = webDriver.findElements(By.cssSelector(cssSelector));
         if (extendedLstType.equals(ExtendedLstType.ON)) {
-            lstElements = elementExtendedUtil.getExtendedLstElements(parentExtendedLstTagType,
-                parentExtendedLstIdentifier, lstElements);
+            lstElements = elementExtendedUtil.getExtendedLstElements(parentExtendedLstIdentifier,
+                parentExtendedLstTagType, lstElements);
         }
 
         return elementFilterUtil.getLstElementWithLink(lstType, lstElements);
@@ -135,19 +135,17 @@ public class ElementFinderUtil {
             result = parentElement.findElements(By.tagName("button"));
         }
         if (result.isEmpty()) {
-            throw new WebDriverException("No matching tags");
+            throw new WebDriverException("No matching tag");
         }
 
         return result;
     }
 
-    public List<WebElement> getPdfElements(WebDriver webDriver,
-        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber, PdfType pdfType,
-        String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+    public List<WebElement> getPdfElements(WebDriver webDriver, ExtendedPdfType extendedPdfType,
+        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
+        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
-        int pdfOrdinalNumber) {
+        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber) {
 
         String parentSelector;
         if (!parentPdfIdentifier.isEmpty()) {
@@ -181,19 +179,15 @@ public class ElementFinderUtil {
 
         String cssSelector;
         if (pdfOrdinalNumber != 0) {
-            cssSelector =
-                parentSelector + " > " + childSelector + ":nth-child(" + pdfOrdinalNumber + ")";
+            cssSelector = parentSelector + " > " + childSelector + ":nth-child(" + pdfOrdinalNumber + ")";
         } else {
             cssSelector = childSelector;
         }
 
         List<WebElement> pdfElements = webDriver.findElements(By.cssSelector(cssSelector));
         if (extendedPdfType.equals(ExtendedPdfType.ON)) {
-            if (pdfElements.size() != 1) {
-                pdfElements = elementExtendedUtil.getExtendedPdfElements(
-                    parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                    extendedPdfOrdinalNumber, pdfElements);
-            }
+            pdfElements = elementExtendedUtil.getExtendedPdfElements(parentExtendedPdfIdentifier,
+                parentExtendedPdfTagType, pdfElements);
         }
 
         return elementFilterUtil.getPdfElementWithLink(pdfType, pdfElements);
@@ -295,7 +289,16 @@ public class ElementFinderUtil {
             }
 
             WebElement parentElement = webDriver.findElement(By.cssSelector(cssSelector));
-            return parentElement.findElements(By.tagName("a"));
+
+            List<WebElement> result = parentElement.findElements(By.tagName("a"));
+            if (result.isEmpty()) {
+                result = parentElement.findElements(By.tagName("button"));
+            }
+            if (result.isEmpty()) {
+                throw new WebDriverException("No matching tag");
+            }
+
+            return result;
         } else {
             return new ArrayList<>();
         }

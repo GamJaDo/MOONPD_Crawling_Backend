@@ -60,19 +60,17 @@ public class ListedContentStructureUtil {
         ParentLstSelectorType parentLstSelectorType, String childLstIdentifier,
         ChildLstTagType childLstTagType, ChildLstSelectorType childLstSelectorType,
         int lstOrdinalNumber, ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, PdfType pdfType, String parentPdfIdentifier,
+        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
+        String childPdfIdentifier, ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
         int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier,
         ParentTitleTagType parentTitleTagType, ParentTitleSelectorType parentTitleSelectorType,
         String childTitleIdentifier, ChildTitleTagType childTitleTagType,
-        ChildTitleSelectorType childTitleSelectorType, int titleOrdinalNumber,
-        NextPageType nextPageType, String parentNextPageIdentifier,
-        ParentNextPageTagType parentNextPageTagType,
+        ChildTitleSelectorType childTitleSelectorType, int titleOrdinalNumber, NextPageType nextPageType,
+        String parentNextPageIdentifier, ParentNextPageTagType parentNextPageTagType,
         ParentNextPageSelectorType parentNextPageSelectorType, String childNextPageIdentifier,
-        ChildNextPageTagType childNextPageTagType,
-        ChildNextPageSelectorType childNextPageSelectorType, int nextPageOrdinalNumber) {
+        ChildNextPageTagType childNextPageTagType, ChildNextPageSelectorType childNextPageSelectorType,
+        int nextPageOrdinalNumber) {
 
         List<WebElement> lstElements = null;
         List<WebElement> titleElements = null;
@@ -150,14 +148,13 @@ public class ListedContentStructureUtil {
                         titleText = titleElements.get(i).getText();
                     }
 
-                    checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target,
-                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber, lstElements, lstType, pdfType,
-                        parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
-                        childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
-                        titleType, parentTitleIdentifier, parentTitleTagType,
-                        parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
-                        childTitleSelectorType, titleOrdinalNumber, titleText, i);
+                    checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target, extendedPdfType,
+                        parentExtendedPdfIdentifier, parentExtendedPdfTagType, lstElements, lstType, pdfType,
+                        parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
+                        childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType,
+                        parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
+                        childTitleIdentifier, childTitleTagType, childTitleSelectorType, titleOrdinalNumber,
+                        titleText, i);
                 }
 
                 if (currentPage < totalPage) {

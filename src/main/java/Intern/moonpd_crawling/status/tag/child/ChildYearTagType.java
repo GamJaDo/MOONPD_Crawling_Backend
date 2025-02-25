@@ -13,6 +13,7 @@ public enum ChildYearTagType {
     ARTICLE("ARTICLE"),
     BUTTON("BUTTON"),
     DIV("DIV"),
+    FIGCAPTION("FIGCAPTION"),
     NONE("NONE"); // 기본값으로 사용할 항목
 
     private final String value;

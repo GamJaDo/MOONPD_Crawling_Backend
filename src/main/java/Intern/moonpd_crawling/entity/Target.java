@@ -149,9 +149,6 @@ public class Target {
     @Column(name = "parent_extended_pdf_tag_type", nullable = true)
     private ParentExtendedPdfTagType parentExtendedPdfTagType;
 
-    @Column(name = "extended_pdf_ordinal_number", nullable = true)
-    private int extendedPdfOrdinalNumber;
-
     // #############################################################################################
 
     @Enumerated(EnumType.STRING)
@@ -269,10 +266,9 @@ public class Target {
         String childYearIdentifier,
         ChildYearTagType childYearTagType, int yearOrdinalNumber, String pageUrl, int totalPage,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, PdfType pdfType, String parentPdfIdentifier,
+        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
+        String childPdfIdentifier, ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
         int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier,
         ParentTitleTagType parentTitleTagType, ParentTitleSelectorType parentTitleSelectorType,
         String childTitleIdentifier, ChildTitleTagType childTitleTagType,
@@ -308,7 +304,6 @@ public class Target {
         this.extendedPdfType = extendedPdfType;
         this.parentExtendedPdfIdentifier = parentExtendedPdfIdentifier;
         this.parentExtendedPdfTagType = parentExtendedPdfTagType;
-        this.extendedPdfOrdinalNumber = extendedPdfOrdinalNumber;
         this.pdfType = pdfType;
         this.parentPdfIdentifier = parentPdfIdentifier;
         this.parentPdfTagType = parentPdfTagType;
@@ -370,7 +365,6 @@ public class Target {
         this.extendedPdfType = target.getExtendedPdfType();
         this.parentExtendedPdfIdentifier = target.getParentExtendedPdfIdentifier();
         this.parentExtendedPdfTagType = target.getParentExtendedPdfTagType();
-        this.extendedPdfOrdinalNumber = target.getExtendedPdfOrdinalNumber();
         this.pdfType = target.getPdfType();
         this.parentPdfIdentifier = target.getParentPdfIdentifier();
         this.parentPdfTagType = target.getParentPdfTagType();

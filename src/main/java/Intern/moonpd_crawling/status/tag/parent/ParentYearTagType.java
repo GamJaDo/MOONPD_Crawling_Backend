@@ -11,6 +11,7 @@ public enum ParentYearTagType {
     UL("UL"),
     FORM("FORM"),
     ARTICLE("ARTICLE"),
+    FIGCAPTION("FIGCAPTION"),
     NONE("NONE"); // 기본값으로 사용할 항목
 
     private final String value;

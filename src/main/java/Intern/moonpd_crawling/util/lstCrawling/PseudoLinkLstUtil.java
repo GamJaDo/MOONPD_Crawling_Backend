@@ -29,7 +29,7 @@ public class PseudoLinkLstUtil {
 
     public void goToPseudoLink(String pageUrl, Target target, ExtendedPdfType extendedPdfType,
         String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
-        int extendedPdfOrdinalNumber, WebElement pseudoLinkElement, PdfType pdfType,
+        WebElement pseudoLinkElement, PdfType pdfType,
         String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
         ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
         ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
@@ -42,13 +42,13 @@ public class PseudoLinkLstUtil {
 
         if (titleType.equals(TitleType.OUT)) {
             lstCrawlingService.crawlLstWithTitleText(pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
                 childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
                 titleText);
         } else if (titleType.equals(TitleType.IN)) {
             lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
                 childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
                 parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
@@ -58,12 +58,12 @@ public class PseudoLinkLstUtil {
 
     private String getLstLink(String pageUrl, WebElement pseudoLinkElement) {
 
-        String[] keyWords = {"data-idx", "data-req-get-p-idx"};
+        String[] pSudoKeyWords = {"data-idx", "data-req-get-p-idx"};
 
         try {
             String dataIdx = null;
-            for (String keyword : keyWords) {
-                dataIdx = pseudoLinkElement.getAttribute(keyword);
+            for (String pSudoKeyWord : pSudoKeyWords) {
+                dataIdx = pseudoLinkElement.getAttribute(pSudoKeyWord);
                 if (dataIdx != null && !dataIdx.trim().isEmpty()) {
                     break;
                 }

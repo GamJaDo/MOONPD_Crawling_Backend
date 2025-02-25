@@ -68,10 +68,9 @@ public class CheckOnClickUtil {
 
     public void checkOnClickLst(WebDriver webDriver, String pageUrl, Target target,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        List<WebElement> lstLinks, LstType lstType, PdfType pdfType, String parentPdfIdentifier,
-        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, List<WebElement> lstLinks, LstType lstType,
+        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier, ChildPdfTagType childPdfTagType,
         ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
         String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
         ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
@@ -83,7 +82,7 @@ public class CheckOnClickUtil {
             String onClickLstScript = lstLinks.get(index).getAttribute("onclick");
 
             hasOnClickLstUtil.goToLstByOnclick(webDriver, pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 onClickLstScript, pdfType, parentPdfIdentifier, parentPdfTagType,
                 parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
                 pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
@@ -94,7 +93,7 @@ public class CheckOnClickUtil {
             String lstLink = lstLinks.get(index).getAttribute("href");
 
             noOnClickLstUtil.goToLstByHref(pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 lstLink, pdfType, parentPdfIdentifier, parentPdfTagType,
                 parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
                 pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
@@ -105,7 +104,7 @@ public class CheckOnClickUtil {
             WebElement pseudoLinkElement = lstLinks.get(index);
 
             pseudoLinkLstUtil.goToPseudoLink(pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 pseudoLinkElement, pdfType, parentPdfIdentifier, parentPdfTagType,
                 parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
                 pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
@@ -116,7 +115,7 @@ public class CheckOnClickUtil {
             String javaScriptLink = lstLinks.get(index).getAttribute("href");
 
             javaScriptLinkLstUtil.goToJavaScriptLink(webDriver, pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 javaScriptLink, pdfType, parentPdfIdentifier, parentPdfTagType,
                 parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
                 pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,

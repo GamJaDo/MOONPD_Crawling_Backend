@@ -104,7 +104,6 @@ public class CrawlingService {
                 ExtendedPdfType extendedPdfType = target.getExtendedPdfType();
                 String parentExtendedPdfIdentifier = target.getParentExtendedPdfIdentifier();
                 ParentExtendedPdfTagType parentExtendedPdfTagType = target.getParentExtendedPdfTagType();
-                int extendedPdfOrdinalNumber = target.getExtendedPdfOrdinalNumber();
 
                 PdfType pdfType = target.getPdfType();
                 String parentPdfIdentifier = target.getParentPdfIdentifier();
@@ -136,10 +135,9 @@ public class CrawlingService {
                 if (structureType.equals(StructureType.SINGLE_PAGE)) {
                     singlePageStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
                         target, extendedPdfType, parentExtendedPdfIdentifier,
-                        parentExtendedPdfTagType, extendedPdfOrdinalNumber, pdfType,
-                        parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
-                        childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
-                        parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
+                        parentExtendedPdfTagType, pdfType, parentPdfIdentifier, parentPdfTagType,
+                        parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
+                        pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
                         childTitleIdentifier, childTitleTagType, childTitleSelectorType,
                         titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
                         parentNextPageTagType, parentNextPageSelectorType, childNextPageIdentifier,
@@ -151,30 +149,27 @@ public class CrawlingService {
                         parentLstSelectorType, childLstIdentifier, childLstTagType,
                         childLstSelectorType, lstOrdinalNumber, yearType, parentYearIdentifier,
                         parentYearTagType, childYearIdentifier, childYearTagType, yearOrdinalNumber,
-                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
-                        parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
-                        childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
-                        parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
-                        childTitleTagType, childTitleSelectorType, titleOrdinalNumber, nextPageType,
-                        parentNextPageIdentifier, parentNextPageTagType, parentNextPageSelectorType,
-                        childNextPageIdentifier, childNextPageTagType, childNextPageSelectorType,
-                        nextPageOrdinalNumber);
+                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType, pdfType,
+                        parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
+                        childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType,
+                        parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
+                        childTitleIdentifier, childTitleTagType, childTitleSelectorType, titleOrdinalNumber,
+                        nextPageType, parentNextPageIdentifier, parentNextPageTagType,
+                        parentNextPageSelectorType, childNextPageIdentifier, childNextPageTagType,
+                        childNextPageSelectorType, nextPageOrdinalNumber);
                 } else if (structureType.equals(StructureType.LISTED_CONTENT)) {
                     listedContentStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
-                        target, extendedLstType, parentExtendedLstTagType,
-                        parentExtendedLstIdentifier, lstType, parentLstIdentifier, parentLstTagType,
-                        parentLstSelectorType, childLstIdentifier, childLstTagType,
-                        childLstSelectorType, lstOrdinalNumber, extendedPdfType,
-                        parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
-                        parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
-                        childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
-                        parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
-                        childTitleTagType, childTitleSelectorType, titleOrdinalNumber, nextPageType,
-                        parentNextPageIdentifier, parentNextPageTagType, parentNextPageSelectorType,
-                        childNextPageIdentifier, childNextPageTagType, childNextPageSelectorType,
-                        nextPageOrdinalNumber);
+                        target, extendedLstType, parentExtendedLstTagType, parentExtendedLstIdentifier,
+                        lstType, parentLstIdentifier, parentLstTagType, parentLstSelectorType,
+                        childLstIdentifier, childLstTagType, childLstSelectorType, lstOrdinalNumber,
+                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
+                        pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
+                        childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
+                        titleType, parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
+                        childTitleIdentifier, childTitleTagType, childTitleSelectorType, titleOrdinalNumber,
+                        nextPageType, parentNextPageIdentifier, parentNextPageTagType,
+                        parentNextPageSelectorType, childNextPageIdentifier, childNextPageTagType,
+                        childNextPageSelectorType, nextPageOrdinalNumber);
                 }
             }
         } catch (InterruptedException e) {

@@ -29,7 +29,7 @@ public class JavaScriptLinkLstUtil {
 
     public void goToJavaScriptLink(WebDriver webDriver, String pageUrl, Target target,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
+        ParentExtendedPdfTagType parentExtendedPdfTagType,
         String javaScriptLink, PdfType pdfType, String parentPdfIdentifier,
         ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
@@ -43,14 +43,14 @@ public class JavaScriptLinkLstUtil {
 
         if (titleType.equals(TitleType.OUT)) {
             lstCrawlingService.crawlLstWithTitleText(pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
                 childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
                 titleText);
         } else if (titleType.equals(TitleType.IN)) {
             lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType,
                 parentExtendedPdfIdentifier,
-                parentExtendedPdfTagType, extendedPdfOrdinalNumber, lstLink, pdfType,
+                parentExtendedPdfTagType, lstLink, pdfType,
                 parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
                 childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, parentTitleIdentifier,
                 parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,

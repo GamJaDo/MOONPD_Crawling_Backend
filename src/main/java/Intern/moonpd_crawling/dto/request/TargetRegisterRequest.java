@@ -46,8 +46,7 @@ public record TargetRegisterRequest(OrganizationType organizationType, String re
                                     int yearOrdinalNumber, String pageUrl, int totalPage,
                                     ExtendedPdfType extendedPdfType,
                                     String parentExtendedPdfIdentifier,
-                                    ParentExtendedPdfTagType parentExtendedPdfTagType,
-                                    int extendedPdfOrdinalNumber, PdfType pdfType,
+                                    ParentExtendedPdfTagType parentExtendedPdfTagType, PdfType pdfType,
                                     String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
                                     ParentPdfSelectorType parentPdfSelectorType,
                                     String childPdfIdentifier, ChildPdfTagType childPdfTagType,
@@ -74,13 +73,12 @@ public record TargetRegisterRequest(OrganizationType organizationType, String re
             parentLstTagType, parentLstSelectorType, childLstIdentifier, childLstTagType,
             childLstSelectorType, lstOrdinalNumber, yearType, parentYearIdentifier,
             parentYearTagType, childYearIdentifier, childYearTagType, yearOrdinalNumber, pageUrl,
-            totalPage, extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-            extendedPdfOrdinalNumber, pdfType, parentPdfIdentifier, parentPdfTagType,
-            parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
-            pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
-            parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
-            childTitleSelectorType, titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
-            parentNextPageTagType, parentNextPageSelectorType, childNextPageIdentifier,
-            childNextPageTagType, childNextPageSelectorType, nextPageOrdinalNumber);
+            totalPage, extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType, pdfType,
+            parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
+            childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
+            parentTitleSelectorType, childTitleIdentifier, childTitleTagType, childTitleSelectorType,
+            titleOrdinalNumber, nextPageType, parentNextPageIdentifier, parentNextPageTagType,
+            parentNextPageSelectorType, childNextPageIdentifier, childNextPageTagType,
+            childNextPageSelectorType, nextPageOrdinalNumber);
     }
 }

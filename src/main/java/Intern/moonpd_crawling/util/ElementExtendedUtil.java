@@ -11,9 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ElementExtendedUtil {
 
-    public List<WebElement> getExtendedLstElements(
-        ParentExtendedLstTagType parentExtendedLstTagType, String parentExtendedLstIdentifier,
-        List<WebElement> lstElements) {
+    public List<WebElement> getExtendedLstElements(String parentExtendedLstIdentifier,
+        ParentExtendedLstTagType parentExtendedLstTagType, List<WebElement> lstElements) {
 
         List<WebElement> filteredElements = new ArrayList<>();
 
@@ -33,23 +32,22 @@ public class ElementExtendedUtil {
     }
 
     public List<WebElement> getExtendedPdfElements(String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, int extendedPdfOrdinalNumber,
-        List<WebElement> pdfElements) {
+        ParentExtendedPdfTagType parentExtendedPdfTagType, List<WebElement> pdfElements) {
 
-        String xpath = "ancestor::*[local-name()='" + parentExtendedPdfTagType.toString() + "'";
+        List<WebElement> filteredElements = new ArrayList<>();
+
+        String xpath = "ancestor::*[local-name()='" + parentExtendedPdfTagType + "'";
         if (parentExtendedPdfIdentifier != null && !parentExtendedPdfIdentifier.isEmpty()) {
             xpath += " and contains(@class, '" + parentExtendedPdfIdentifier + "')";
         }
         xpath += "]";
 
-        WebElement parentExtended = pdfElements.get(0).findElement(By.xpath(xpath));
+        for (WebElement pdfElement : pdfElements) {
+            if (!pdfElement.findElements(By.xpath(xpath)).isEmpty()) {
+                filteredElements.add(pdfElement);
+            }
+        }
 
-        String childTag = pdfElements.get(0).getTagName();
-        String childSelector = childTag + ":nth-child(" + extendedPdfOrdinalNumber + ")";
-
-        List<WebElement> extendedElements = parentExtended.findElements(By.cssSelector(childSelector));
-
-        return extendedElements;
+        return filteredElements;
     }
-
 }

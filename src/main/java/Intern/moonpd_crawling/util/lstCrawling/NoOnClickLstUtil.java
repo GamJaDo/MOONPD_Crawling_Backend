@@ -27,7 +27,7 @@ public class NoOnClickLstUtil {
 
     public void goToLstByHref(String pageUrl, Target target, ExtendedPdfType extendedPdfType,
         String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
-        int extendedPdfOrdinalNumber, String lstLink, PdfType pdfType, String parentPdfIdentifier,
+        String lstLink, PdfType pdfType, String parentPdfIdentifier,
         ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType,
         ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
@@ -38,14 +38,14 @@ public class NoOnClickLstUtil {
 
         if (titleType.equals(TitleType.OUT)) {
             lstCrawlingService.crawlLstWithTitleText(pageUrl, target, extendedPdfType,
-                parentExtendedPdfIdentifier, parentExtendedPdfTagType, extendedPdfOrdinalNumber,
+                parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
                 childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
                 titleText);
         } else if (titleType.equals(TitleType.IN)) {
             lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType,
                 parentExtendedPdfIdentifier,
-                parentExtendedPdfTagType, extendedPdfOrdinalNumber, lstLink, pdfType,
+                parentExtendedPdfTagType, lstLink, pdfType,
                 parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
                 childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, parentTitleIdentifier,
                 parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,

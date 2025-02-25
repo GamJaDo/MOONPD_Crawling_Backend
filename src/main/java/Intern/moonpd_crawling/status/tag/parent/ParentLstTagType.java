@@ -16,6 +16,7 @@ public enum ParentLstTagType {
     H4("H4"),
     H5("H5"),
     FIGURE("FIGURE"),
+    FIGCAPTION("FIGCAPTION"),
     NAV("NAV"),
     NONE("NONE"); // 기본값으로 사용할 항목
 

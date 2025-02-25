@@ -12,13 +12,14 @@ public class NextPageLinkExtenderUtil {
     public List<Map<String, Integer>> extendedNextPageLinks(int totalPage,
         List<Map<String, Integer>> nextPageLinks) {
 
+        String[] nextPageKeywords = KeywordConstants.NEXT_PAGE_KEYWORDS;
         String nextPageWord = null;
 
         Map<String, Integer> lastMap = nextPageLinks.get(nextPageLinks.size() - 1);
         String lastNextPageLink = lastMap.entrySet().iterator().next().getKey();
         int lastNextPage = lastMap.entrySet().iterator().next().getValue();
 
-        for (String nextPageKeyword : KeywordConstants.NEXT_PAGE_KEYWORDS) {
+        for (String nextPageKeyword : nextPageKeywords) {
             if (lastNextPageLink.contains(nextPageKeyword)) {
                 nextPageWord = nextPageKeyword;
                 break;

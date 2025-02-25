@@ -36,8 +36,8 @@ public class CheckOnClickPdfUtil {
         this.javaScriptLinkPdfUtil = javaScriptLinkPdfUtil;
     }
 
-    public String checkOnClickPdf(WebDriver webDriver, String pageUrl, PdfType pdfType,
-        List<WebElement> pdfLinks, ChildPdfTagType childPdfTagType, int index) {
+    public String checkOnClickPdf(String pageUrl, PdfType pdfType,
+        List<WebElement> pdfLinks, int index) {
 
         if (pdfType.equals(PdfType.HAS_ONCLICK)) {
 

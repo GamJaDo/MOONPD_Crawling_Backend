@@ -134,7 +134,7 @@ public class CrawlingService {
 
                 if (structureType.equals(StructureType.SINGLE_PAGE)) {
                     singlePageStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
-                        target, extendedPdfType, parentExtendedPdfIdentifier,
+                        target, lstType, extendedPdfType, parentExtendedPdfIdentifier,
                         parentExtendedPdfTagType, pdfType, parentPdfIdentifier, parentPdfTagType,
                         parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
                         pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,

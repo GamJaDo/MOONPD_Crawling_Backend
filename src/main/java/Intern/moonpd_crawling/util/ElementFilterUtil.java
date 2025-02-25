@@ -14,6 +14,7 @@ public class ElementFilterUtil {
 
     public List<WebElement> getLstElementWithLink(LstType lstType, List<WebElement> lstElements) {
 
+        String[] onClickLstKeywords =  KeywordConstants.ON_CLICK_LST_KEYWORDS;
         List<WebElement> lstElementsWithLink = new ArrayList<>();
 
         for (WebElement lstElement : lstElements) {
@@ -21,7 +22,7 @@ public class ElementFilterUtil {
                 String onClickAttr = lstElement.getAttribute("onclick");
                 if (onClickAttr != null) {
                     boolean flag = false;
-                    for (String onClickLstKeyWord : KeywordConstants.ON_CLICK_LST_KEYWORDS) {
+                    for (String onClickLstKeyWord : onClickLstKeywords) {
                         if (onClickAttr.contains(onClickLstKeyWord)) {
                             flag = true;
                             break;
@@ -54,6 +55,7 @@ public class ElementFilterUtil {
 
     public List<WebElement> getPdfElementWithLink(PdfType pdfType, List<WebElement> pdfElements) {
 
+        String[] onClickPdfKeywords = KeywordConstants.ON_CLICK_PDF_KEYWORDS;
         List<WebElement> pdfElementsWithLink = new ArrayList<>();
 
         for (WebElement pdfElement : pdfElements) {
@@ -61,7 +63,7 @@ public class ElementFilterUtil {
                 String onClickAttr = pdfElement.getAttribute("onclick");
                 if (onClickAttr != null) {
                     boolean flag = false;
-                    for (String onClickPdfKeyWord : KeywordConstants.ON_CLICK_PDF_KEYWORDS) {
+                    for (String onClickPdfKeyWord : onClickPdfKeywords) {
                         if (onClickAttr.contains(onClickPdfKeyWord)) {
                             flag = true;
                             break;
@@ -88,7 +90,13 @@ public class ElementFilterUtil {
                 throw new WebDriverException("Unsupported pdf type");
             }
         }
-
+/*
+        System.out.println("###################");
+        for (int i = 0; i < pdfElementsWithLink.size(); i++) {
+            System.out.println("pdfElementsWithLink[" + i + "]: " + pdfElementsWithLink.get(i).getAttribute("onclick"));
+        }
+        System.out.println("###################");
+*/
         return pdfElementsWithLink;
     }
 }

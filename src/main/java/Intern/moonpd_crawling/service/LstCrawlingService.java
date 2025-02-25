@@ -9,12 +9,14 @@ import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
+import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.PdfType;
 import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
+import Intern.moonpd_crawling.status.type.StructureType;
 import Intern.moonpd_crawling.util.CheckOnClickPdfUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import java.util.List;
@@ -37,12 +39,13 @@ public class LstCrawlingService {
         this.elementFinderUtil = elementFinderUtil;
     }
 
-    public void crawlLstWithTitleText(String pageUrl, Target target, ExtendedPdfType extendedPdfType,
-        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
-        String lstLink, PdfType pdfType, String parentPdfIdentifier,
-        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType,
-        ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber, String titleText) {
+    public void crawlLstWithTitleText(String pageUrl,
+        Target target, LstType lstType, ExtendedPdfType extendedPdfType,
+        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType, String lstLink,
+        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
+        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber,
+        String titleText) {
 
         System.setProperty("webdriver.chrome.driver",
             "C:\\tools\\chromedriver-win64\\chromedriver.exe");
@@ -55,7 +58,7 @@ public class LstCrawlingService {
             webDriver.get(lstLink);
             Thread.sleep(500);
 
-            pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
+            pdfElements = elementFinderUtil.getPdfElements(webDriver, lstType, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType, pdfType, parentPdfIdentifier,
                 parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
                 childPdfSelectorType, pdfOrdinalNumber);
@@ -68,8 +71,8 @@ public class LstCrawlingService {
 */
             if (!pdfElements.isEmpty()) {
                 for (int i = 0; i < pdfElements.size(); i++) {
-                    String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl, pdfType,
-                        pdfElements, childPdfTagType, i);
+                    String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(pageUrl, pdfType,
+                        pdfElements, i);
 
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
                         continue;
@@ -89,7 +92,7 @@ public class LstCrawlingService {
         }
     }
 
-    public void crawlLst(String pageUrl, Target target, ExtendedPdfType extendedPdfType,
+    public void crawlLst(String pageUrl, Target target, LstType lstType, ExtendedPdfType extendedPdfType,
         String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
         String lstLink, PdfType pdfType, String parentPdfIdentifier,
         ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
@@ -112,7 +115,7 @@ public class LstCrawlingService {
             webDriver.get(lstLink);
             Thread.sleep(500);
 
-            pdfElements = elementFinderUtil.getPdfElements(webDriver, extendedPdfType,
+            pdfElements = elementFinderUtil.getPdfElements(webDriver, lstType, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType, pdfType, parentPdfIdentifier,
                 parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
                 childPdfSelectorType, pdfOrdinalNumber);
@@ -122,9 +125,7 @@ public class LstCrawlingService {
 
             if (!pdfElements.isEmpty()) {
                 for (int i = 0; i < pdfElements.size(); i++) {
-                    String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(webDriver, pageUrl,
-                        pdfType,
-                        pdfElements, childPdfTagType, i);
+                    String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(pageUrl, pdfType, pdfElements, i);
                     String titleText = titleElements.get(i).getText();
 
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {

@@ -81,7 +81,7 @@ public class CheckOnClickUtil {
 
             String onClickLstScript = lstLinks.get(index).getAttribute("onclick");
 
-            hasOnClickLstUtil.goToLstByOnclick(webDriver, pageUrl, target, extendedPdfType,
+            hasOnClickLstUtil.goToLstByOnclick(pageUrl, target, lstType, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 onClickLstScript, pdfType, parentPdfIdentifier, parentPdfTagType,
                 parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
@@ -92,7 +92,7 @@ public class CheckOnClickUtil {
 
             String lstLink = lstLinks.get(index).getAttribute("href");
 
-            noOnClickLstUtil.goToLstByHref(pageUrl, target, extendedPdfType,
+            noOnClickLstUtil.goToLstByHref(pageUrl, target, lstType, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 lstLink, pdfType, parentPdfIdentifier, parentPdfTagType,
                 parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
@@ -103,7 +103,7 @@ public class CheckOnClickUtil {
 
             WebElement pseudoLinkElement = lstLinks.get(index);
 
-            pseudoLinkLstUtil.goToPseudoLink(pageUrl, target, extendedPdfType,
+            pseudoLinkLstUtil.goToPseudoLink(pageUrl, target, lstType, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 pseudoLinkElement, pdfType, parentPdfIdentifier, parentPdfTagType,
                 parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
@@ -114,7 +114,7 @@ public class CheckOnClickUtil {
 
             String javaScriptLink = lstLinks.get(index).getAttribute("href");
 
-            javaScriptLinkLstUtil.goToJavaScriptLink(webDriver, pageUrl, target, extendedPdfType,
+            javaScriptLinkLstUtil.goToJavaScriptLink(webDriver, pageUrl, target, lstType, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 javaScriptLink, pdfType, parentPdfIdentifier, parentPdfTagType,
                 parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,

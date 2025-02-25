@@ -27,6 +27,8 @@ public class HasOnClickPdfUtil {
                 return extractOpenDownloadFiles(onClickPdfScript, baseDomain);
             } else if (onClickPdfScript.contains(KeywordConstants.ON_CLICK_PDF_KEYWORDS[5])) {
                 return extractGfnFileDownload(onClickPdfScript, baseDomain);
+            } else if (onClickPdfScript.contains(KeywordConstants.ON_CLICK_PDF_KEYWORDS[6])) {
+                return extractCfDownloadPDF(onClickPdfScript, baseDomain);
             } else {
                 throw new WebDriverException("Unknown PDF download function in script: " + onClickPdfScript);
             }
@@ -89,6 +91,16 @@ public class HasOnClickPdfUtil {
             return baseDomain + "/programs/board/download.do?parm_file_uid=" + uid;
         }
         throw new WebDriverException("Failed to extract parameter from openDownloadFiles script: " + script);
+    }
+
+    private String extractCfDownloadPDF(String script, String baseDomain) {
+        Pattern pattern = Pattern.compile("cf_downloadPDF\\('([^']+)'\\)");
+        Matcher matcher = pattern.matcher(script);
+        if (matcher.find() && matcher.groupCount() >= 1) {
+            String fmKeyNo = matcher.group(1);
+            return baseDomain + "/async/file/PDFdownload.do?FM_KEYNO=" + fmKeyNo;
+        }
+        throw new WebDriverException("Failed to extract PDF key from cf_downloadPDF script: " + script);
     }
 
     private String extractByParams(String script, String regex, String baseDomain, String endpoint,

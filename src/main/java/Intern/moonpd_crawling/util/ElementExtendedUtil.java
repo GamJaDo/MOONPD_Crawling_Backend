@@ -50,4 +50,18 @@ public class ElementExtendedUtil {
 
         return filteredElements;
     }
+
+    public List<WebElement> getDescendantPdfElements(List<WebElement> pdfElements) {
+
+        List<WebElement> filteredElements = new ArrayList<>();
+
+        for (WebElement pdfElement : pdfElements) {
+            String elementText = pdfElement.getText();
+            if (elementText != null && elementText.toLowerCase().contains("pdf")) {
+                filteredElements.add(pdfElement);
+            }
+        }
+
+        return filteredElements;
+    }
 }

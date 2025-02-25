@@ -15,6 +15,11 @@ public enum ChildPdfTagType {
     DD("DD"),
     FORM("FORM"),
     FIGCAPTION("FIGCAPTION"),
+    H1("H1"),
+    H2("H2"),
+    H3("H3"),
+    H4("H4"),
+    H5("H5"),
     NONE("NONE");   // 기본값 (빈 값 또는 null)
 
     private final String value;

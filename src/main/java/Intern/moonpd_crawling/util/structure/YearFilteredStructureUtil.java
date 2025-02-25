@@ -106,7 +106,7 @@ public class YearFilteredStructureUtil {
 
                 if (lstType.equals(LstType.NONE)) {
                     singlePageStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
-                        target, extendedPdfType, parentExtendedPdfIdentifier,
+                        target, lstType, extendedPdfType, parentExtendedPdfIdentifier,
                         parentExtendedPdfTagType, pdfType, parentPdfIdentifier, parentPdfTagType,
                         parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
                         pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,

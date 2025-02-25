@@ -7,7 +7,9 @@ import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
+import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.type.StructureType;
 import Intern.moonpd_crawling.status.type.TitleType;
 import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
@@ -27,7 +29,7 @@ public class JavaScriptLinkLstUtil {
         this.lstCrawlingService = lstCrawlingService;
     }
 
-    public void goToJavaScriptLink(WebDriver webDriver, String pageUrl, Target target,
+    public void goToJavaScriptLink(WebDriver webDriver, String pageUrl, Target target, LstType lstType,
         ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
         ParentExtendedPdfTagType parentExtendedPdfTagType,
         String javaScriptLink, PdfType pdfType, String parentPdfIdentifier,
@@ -42,13 +44,13 @@ public class JavaScriptLinkLstUtil {
         String lstLink = javascriptLinkExecutor(webDriver, javaScriptLink);
 
         if (titleType.equals(TitleType.OUT)) {
-            lstCrawlingService.crawlLstWithTitleText(pageUrl, target, extendedPdfType,
+            lstCrawlingService.crawlLstWithTitleText(pageUrl, target, lstType, extendedPdfType,
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType,
                 lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
                 childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
                 titleText);
         } else if (titleType.equals(TitleType.IN)) {
-            lstCrawlingService.crawlLst(pageUrl, target, extendedPdfType,
+            lstCrawlingService.crawlLst(pageUrl, target, lstType, extendedPdfType,
                 parentExtendedPdfIdentifier,
                 parentExtendedPdfTagType, lstLink, pdfType,
                 parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,

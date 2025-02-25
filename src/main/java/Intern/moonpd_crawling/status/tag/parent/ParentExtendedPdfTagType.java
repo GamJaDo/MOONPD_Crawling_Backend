@@ -18,6 +18,7 @@ public enum ParentExtendedPdfTagType {
     ARTICLE("ARTICLE"),
     TBODY("TBODY"),
     FIGCAPTION("FIGCAPTION"),
+    TABLE("TABLE"),
     NONE("NONE");                // 기본값 (빈 값 또는 null)
 
     private final String value;

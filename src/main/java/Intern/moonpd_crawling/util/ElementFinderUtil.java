@@ -26,6 +26,7 @@ import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
 import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.type.StructureType;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
@@ -141,11 +142,12 @@ public class ElementFinderUtil {
         return result;
     }
 
-    public List<WebElement> getPdfElements(WebDriver webDriver, ExtendedPdfType extendedPdfType,
-        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
-        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
-        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber) {
+    public List<WebElement> getPdfElements(WebDriver webDriver, LstType lstType,
+        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
+        ParentExtendedPdfTagType parentExtendedPdfTagType, PdfType pdfType, String parentPdfIdentifier,
+        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
+        String childPdfIdentifier, ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
+        int pdfOrdinalNumber) {
 
         String parentSelector;
         if (!parentPdfIdentifier.isEmpty()) {
@@ -188,6 +190,9 @@ public class ElementFinderUtil {
         if (extendedPdfType.equals(ExtendedPdfType.ON)) {
             pdfElements = elementExtendedUtil.getExtendedPdfElements(parentExtendedPdfIdentifier,
                 parentExtendedPdfTagType, pdfElements);
+        }
+        if (!lstType.equals(LstType.NONE)) {
+            pdfElements = elementExtendedUtil.getDescendantPdfElements(pdfElements);
         }
 
         return elementFilterUtil.getPdfElementWithLink(pdfType, pdfElements);

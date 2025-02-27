@@ -30,9 +30,9 @@ public class ElementCountUtil {
         Integer firstValue = firstMap.entrySet().iterator().next().getValue();
 
         if (firstValue.equals(2)) {
-            Map<String, Integer> dummyNexPageLink = new HashMap<>();
-            dummyNexPageLink.put("dummyNextPageLink", 1);
-            nextPageLinks.add(0, dummyNexPageLink);
+            Map<String, Integer> dummyNextPageLink = new HashMap<>();
+            dummyNextPageLink.put("dummyNextPageLink", 1);
+            nextPageLinks.add(0, dummyNextPageLink);
         }
 
         return nextPageLinks;

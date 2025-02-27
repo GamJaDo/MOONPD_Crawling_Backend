@@ -103,7 +103,7 @@ public class ListedContentStructureUtil {
                 }
 
                 if (titleType.equals(TitleType.OUT)) {
-                    titleElements = elementFinderUtil.getTitleElements(webDriver,
+                    titleElements = elementFinderUtil.getTitleElements(webDriver, lstType,
                         parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
                         childTitleIdentifier, childTitleTagType, childTitleSelectorType,
                         titleOrdinalNumber);

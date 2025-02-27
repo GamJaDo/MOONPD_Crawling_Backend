@@ -3,8 +3,10 @@ package Intern.moonpd_crawling.util;
 import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 
@@ -51,17 +53,21 @@ public class ElementExtendedUtil {
         return filteredElements;
     }
 
-    public List<WebElement> getDescendantPdfElements(List<WebElement> pdfElements) {
-
+    public List<WebElement> getDescendantPdfTextElements(List<WebElement> elements) {
         List<WebElement> filteredElements = new ArrayList<>();
 
-        for (WebElement pdfElement : pdfElements) {
-            String elementText = pdfElement.getText();
-            if (elementText != null && elementText.toLowerCase().contains("pdf")) {
-                filteredElements.add(pdfElement);
+        for (WebElement element : elements) {
+            if (element.getAttribute("innerHTML").contains("pdf")){
+                filteredElements.add(element);
             }
         }
 
-        return filteredElements;
+         return filteredElements;
     }
 }
+
+/*
+System.out.println("################");
+            System.out.println(element.getAttribute("innerHTML"));
+            System.out.println("################");
+ */

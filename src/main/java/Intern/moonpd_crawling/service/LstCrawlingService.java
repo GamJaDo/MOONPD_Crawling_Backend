@@ -119,7 +119,7 @@ public class LstCrawlingService {
                 parentExtendedPdfIdentifier, parentExtendedPdfTagType, pdfType, parentPdfIdentifier,
                 parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
                 childPdfSelectorType, pdfOrdinalNumber);
-            titleElements = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
+            titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, parentTitleIdentifier,
                 parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
                 childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
 

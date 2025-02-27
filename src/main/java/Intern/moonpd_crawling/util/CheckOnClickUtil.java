@@ -224,6 +224,7 @@ public class CheckOnClickUtil {
 
             return nextPageLinks;
         } else if (nextPageType.equals(NextPageType.NONE)) {
+
             return nextPageLinks;
         } else {
             throw new WebDriverException("Unsupported nextPage type");

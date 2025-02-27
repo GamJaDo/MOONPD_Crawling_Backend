@@ -103,7 +103,7 @@ public class SinglePageStructureUtil {
                             + childPdfIdentifier);
                 }
                 */
-                titleElements = elementFinderUtil.getTitleElements(webDriver, parentTitleIdentifier,
+                titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, parentTitleIdentifier,
                     parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
                     childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
                 /*

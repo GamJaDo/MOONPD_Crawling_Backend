@@ -191,17 +191,19 @@ public class ElementFinderUtil {
             pdfElements = elementExtendedUtil.getExtendedPdfElements(parentExtendedPdfIdentifier,
                 parentExtendedPdfTagType, pdfElements);
         }
+
         if (!lstType.equals(LstType.NONE)) {
-            pdfElements = elementExtendedUtil.getDescendantPdfElements(pdfElements);
+            pdfElements = elementExtendedUtil.getDescendantPdfTextElements(pdfElements);
         }
 
         return elementFilterUtil.getPdfElementWithLink(pdfType, pdfElements);
     }
 
-    public List<WebElement> getTitleElements(WebDriver webDriver, String parentTitleIdentifier,
-        ParentTitleTagType parentTitleTagType, ParentTitleSelectorType parentTitleSelectorType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType,
-        ChildTitleSelectorType childTitleSelectorType, int titleOrdinalNumber) {
+    public List<WebElement> getTitleElements(WebDriver webDriver, LstType lstType,
+        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
+        ChildTitleTagType childTitleTagType, ChildTitleSelectorType childTitleSelectorType,
+        int titleOrdinalNumber) {
 
         String parentSelector;
         if (!parentTitleIdentifier.isEmpty()) {
@@ -241,7 +243,14 @@ public class ElementFinderUtil {
             cssSelector = childSelector;
         }
 
-        return webDriver.findElements(By.cssSelector(cssSelector));
+        List<WebElement> titleElements = webDriver.findElements(By.cssSelector(cssSelector));
+
+        if (!lstType.equals(LstType.NONE)) {
+            titleElements = elementExtendedUtil.getDescendantPdfTextElements(titleElements);
+        }
+
+
+        return titleElements;
     }
 
     public List<WebElement> getNextPageElements(WebDriver webDriver, NextPageType nextPageType,

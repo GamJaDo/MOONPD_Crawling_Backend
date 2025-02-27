@@ -5,16 +5,17 @@ import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
+import Intern.moonpd_crawling.status.selector.extended.ExtendedLstSelectorType;
+import Intern.moonpd_crawling.status.selector.extended.ExtendedPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
-import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
+import Intern.moonpd_crawling.status.tag.extended.ExtendedLstTagType;
 import Intern.moonpd_crawling.status.type.ExtendedLstType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
 import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.PdfType;
-import Intern.moonpd_crawling.status.type.TitleType;
 import Intern.moonpd_crawling.status.type.YearType;
 import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
@@ -22,7 +23,7 @@ import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildYearTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.extended.ExtendedPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentLstTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.type.NextPageType;
@@ -67,11 +68,14 @@ public class Target {
     private ExtendedLstType extendedLstType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "parent_extended_lst_tag_type", nullable = true)
-    private ParentExtendedLstTagType parentExtendedLstTagType;
+    @Column(name = "extended_lst_tag_type", nullable = true)
+    private ExtendedLstTagType extendedLstTagType;
 
-    @Column(name = "parent_extended_lst_identifier", nullable = true)
-    private String parentExtendedLstIdentifier;
+    @Column(name = "extended_lst_identifier", nullable = true)
+    private String extendedLstIdentifier;
+
+    @Column(name = "extended_lst_selector_type", nullable = true)
+    private ExtendedLstSelectorType extendedLstSelectorType;
 
     // #############################################################################################
 
@@ -142,12 +146,15 @@ public class Target {
     @Column(name = "extended_pdf_type", nullable = true)
     private ExtendedPdfType extendedPdfType;
 
-    @Column(name = "parent_extended_pdf_identifier", nullable = true)
-    private String parentExtendedPdfIdentifier;
+    @Column(name = "extended_pdf_identifier", nullable = true)
+    private String extendedPdfIdentifier;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "parent_extended_pdf_tag_type", nullable = true)
-    private ParentExtendedPdfTagType parentExtendedPdfTagType;
+    @Column(name = "extended_pdf_tag_type", nullable = true)
+    private ExtendedPdfTagType extendedPdfTagType;
+
+    @Column(name = "extended_pdf_selector_type", nullable = true)
+    private ExtendedPdfSelectorType extendedPdfSelectorType;
 
     // #############################################################################################
 
@@ -181,10 +188,6 @@ public class Target {
     private int pdfOrdinalNumber;
 
     // #############################################################################################
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "title_type", nullable = true)
-    private TitleType titleType;
 
     @Column(name = "parent_title_identifier", nullable = true)
     private String parentTitleIdentifier;
@@ -257,23 +260,22 @@ public class Target {
 
     public Target(OrganizationType organizationType, String region, String group,
         StructureType structureType, ExtendedLstType extendedLstType,
-        ParentExtendedLstTagType parentExtendedLstTagType,
-        String parentExtendedLstIdentifier, LstType lstType, String parentLstIdentifier,
+        String extendedLstIdentifier, ExtendedLstTagType extendedLstTagType,
+        ExtendedLstSelectorType extendedLstSelectorType, LstType lstType, String parentLstIdentifier,
         ParentLstTagType parentLstTagType, ParentLstSelectorType parentLstSelectorType,
         String childLstIdentifier, ChildLstTagType childLstTagType,
         ChildLstSelectorType childLstSelectorType, int lstOrdinalNumber, YearType yearType,
         String parentYearIdentifier, ParentYearTagType parentYearTagType,
         String childYearIdentifier,
         ChildYearTagType childYearTagType, int yearOrdinalNumber, String pageUrl, int totalPage,
-        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, PdfType pdfType, String parentPdfIdentifier,
+        ExtendedPdfType extendedPdfType, String extendedPdfIdentifier, ExtendedPdfTagType extendedPdfTagType,
+        ExtendedPdfSelectorType extendedPdfSelectorType, PdfType pdfType, String parentPdfIdentifier,
         ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
-        int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier,
-        ParentTitleTagType parentTitleTagType, ParentTitleSelectorType parentTitleSelectorType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType,
-        ChildTitleSelectorType childTitleSelectorType, int titleOrdinalNumber,
-        NextPageType nextPageType, String parentNextPageIdentifier,
+        int pdfOrdinalNumber, String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
+        ChildTitleTagType childTitleTagType, ChildTitleSelectorType childTitleSelectorType,
+        int titleOrdinalNumber, NextPageType nextPageType, String parentNextPageIdentifier,
         ParentNextPageTagType parentNextPageTagType,
         ParentNextPageSelectorType parentNextPageSelectorType, String childNextPageIdentifier,
         ChildNextPageTagType childNextPageTagType,
@@ -283,8 +285,9 @@ public class Target {
         this.group = group;
         this.structureType = structureType;
         this.extendedLstType = extendedLstType;
-        this.parentExtendedLstTagType = parentExtendedLstTagType;
-        this.parentExtendedLstIdentifier = parentExtendedLstIdentifier;
+        this.extendedLstIdentifier = extendedLstIdentifier;
+        this.extendedLstTagType = extendedLstTagType;
+        this.extendedLstSelectorType = extendedLstSelectorType;
         this.lstType = lstType;
         this.parentLstIdentifier = parentLstIdentifier;
         this.parentLstTagType = parentLstTagType;
@@ -302,8 +305,9 @@ public class Target {
         this.pageUrl = pageUrl;
         this.totalPage = totalPage;
         this.extendedPdfType = extendedPdfType;
-        this.parentExtendedPdfIdentifier = parentExtendedPdfIdentifier;
-        this.parentExtendedPdfTagType = parentExtendedPdfTagType;
+        this.extendedPdfIdentifier = extendedPdfIdentifier;
+        this.extendedPdfTagType = extendedPdfTagType;
+        this.extendedPdfSelectorType = extendedPdfSelectorType;
         this.pdfType = pdfType;
         this.parentPdfIdentifier = parentPdfIdentifier;
         this.parentPdfTagType = parentPdfTagType;
@@ -312,7 +316,6 @@ public class Target {
         this.childPdfTagType = childPdfTagType;
         this.childPdfSelectorType = childPdfSelectorType;
         this.pdfOrdinalNumber = pdfOrdinalNumber;
-        this.titleType = titleType;
         this.titleOrdinalNumber = titleOrdinalNumber;
         this.parentTitleIdentifier = parentTitleIdentifier;
         this.parentTitleTagType = parentTitleTagType;
@@ -344,8 +347,9 @@ public class Target {
         this.group = target.getGroup();
         this.structureType = target.getStructureType();
         this.extendedLstType = target.getExtendedLstType();
-        this.parentExtendedLstTagType = target.getParentExtendedLstTagType();
-        this.parentExtendedLstIdentifier = target.getParentExtendedLstIdentifier();
+        this.extendedLstTagType = target.getExtendedLstTagType();
+        this.extendedLstIdentifier = target.getExtendedLstIdentifier();
+        this.extendedLstSelectorType = target.getExtendedLstSelectorType();
         this.lstType = target.getLstType();
         this.parentLstIdentifier = target.getParentLstIdentifier();
         this.parentLstTagType = target.getParentLstTagType();
@@ -363,8 +367,9 @@ public class Target {
         this.pageUrl = target.getPageUrl();
         this.totalPage = target.getTotalPage();
         this.extendedPdfType = target.getExtendedPdfType();
-        this.parentExtendedPdfIdentifier = target.getParentExtendedPdfIdentifier();
-        this.parentExtendedPdfTagType = target.getParentExtendedPdfTagType();
+        this.extendedPdfIdentifier = target.getExtendedPdfIdentifier();
+        this.extendedPdfSelectorType = target.getExtendedPdfSelectorType();
+        this.extendedPdfTagType = target.getExtendedPdfTagType();
         this.pdfType = target.getPdfType();
         this.parentPdfIdentifier = target.getParentPdfIdentifier();
         this.parentPdfTagType = target.getParentPdfTagType();
@@ -373,7 +378,6 @@ public class Target {
         this.childPdfTagType = target.getChildPdfTagType();
         this.childPdfSelectorType = target.getChildPdfSelectorType();
         this.pdfOrdinalNumber = target.getPdfOrdinalNumber();
-        this.titleType = target.getTitleType();
         this.parentTitleIdentifier = target.getParentTitleIdentifier();
         this.parentTitleTagType = target.getParentTitleTagType();
         this.parentTitleSelectorType = target.getParentTitleSelectorType();

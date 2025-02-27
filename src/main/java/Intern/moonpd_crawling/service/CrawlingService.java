@@ -7,16 +7,17 @@ import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
+import Intern.moonpd_crawling.status.selector.extended.ExtendedLstSelectorType;
+import Intern.moonpd_crawling.status.selector.extended.ExtendedPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
-import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
+import Intern.moonpd_crawling.status.tag.extended.ExtendedLstTagType;
 import Intern.moonpd_crawling.status.type.ExtendedLstType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
 import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.PdfType;
-import Intern.moonpd_crawling.status.type.TitleType;
 import Intern.moonpd_crawling.status.type.YearType;
 import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
@@ -24,7 +25,7 @@ import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildYearTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.extended.ExtendedPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentLstTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.type.NextPageType;
@@ -76,8 +77,9 @@ public class CrawlingService {
                 StructureType structureType = target.getStructureType();
 
                 ExtendedLstType extendedLstType = target.getExtendedLstType();
-                ParentExtendedLstTagType parentExtendedLstTagType = target.getParentExtendedLstTagType();
-                String parentExtendedLstIdentifier = target.getParentExtendedLstIdentifier();
+                ExtendedLstTagType extendedLstTagType = target.getExtendedLstTagType();
+                String extendedLstIdentifier = target.getExtendedLstIdentifier();
+                ExtendedLstSelectorType extendedLstSelectorType = target.getExtendedLstSelectorType();
 
                 LstType lstType = target.getLstType();
                 String parentLstIdentifier = target.getParentLstIdentifier();
@@ -102,8 +104,9 @@ public class CrawlingService {
                 int totalPage = target.getTotalPage();
 
                 ExtendedPdfType extendedPdfType = target.getExtendedPdfType();
-                String parentExtendedPdfIdentifier = target.getParentExtendedPdfIdentifier();
-                ParentExtendedPdfTagType parentExtendedPdfTagType = target.getParentExtendedPdfTagType();
+                String extendedPdfIdentifier = target.getExtendedPdfIdentifier();
+                ExtendedPdfTagType extendedPdfTagType = target.getExtendedPdfTagType();
+                ExtendedPdfSelectorType extendedPdfSelectorType = target.getExtendedPdfSelectorType();
 
                 PdfType pdfType = target.getPdfType();
                 String parentPdfIdentifier = target.getParentPdfIdentifier();
@@ -114,7 +117,6 @@ public class CrawlingService {
                 ChildPdfSelectorType childPdfSelectorType = target.getChildPdfSelectorType();
                 int pdfOrdinalNumber = target.getPdfOrdinalNumber();
 
-                TitleType titleType = target.getTitleType();
                 String parentTitleIdentifier = target.getParentTitleIdentifier();
                 ParentTitleTagType parentTitleTagType = target.getParentTitleTagType();
                 ParentTitleSelectorType parentTitleSelectorType = target.getParentTitleSelectorType();
@@ -134,8 +136,8 @@ public class CrawlingService {
 
                 if (structureType.equals(StructureType.SINGLE_PAGE)) {
                     singlePageStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
-                        target, lstType, extendedPdfType, parentExtendedPdfIdentifier,
-                        parentExtendedPdfTagType, pdfType, parentPdfIdentifier, parentPdfTagType,
+                        target, lstType, extendedPdfType, extendedPdfIdentifier, extendedPdfTagType,
+                        extendedPdfSelectorType, pdfType, parentPdfIdentifier, parentPdfTagType,
                         parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
                         pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
                         childTitleIdentifier, childTitleTagType, childTitleSelectorType,
@@ -144,14 +146,14 @@ public class CrawlingService {
                         childNextPageTagType, childNextPageSelectorType, nextPageOrdinalNumber);
                 } else if (structureType.equals(StructureType.YEAR_FILTERED)) {
                     yearFilteredStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
-                        target, extendedLstType, parentExtendedLstTagType,
-                        parentExtendedLstIdentifier, lstType, parentLstIdentifier, parentLstTagType,
+                        target, extendedLstType, extendedLstIdentifier, extendedLstTagType,
+                        extendedLstSelectorType, lstType, parentLstIdentifier, parentLstTagType,
                         parentLstSelectorType, childLstIdentifier, childLstTagType,
                         childLstSelectorType, lstOrdinalNumber, yearType, parentYearIdentifier,
                         parentYearTagType, childYearIdentifier, childYearTagType, yearOrdinalNumber,
-                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType, pdfType,
-                        parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
-                        childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType,
+                        extendedPdfType, extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType,
+                        pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
+                        childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
                         parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
                         childTitleIdentifier, childTitleTagType, childTitleSelectorType, titleOrdinalNumber,
                         nextPageType, parentNextPageIdentifier, parentNextPageTagType,
@@ -159,13 +161,13 @@ public class CrawlingService {
                         childNextPageSelectorType, nextPageOrdinalNumber);
                 } else if (structureType.equals(StructureType.LISTED_CONTENT)) {
                     listedContentStructureUtil.crawl(webDriver, structureType, pageUrl, totalPage,
-                        target, extendedLstType, parentExtendedLstTagType, parentExtendedLstIdentifier,
-                        lstType, parentLstIdentifier, parentLstTagType, parentLstSelectorType,
-                        childLstIdentifier, childLstTagType, childLstSelectorType, lstOrdinalNumber,
-                        extendedPdfType, parentExtendedPdfIdentifier, parentExtendedPdfTagType,
-                        pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
-                        childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
-                        titleType, parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
+                        target, extendedLstType, extendedLstIdentifier, extendedLstTagType,
+                        extendedLstSelectorType, lstType, parentLstIdentifier, parentLstTagType,
+                        parentLstSelectorType, childLstIdentifier, childLstTagType, childLstSelectorType,
+                        lstOrdinalNumber, extendedPdfType, extendedPdfIdentifier, extendedPdfTagType,
+                        extendedPdfSelectorType, pdfType, parentPdfIdentifier, parentPdfTagType,
+                        parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
+                        pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
                         childTitleIdentifier, childTitleTagType, childTitleSelectorType, titleOrdinalNumber,
                         nextPageType, parentNextPageIdentifier, parentNextPageTagType,
                         parentNextPageSelectorType, childNextPageIdentifier, childNextPageTagType,

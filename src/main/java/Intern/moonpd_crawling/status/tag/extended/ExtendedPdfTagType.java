@@ -1,19 +1,29 @@
-package Intern.moonpd_crawling.status.type;
+package Intern.moonpd_crawling.status.tag.extended;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum TitleType {
-    // lst 유형에서만 사용
-    OUT("OUT"), // 안에서 Title을 크롤링 할것인가 (pdf와 함께 크롤링)
-    IN("IN"), // 바깥에서 Title을 크롤링 할것인가 (lst와 함께 크롤링)
-    
-    // single 유형세서만 사용
-    NONE("NONE");
+public enum ExtendedPdfTagType {
+    A("A"),         // 앵커 태그
+    BUTTON("BUTTON"), // 버튼 태그
+    IMG("IMG"),     // 이미지 태그
+    DIV("DIV"),     // DIV 태그
+    SPAN("SPAN"),   // SPAN 태그
+    P("P"), // P 태그
+    TD("TD"),
+    TR("TR"),
+    LI("LI"),
+    UL("UL"),
+    FORM("FORM"),
+    ARTICLE("ARTICLE"),
+    TBODY("TBODY"),
+    FIGCAPTION("FIGCAPTION"),
+    TABLE("TABLE"),
+    NONE("NONE");                // 기본값 (빈 값 또는 null)
 
     private final String value;
 
-    TitleType(String value) {
+    ExtendedPdfTagType(String value) {
         this.value = value;
     }
 
@@ -28,11 +38,11 @@ public enum TitleType {
     }
 
     @JsonCreator
-    public static TitleType fromValue(String value) {
+    public static ExtendedPdfTagType fromValue(String value) {
         if (value == null || value.isEmpty()) {
             return NONE; // null 또는 빈 문자열에 대해 기본값 반환
         }
-        for (TitleType type : values()) {
+        for (ExtendedPdfTagType type : values()) {
             if (type.value.equalsIgnoreCase(value)) {
                 return type; // 일치하는 값 반환
             }

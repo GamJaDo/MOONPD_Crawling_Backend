@@ -7,6 +7,7 @@ import Intern.moonpd_crawling.repository.CrawlingDataRepository;
 import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
+import Intern.moonpd_crawling.status.selector.extended.ExtendedPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
@@ -17,7 +18,7 @@ import Intern.moonpd_crawling.status.type.PdfType;
 import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.extended.ExtendedPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
@@ -53,8 +54,9 @@ public class SinglePageStructureUtil {
 
     public void crawl(WebDriver webDriver, StructureType structureType, String pageUrl,
         int totalPage, Target target, LstType lstType, ExtendedPdfType extendedPdfType,
-        String parentExtendedPdfIdentifier, ParentExtendedPdfTagType parentExtendedPdfTagType,
-        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        String extendedPdfIdentifier, ExtendedPdfTagType extendedPdfTagType,
+        ExtendedPdfSelectorType extendedPdfSelectorType, PdfType pdfType, String parentPdfIdentifier,
+        ParentPdfTagType parentPdfTagType,
         ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
         ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber,
         String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
@@ -92,9 +94,9 @@ public class SinglePageStructureUtil {
                 Thread.sleep(500);
 
                 pdfElements = elementFinderUtil.getPdfElements(webDriver, lstType, extendedPdfType,
-                    parentExtendedPdfIdentifier, parentExtendedPdfTagType, pdfType, parentPdfIdentifier,
-                    parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
-                    childPdfSelectorType, pdfOrdinalNumber);
+                    extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType, pdfType,
+                    parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
+                    childPdfTagType, childPdfSelectorType, pdfOrdinalNumber);
 
                 /*
                 if (pdfLinks.isEmpty()) {

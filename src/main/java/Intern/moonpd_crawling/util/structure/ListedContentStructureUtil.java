@@ -6,30 +6,28 @@ import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
+import Intern.moonpd_crawling.status.selector.extended.ExtendedLstSelectorType;
+import Intern.moonpd_crawling.status.selector.extended.ExtendedPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
-import Intern.moonpd_crawling.status.tag.child.ChildYearTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
+import Intern.moonpd_crawling.status.tag.extended.ExtendedLstTagType;
 import Intern.moonpd_crawling.status.type.ExtendedLstType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
 import Intern.moonpd_crawling.status.type.LstType;
 import Intern.moonpd_crawling.status.type.NextPageType;
 import Intern.moonpd_crawling.status.type.PdfType;
 import Intern.moonpd_crawling.status.type.StructureType;
-import Intern.moonpd_crawling.status.type.TitleType;
 import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.extended.ExtendedPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentLstTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
-import Intern.moonpd_crawling.status.type.YearType;
 import Intern.moonpd_crawling.util.CheckOnClickUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
@@ -54,27 +52,25 @@ public class ListedContentStructureUtil {
     }
 
     public void crawl(WebDriver webDriver, StructureType structureType, String pageUrl,
-        int totalPage, Target target, ExtendedLstType extendedLstType,
-        ParentExtendedLstTagType parentExtendedLstTagType, String parentExtendedLstIdentifier,
+        int totalPage, Target target, ExtendedLstType extendedLstType, String extendedLstIdentifier,
+        ExtendedLstTagType extendedLstTagType, ExtendedLstSelectorType extendedLstSelectorType,
         LstType lstType, String parentLstIdentifier, ParentLstTagType parentLstTagType,
         ParentLstSelectorType parentLstSelectorType, String childLstIdentifier,
         ChildLstTagType childLstTagType, ChildLstSelectorType childLstSelectorType,
-        int lstOrdinalNumber, ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, PdfType pdfType, String parentPdfIdentifier,
-        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
-        int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier,
-        ParentTitleTagType parentTitleTagType, ParentTitleSelectorType parentTitleSelectorType,
-        String childTitleIdentifier, ChildTitleTagType childTitleTagType,
-        ChildTitleSelectorType childTitleSelectorType, int titleOrdinalNumber, NextPageType nextPageType,
-        String parentNextPageIdentifier, ParentNextPageTagType parentNextPageTagType,
-        ParentNextPageSelectorType parentNextPageSelectorType, String childNextPageIdentifier,
-        ChildNextPageTagType childNextPageTagType, ChildNextPageSelectorType childNextPageSelectorType,
-        int nextPageOrdinalNumber) {
+        int lstOrdinalNumber, ExtendedPdfType extendedPdfType, String extendedPdfIdentifier,
+        ExtendedPdfTagType extendedPdfTagType, ExtendedPdfSelectorType extendedPdfSelectorType,
+        PdfType pdfType, String parentPdfIdentifier, ParentPdfTagType parentPdfTagType,
+        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
+        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber,
+        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
+        ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
+        ChildTitleTagType childTitleTagType, ChildTitleSelectorType childTitleSelectorType,
+        int titleOrdinalNumber, NextPageType nextPageType, String parentNextPageIdentifier,
+        ParentNextPageTagType parentNextPageTagType, ParentNextPageSelectorType parentNextPageSelectorType,
+        String childNextPageIdentifier, ChildNextPageTagType childNextPageTagType,
+        ChildNextPageSelectorType childNextPageSelectorType, int nextPageOrdinalNumber) {
 
         List<WebElement> lstElements = null;
-        List<WebElement> titleElements = null;
-        String titleText = null;
 
         List<WebElement> nextPageElements = elementFinderUtil.getNextPageElements(webDriver,
             nextPageType, parentNextPageIdentifier, parentNextPageTagType,
@@ -93,7 +89,7 @@ public class ListedContentStructureUtil {
                 Thread.sleep(500);
 
                 lstElements = elementFinderUtil.getLstElements(webDriver, extendedLstType,
-                    parentExtendedLstTagType, parentExtendedLstIdentifier, lstType,
+                    extendedLstIdentifier, extendedLstTagType, extendedLstSelectorType, lstType,
                     parentLstIdentifier, parentLstTagType, parentLstSelectorType,
                     childLstIdentifier, childLstTagType, childLstSelectorType, lstOrdinalNumber);
                 if (lstElements.isEmpty()) {
@@ -102,18 +98,6 @@ public class ListedContentStructureUtil {
                             + childLstIdentifier);
                 }
 
-                if (titleType.equals(TitleType.OUT)) {
-                    titleElements = elementFinderUtil.getTitleElements(webDriver, lstType,
-                        parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
-                        childTitleIdentifier, childTitleTagType, childTitleSelectorType,
-                        titleOrdinalNumber);
-                    if (titleElements.isEmpty()) {
-                        throw new WebDriverException(
-                            "No TitleElements found for identifier: " + parentTitleIdentifier
-                                + " or "
-                                + childTitleIdentifier);
-                    }
-                }
 /*
                 System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
                 for (int i=0; i<lstElements.size(); i++){
@@ -129,32 +113,14 @@ public class ListedContentStructureUtil {
                 }
                 System.out.println("#########################");
 */
-                if (titleType.equals(TitleType.OUT)) {
-                    if (lstElements.size() != titleElements.size()) {
-                        int diff = Math.abs(lstElements.size() - titleElements.size());
-
-                        if (lstElements.size() > titleElements.size()) {
-                            lstElements = lstElements.subList(diff, lstElements.size());
-                        } else {
-                            titleElements = titleElements.subList(diff, titleElements.size());
-                        }
-                    }
-                }
-
                 for (int i = 0; i < lstElements.size(); i++) {
-                    Thread.sleep(100);
-
-                    if (titleType.equals(TitleType.OUT)) {
-                        titleText = titleElements.get(i).getText();
-                    }
-
-                    checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target, extendedPdfType,
-                        parentExtendedPdfIdentifier, parentExtendedPdfTagType, lstElements, lstType, pdfType,
-                        parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
-                        childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType,
+                    checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target, lstType, lstElements,
+                        extendedPdfType, extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType,
+                        pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
+                        childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
                         parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
                         childTitleIdentifier, childTitleTagType, childTitleSelectorType, titleOrdinalNumber,
-                        titleText, i);
+                        i);
                 }
 
                 if (currentPage < totalPage) {

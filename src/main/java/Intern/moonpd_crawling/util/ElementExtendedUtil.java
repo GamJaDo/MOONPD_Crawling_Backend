@@ -1,9 +1,10 @@
 package Intern.moonpd_crawling.util;
 
-import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.selector.extended.ExtendedLstSelectorType;
+import Intern.moonpd_crawling.status.selector.extended.ExtendedPdfSelectorType;
+import Intern.moonpd_crawling.status.tag.extended.ExtendedLstTagType;
+import Intern.moonpd_crawling.status.tag.extended.ExtendedPdfTagType;
 import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
@@ -13,14 +14,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class ElementExtendedUtil {
 
-    public List<WebElement> getExtendedLstElements(String parentExtendedLstIdentifier,
-        ParentExtendedLstTagType parentExtendedLstTagType, List<WebElement> lstElements) {
+    public List<WebElement> getExtendedLstElements(String extendedLstIdentifier,
+        ExtendedLstTagType extendedLstTagType, ExtendedLstSelectorType extendedLstSelectorType,
+        List<WebElement> lstElements) {
 
         List<WebElement> filteredElements = new ArrayList<>();
 
-        String xpath = "ancestor::*[local-name()='" + parentExtendedLstTagType + "'";
-        if (parentExtendedLstIdentifier != null && !parentExtendedLstIdentifier.isEmpty()) {
-            xpath += " and contains(@class, '" + parentExtendedLstIdentifier + "')";
+        String xpath = "ancestor::*[local-name()='" + extendedLstTagType + "'";
+        if (extendedLstIdentifier != null && !extendedLstIdentifier.isEmpty()) {
+            if (extendedLstSelectorType.equals(ExtendedLstSelectorType.CLASS)) {
+                xpath += " and contains(@class, '" + extendedLstIdentifier + "')";
+            } else if (extendedLstSelectorType.equals(ExtendedLstSelectorType.STYLE)) {
+                xpath += " and contains(@style, '" + extendedLstIdentifier + "')";
+            } else if (extendedLstSelectorType.equals(ExtendedLstSelectorType.ID)) {
+                xpath += " and contains(@id, '" + extendedLstIdentifier + "')";
+            } else {
+                throw new WebDriverException("Unsupported extendedSelectorType type");
+            }
         }
         xpath += "]";
 
@@ -33,14 +43,23 @@ public class ElementExtendedUtil {
         return filteredElements;
     }
 
-    public List<WebElement> getExtendedPdfElements(String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, List<WebElement> pdfElements) {
+    public List<WebElement> getExtendedPdfElements(String extendedPdfIdentifier,
+        ExtendedPdfTagType extendedPdfTagType, ExtendedPdfSelectorType extendedPdfSelectorType,
+        List<WebElement> pdfElements) {
 
         List<WebElement> filteredElements = new ArrayList<>();
 
-        String xpath = "ancestor::*[local-name()='" + parentExtendedPdfTagType + "'";
-        if (parentExtendedPdfIdentifier != null && !parentExtendedPdfIdentifier.isEmpty()) {
-            xpath += " and contains(@class, '" + parentExtendedPdfIdentifier + "')";
+        String xpath = "ancestor::*[local-name()='" + extendedPdfTagType + "'";
+        if (extendedPdfIdentifier != null && !extendedPdfIdentifier.isEmpty()) {
+            if (extendedPdfSelectorType.equals(ExtendedPdfSelectorType.CLASS)) {
+                xpath += " and contains(@class, '" + extendedPdfIdentifier + "')";
+            } else if (extendedPdfSelectorType.equals(ExtendedPdfSelectorType.STYLE)) {
+                xpath += " and contains(@style, '" + extendedPdfIdentifier + "')";
+            } else if (extendedPdfSelectorType.equals(ExtendedPdfSelectorType.ID)) {
+                xpath += " and contains(@id, '" + extendedPdfIdentifier + "')";
+            } else {
+                throw new WebDriverException("Unsupported extendedSelectorType type");
+            }
         }
         xpath += "]";
 
@@ -65,9 +84,3 @@ public class ElementExtendedUtil {
          return filteredElements;
     }
 }
-
-/*
-System.out.println("################");
-            System.out.println(element.getAttribute("innerHTML"));
-            System.out.println("################");
- */

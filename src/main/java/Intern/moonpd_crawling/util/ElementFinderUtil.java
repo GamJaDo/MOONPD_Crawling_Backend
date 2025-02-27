@@ -5,11 +5,13 @@ import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
+import Intern.moonpd_crawling.status.selector.extended.ExtendedLstSelectorType;
+import Intern.moonpd_crawling.status.selector.extended.ExtendedPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
 import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
-import Intern.moonpd_crawling.status.tag.parent.ParentExtendedLstTagType;
+import Intern.moonpd_crawling.status.tag.extended.ExtendedLstTagType;
 import Intern.moonpd_crawling.status.type.ExtendedLstType;
 import Intern.moonpd_crawling.status.type.ExtendedPdfType;
 import Intern.moonpd_crawling.status.type.LstType;
@@ -19,14 +21,13 @@ import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
 import Intern.moonpd_crawling.status.tag.child.ChildYearTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentExtendedPdfTagType;
+import Intern.moonpd_crawling.status.tag.extended.ExtendedPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentLstTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
 import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
 import Intern.moonpd_crawling.status.type.PdfType;
-import Intern.moonpd_crawling.status.type.StructureType;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
@@ -47,10 +48,10 @@ public class ElementFinderUtil {
     }
 
     public List<WebElement> getLstElements(WebDriver webDriver, ExtendedLstType extendedLstType,
-        ParentExtendedLstTagType parentExtendedLstTagType, String parentExtendedLstIdentifier,
-        LstType lstType, String parentLstIdentifier, ParentLstTagType parentLstTagType,
-        ParentLstSelectorType parentLstSelectorType, String childLstIdentifier,
-        ChildLstTagType childLstTagType, ChildLstSelectorType childLstSelectorType,
+        String extendedLstIdentifier, ExtendedLstTagType extendedLstTagType,
+        ExtendedLstSelectorType extendedLstSelectorType, LstType lstType, String parentLstIdentifier,
+        ParentLstTagType parentLstTagType, ParentLstSelectorType parentLstSelectorType,
+        String childLstIdentifier, ChildLstTagType childLstTagType, ChildLstSelectorType childLstSelectorType,
         int lstOrdinalNumber) {
 
         String parentSelector;
@@ -93,8 +94,8 @@ public class ElementFinderUtil {
 
         List<WebElement> lstElements = webDriver.findElements(By.cssSelector(cssSelector));
         if (extendedLstType.equals(ExtendedLstType.ON)) {
-            lstElements = elementExtendedUtil.getExtendedLstElements(parentExtendedLstIdentifier,
-                parentExtendedLstTagType, lstElements);
+            lstElements = elementExtendedUtil.getExtendedLstElements(extendedLstIdentifier,
+                extendedLstTagType, extendedLstSelectorType, lstElements);
         }
 
         return elementFilterUtil.getLstElementWithLink(lstType, lstElements);
@@ -143,8 +144,8 @@ public class ElementFinderUtil {
     }
 
     public List<WebElement> getPdfElements(WebDriver webDriver, LstType lstType,
-        ExtendedPdfType extendedPdfType, String parentExtendedPdfIdentifier,
-        ParentExtendedPdfTagType parentExtendedPdfTagType, PdfType pdfType, String parentPdfIdentifier,
+        ExtendedPdfType extendedPdfType, String extendedPdfIdentifier, ExtendedPdfTagType extendedPdfTagType,
+        ExtendedPdfSelectorType extendedPdfSelectorType, PdfType pdfType, String parentPdfIdentifier,
         ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
         String childPdfIdentifier, ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
         int pdfOrdinalNumber) {
@@ -188,10 +189,9 @@ public class ElementFinderUtil {
 
         List<WebElement> pdfElements = webDriver.findElements(By.cssSelector(cssSelector));
         if (extendedPdfType.equals(ExtendedPdfType.ON)) {
-            pdfElements = elementExtendedUtil.getExtendedPdfElements(parentExtendedPdfIdentifier,
-                parentExtendedPdfTagType, pdfElements);
+            pdfElements = elementExtendedUtil.getExtendedPdfElements(extendedPdfIdentifier,
+                extendedPdfTagType, extendedPdfSelectorType, pdfElements);
         }
-
         if (!lstType.equals(LstType.NONE)) {
             pdfElements = elementExtendedUtil.getDescendantPdfTextElements(pdfElements);
         }
@@ -244,7 +244,6 @@ public class ElementFinderUtil {
         }
 
         List<WebElement> titleElements = webDriver.findElements(By.cssSelector(cssSelector));
-
         if (!lstType.equals(LstType.NONE)) {
             titleElements = elementExtendedUtil.getDescendantPdfTextElements(titleElements);
         }

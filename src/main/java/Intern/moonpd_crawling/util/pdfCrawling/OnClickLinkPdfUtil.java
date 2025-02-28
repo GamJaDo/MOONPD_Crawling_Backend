@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriverException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HasOnClickPdfUtil {
+public class OnClickLinkPdfUtil {
 
     public String getPdfLinkByOnClick(String pageUrl, String onClickPdfScript) {
         try {

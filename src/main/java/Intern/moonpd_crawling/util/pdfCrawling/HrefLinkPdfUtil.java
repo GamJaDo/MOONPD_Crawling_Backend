@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NoOnclickPdfUtil {
+public class HrefLinkPdfUtil {
 
     public String getPdfLinkByHref(List<WebElement> pdfLinks, int index) {
 

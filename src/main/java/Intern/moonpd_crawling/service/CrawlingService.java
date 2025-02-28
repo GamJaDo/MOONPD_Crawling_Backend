@@ -119,9 +119,9 @@ public class CrawlingService {
                         target, lstType, extendedPdfType, extendedPdfIdentifier, extendedPdfTagType,
                         extendedPdfSelectorType, pdfType, parentPdfIdentifier, parentPdfTagType,
                         parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
-                        pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
-                        childTitleIdentifier, childTitleTagType, childTitleSelectorType,
-                        titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
+                        pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
+                        parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
+                        childTitleSelectorType, titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
                         parentNextPageTagType, parentNextPageSelectorType, childNextPageIdentifier,
                         childNextPageTagType, childNextPageSelectorType, nextPageOrdinalNumber);
                 } else if (structureType.equals(StructureType.YEAR_FILTERED)) {

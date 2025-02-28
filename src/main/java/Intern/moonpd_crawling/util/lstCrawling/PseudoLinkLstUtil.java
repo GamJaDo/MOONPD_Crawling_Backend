@@ -1,11 +1,12 @@
 package Intern.moonpd_crawling.util.lstCrawling;
 
 import Intern.moonpd_crawling.entity.Target;
-import Intern.moonpd_crawling.service.LstCrawlingService;
+import Intern.moonpd_crawling.service.CrawlDetailPageService;
 import Intern.moonpd_crawling.status.type.ExtendedType;
 import Intern.moonpd_crawling.status.type.LinkType;
 import Intern.moonpd_crawling.status.type.SelectorType;
 import Intern.moonpd_crawling.status.type.TagType;
+import Intern.moonpd_crawling.status.type.TitleType;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
@@ -13,28 +14,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class PseudoLinkLstUtil {
 
-    private final LstCrawlingService lstCrawlingService;
+    private final CrawlDetailPageService crawlDetailPageService;
 
-    public PseudoLinkLstUtil(LstCrawlingService lstCrawlingService) {
-        this.lstCrawlingService = lstCrawlingService;
+    public PseudoLinkLstUtil(CrawlDetailPageService crawlDetailPageService) {
+        this.crawlDetailPageService = crawlDetailPageService;
     }
 
     public void goToPseudoLink(String pageUrl, Target target, LinkType lstType, ExtendedType extendedPdfType,
         String extendedPdfIdentifier, TagType extendedPdfTagType, SelectorType extendedPdfSelectorType,
         WebElement pseudoLinkElement, LinkType pdfType, String parentPdfIdentifier, TagType parentPdfTagType,
         SelectorType parentPdfSelectorType, String childPdfIdentifier, TagType childPdfTagType,
-        SelectorType childPdfSelectorType, int pdfOrdinalNumber, String parentTitleIdentifier,
-        TagType parentTitleTagType, SelectorType parentTitleSelectorType, String childTitleIdentifier,
-        TagType childTitleTagType, SelectorType childTitleSelectorType, int titleOrdinalNumber) {
+        SelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
+        String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
+        String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
+        int titleOrdinalNumber, String titleText) {
 
         String lstLink = getLstLink(pageUrl, pseudoLinkElement);
 
-        lstCrawlingService.crawlLst(pageUrl, target, lstType, extendedPdfType,
+        crawlDetailPageService.crawlSubPage(pageUrl, target, lstType, extendedPdfType,
             extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType,
             lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
-            childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
+            childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType,
             parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
-            childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
+            childTitleTagType, childTitleSelectorType, titleOrdinalNumber, titleText);
     }
 
     private String getLstLink(String pageUrl, WebElement pseudoLinkElement) {

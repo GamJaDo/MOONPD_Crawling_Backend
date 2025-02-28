@@ -5,6 +5,7 @@ import Intern.moonpd_crawling.status.type.ExtendedType;
 import Intern.moonpd_crawling.status.type.LinkType;
 import Intern.moonpd_crawling.status.type.SelectorType;
 import Intern.moonpd_crawling.status.type.TagType;
+import Intern.moonpd_crawling.status.type.TitleType;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
@@ -88,7 +89,7 @@ public class ElementFinderUtil {
         return elementFilterUtil.getPdfElementWithLink(pdfType, pdfElements);
     }
 
-    public List<WebElement> getTitleElements(WebDriver webDriver, LinkType lstType,
+    public List<WebElement> getTitleElements(WebDriver webDriver, LinkType lstType, TitleType titleType,
         String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
         String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
         int titleOrdinalNumber) {
@@ -98,7 +99,7 @@ public class ElementFinderUtil {
             titleOrdinalNumber);
 
         List<WebElement> titleElements = webDriver.findElements(By.cssSelector(cssSelector));
-        if (!lstType.equals(LinkType.NONE)) {
+        if (!lstType.equals(LinkType.NONE) && !titleType.equals(TitleType.OUT)) {
             titleElements = elementExtendedUtil.getDescendantPdfTextElements(titleElements);
         }
 

@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NoOnClickYearUtil {
+public class HrefLinkYearUtil {
 
     public void goToYearByHref(WebDriver webDriver, String yearLink) {
 

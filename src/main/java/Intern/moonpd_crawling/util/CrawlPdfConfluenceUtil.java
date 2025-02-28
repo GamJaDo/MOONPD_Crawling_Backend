@@ -2,9 +2,9 @@ package Intern.moonpd_crawling.util;
 
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.status.type.LinkType;
-import Intern.moonpd_crawling.util.pdfCrawling.HasOnClickPdfUtil;
+import Intern.moonpd_crawling.util.pdfCrawling.OnClickLinkPdfUtil;
 import Intern.moonpd_crawling.util.pdfCrawling.JavaScriptLinkPdfUtil;
-import Intern.moonpd_crawling.util.pdfCrawling.NoOnclickPdfUtil;
+import Intern.moonpd_crawling.util.pdfCrawling.HrefLinkPdfUtil;
 import Intern.moonpd_crawling.util.pdfCrawling.PseudoLinkPdfUtil;
 import java.util.List;
 import org.openqa.selenium.WebElement;
@@ -18,33 +18,33 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class CheckOnClickPdfUtil {
+public class CrawlPdfConfluenceUtil {
 
-    private final HasOnClickPdfUtil hasOnClickPdfUtil;
-    private final NoOnclickPdfUtil noOnclickPdfUtil;
+    private final OnClickLinkPdfUtil onClickLinkPdfUtil;
+    private final HrefLinkPdfUtil hrefLinkPdfUtil;
     private final PseudoLinkPdfUtil pseudoLinkPdfUtil;
     private final JavaScriptLinkPdfUtil javaScriptLinkPdfUtil;
 
-    public CheckOnClickPdfUtil(HasOnClickPdfUtil hasOnClickPdfUtil,
-        NoOnclickPdfUtil noOnclickPdfUtil, PseudoLinkPdfUtil pseudoLinkPdfUtil,
+    public CrawlPdfConfluenceUtil(OnClickLinkPdfUtil onClickLinkPdfUtil,
+        HrefLinkPdfUtil hrefLinkPdfUtil, PseudoLinkPdfUtil pseudoLinkPdfUtil,
         JavaScriptLinkPdfUtil javaScriptLinkPdfUtil) {
-        this.hasOnClickPdfUtil = hasOnClickPdfUtil;
-        this.noOnclickPdfUtil = noOnclickPdfUtil;
+        this.onClickLinkPdfUtil = onClickLinkPdfUtil;
+        this.hrefLinkPdfUtil = hrefLinkPdfUtil;
         this.pseudoLinkPdfUtil = pseudoLinkPdfUtil;
         this.javaScriptLinkPdfUtil = javaScriptLinkPdfUtil;
     }
 
-    public String checkOnClickPdf(String pageUrl, LinkType pdfType,
+    public String crawlPdf(String pageUrl, LinkType pdfType,
         List<WebElement> pdfLinks, int index) {
 
         if (pdfType.equals(LinkType.ONCLICK_LINK)) {
 
             String onClickPdfScript = pdfLinks.get(index).getAttribute("onclick");
 
-            return hasOnClickPdfUtil.getPdfLinkByOnClick(pageUrl, onClickPdfScript);
+            return onClickLinkPdfUtil.getPdfLinkByOnClick(pageUrl, onClickPdfScript);
         } else if (pdfType.equals(LinkType.HREF_LINK) || pdfType.equals(LinkType.JAVASCRIPT_LINK)) {
 
-            return noOnclickPdfUtil.getPdfLinkByHref(pdfLinks, index);
+            return hrefLinkPdfUtil.getPdfLinkByHref(pdfLinks, index);
         } else if (pdfType.equals(LinkType.PSEUDO_LINK)) {
 
             WebElement pseudoLinkElement = pdfLinks.get(index);

@@ -8,9 +8,10 @@ import Intern.moonpd_crawling.status.type.SelectorType;
 import Intern.moonpd_crawling.status.type.StructureType;
 import Intern.moonpd_crawling.status.type.TagType;
 import Intern.moonpd_crawling.status.type.TitleType;
-import Intern.moonpd_crawling.util.CheckOnClickUtil;
+import Intern.moonpd_crawling.util.CrawlConfluenceUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
+import Intern.moonpd_crawling.util.ElementLinkExtractorUtil;
 import java.util.List;
 import java.util.Map;
 import org.openqa.selenium.WebDriver;
@@ -22,18 +23,21 @@ public class YearFilteredStructureUtil {
 
     private final SinglePageStructureUtil singlePageStructureUtil;
     private final ListedContentStructureUtil listedContentStructureUtil;
-    private final CheckOnClickUtil checkOnClickUtil;
+    private final CrawlConfluenceUtil crawlConfluenceUtil;
     private final ElementFinderUtil elementFinderUtil;
     private final ElementCountUtil elementCountUtil;
+    private final ElementLinkExtractorUtil elementLinkExtractorUtil;
 
     public YearFilteredStructureUtil(SinglePageStructureUtil singlePageStructureUtil,
-        ListedContentStructureUtil listedContentStructureUtil, CheckOnClickUtil checkOnClickUtil,
-        ElementFinderUtil elementFinderUtil, ElementCountUtil elementCountUtil) {
+        ListedContentStructureUtil listedContentStructureUtil, CrawlConfluenceUtil crawlConfluenceUtil,
+        ElementFinderUtil elementFinderUtil, ElementCountUtil elementCountUtil,
+        ElementLinkExtractorUtil elementLinkExtractorUtil) {
         this.singlePageStructureUtil = singlePageStructureUtil;
         this.listedContentStructureUtil = listedContentStructureUtil;
-        this.checkOnClickUtil = checkOnClickUtil;
+        this.crawlConfluenceUtil = crawlConfluenceUtil;
         this.elementFinderUtil = elementFinderUtil;
         this.elementCountUtil = elementCountUtil;
+        this.elementLinkExtractorUtil = elementLinkExtractorUtil;
     }
 
     public void crawl(WebDriver webDriver, StructureType structureType, String pageUrl, int totalPage,
@@ -63,7 +67,8 @@ public class YearFilteredStructureUtil {
                     + childYearIdentifier);
         }
 
-        List<Map<String, Integer>> yearLinks = checkOnClickUtil.getYearLinks(pageUrl, yearType, yearElements);
+        List<Map<String, Integer>> yearLinks = elementLinkExtractorUtil.getYearLinks(pageUrl, yearType,
+            yearElements);
 
         System.out.println("############################");
         for (int i = 0; i < yearElements.size(); i++) {
@@ -82,9 +87,9 @@ public class YearFilteredStructureUtil {
                         target, lstType, extendedPdfType, extendedPdfIdentifier, extendedPdfTagType,
                         extendedPdfSelectorType, pdfType, parentPdfIdentifier, parentPdfTagType,
                         parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
-                        pdfOrdinalNumber, parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
-                        childTitleIdentifier, childTitleTagType, childTitleSelectorType,
-                        titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
+                        pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
+                        parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
+                        childTitleSelectorType, titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
                         parentNextPageTagType, parentNextPageSelectorType, childNextPageIdentifier,
                         childNextPageTagType, childNextPageSelectorType, nextPageOrdinalNumber);
                 } else {
@@ -106,7 +111,7 @@ public class YearFilteredStructureUtil {
 
                     String yearLink = yearLinks.get(currentYear).entrySet().iterator().next().getKey();
 
-                    checkOnClickUtil.checkOnClickYear(webDriver, yearType, yearLink);
+                    crawlConfluenceUtil.crawlYear(webDriver, yearType, yearLink);
                 }
             }
         } catch (InterruptedException e) {

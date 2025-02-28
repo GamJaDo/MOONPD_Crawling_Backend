@@ -2,11 +2,12 @@ package Intern.moonpd_crawling.util.lstCrawling;
 
 import Intern.moonpd_crawling.constants.KeywordConstants;
 import Intern.moonpd_crawling.entity.Target;
-import Intern.moonpd_crawling.service.LstCrawlingService;
+import Intern.moonpd_crawling.service.CrawlDetailPageService;
 import Intern.moonpd_crawling.status.type.ExtendedType;
 import Intern.moonpd_crawling.status.type.LinkType;
 import Intern.moonpd_crawling.status.type.SelectorType;
 import Intern.moonpd_crawling.status.type.TagType;
+import Intern.moonpd_crawling.status.type.TitleType;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
@@ -15,12 +16,12 @@ import org.openqa.selenium.WebDriverException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HasOnClickLstUtil {
+public class OnClickLinkLstUtil {
 
-    private final LstCrawlingService lstCrawlingService;
+    private final CrawlDetailPageService crawlDetailPageService;
 
-    public HasOnClickLstUtil(LstCrawlingService lstCrawlingService) {
-        this.lstCrawlingService = lstCrawlingService;
+    public OnClickLinkLstUtil(CrawlDetailPageService crawlDetailPageService) {
+        this.crawlDetailPageService = crawlDetailPageService;
     }
 
     public void goToLstByOnclick(String pageUrl, Target target, LinkType lstType,
@@ -28,18 +29,18 @@ public class HasOnClickLstUtil {
         SelectorType extendedPdfSelectorType, String onClickLstScript, LinkType pdfType,
         String parentPdfIdentifier, TagType parentPdfTagType, SelectorType parentPdfSelectorType,
         String childPdfIdentifier, TagType childPdfTagType, SelectorType childPdfSelectorType,
-        int pdfOrdinalNumber, String parentTitleIdentifier, TagType parentTitleTagType,
+        int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier, TagType parentTitleTagType,
         SelectorType parentTitleSelectorType, String childTitleIdentifier, TagType childTitleTagType,
-        SelectorType childTitleSelectorType, int titleOrdinalNumber) {
+        SelectorType childTitleSelectorType, int titleOrdinalNumber, String titleText) {
 
         String lstLink = getLstLink(pageUrl, onClickLstScript);
 
-        lstCrawlingService.crawlLst(pageUrl, target, lstType, extendedPdfType,
+        crawlDetailPageService.crawlSubPage(pageUrl, target, lstType, extendedPdfType,
             extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType, lstLink, pdfType,
             parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
-            childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, parentTitleIdentifier,
+            childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
             parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
-            childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
+            childTitleTagType, childTitleSelectorType, titleOrdinalNumber, titleText);
     }
 
     private String getLstLink(String pageUrl, String onClickLstScript) {

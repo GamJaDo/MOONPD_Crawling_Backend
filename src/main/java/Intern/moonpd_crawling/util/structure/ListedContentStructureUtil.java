@@ -8,9 +8,10 @@ import Intern.moonpd_crawling.status.type.SelectorType;
 import Intern.moonpd_crawling.status.type.StructureType;
 import Intern.moonpd_crawling.status.type.TagType;
 import Intern.moonpd_crawling.status.type.TitleType;
-import Intern.moonpd_crawling.util.CheckOnClickUtil;
+import Intern.moonpd_crawling.util.CrawlConfluenceUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
+import Intern.moonpd_crawling.util.ElementLinkExtractorUtil;
 import java.util.List;
 import java.util.Map;
 import org.openqa.selenium.WebDriver;
@@ -20,15 +21,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ListedContentStructureUtil {
 
-    private final CheckOnClickUtil checkOnClickUtil;
+    private final CrawlConfluenceUtil crawlConfluenceUtil;
     private final ElementFinderUtil elementFinderUtil;
     private final ElementCountUtil elementCountUtil;
+    private final ElementLinkExtractorUtil elementLinkExtractorUtil;
 
-    public ListedContentStructureUtil(CheckOnClickUtil checkOnClickUtil,
-        ElementFinderUtil elementFinderUtil, ElementCountUtil elementCountUtil) {
-        this.checkOnClickUtil = checkOnClickUtil;
+    public ListedContentStructureUtil(CrawlConfluenceUtil crawlConfluenceUtil, ElementFinderUtil elementFinderUtil,
+        ElementCountUtil elementCountUtil, ElementLinkExtractorUtil elementLinkExtractorUtil) {
+        this.crawlConfluenceUtil = crawlConfluenceUtil;
         this.elementFinderUtil = elementFinderUtil;
         this.elementCountUtil = elementCountUtil;
+        this.elementLinkExtractorUtil = elementLinkExtractorUtil;
     }
 
     public void crawl(WebDriver webDriver, StructureType structureType, String pageUrl, int totalPage,
@@ -48,13 +51,15 @@ public class ListedContentStructureUtil {
         int nextPageOrdinalNumber) {
 
         List<WebElement> lstElements = null;
+        List<WebElement> titleElements = null;
+        String titleText = null;
 
         List<WebElement> nextPageElements = elementFinderUtil.getNextPageElements(webDriver,
             nextPageType, parentNextPageIdentifier, parentNextPageTagType,
             parentNextPageSelectorType, childNextPageIdentifier, childNextPageTagType,
             childNextPageSelectorType, nextPageOrdinalNumber);
 
-        List<Map<String, Integer>> nextPageLinks = checkOnClickUtil.getNextPageLinks(totalPage,
+        List<Map<String, Integer>> nextPageLinks = elementLinkExtractorUtil.getNextPageLinks(totalPage,
             nextPageType, nextPageElements);
 
         try {
@@ -75,6 +80,11 @@ public class ListedContentStructureUtil {
                             + childLstIdentifier);
                 }
 
+                if (titleType.equals(TitleType.OUT)) {
+                    titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, titleType,
+                        parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
+                        childTitleIdentifier, childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
+                }
 /*
                 System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
                 for (int i=0; i<lstElements.size(); i++){
@@ -91,13 +101,17 @@ public class ListedContentStructureUtil {
                 System.out.println("#########################");
 */
                 for (int i = 0; i < lstElements.size(); i++) {
-                    checkOnClickUtil.checkOnClickLst(webDriver, pageUrl, target, lstType, lstElements,
+                    if (titleType.equals(TitleType.OUT)) {
+                        titleText = titleElements.get(i).getText();
+                    }
+
+                    crawlConfluenceUtil.crawlLst(webDriver, pageUrl, target, lstType, lstElements,
                         extendedPdfType, extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType,
                         pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
                         childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
-                        parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
+                        titleType, parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
                         childTitleIdentifier, childTitleTagType, childTitleSelectorType, titleOrdinalNumber,
-                        i);
+                        titleText, i);
                 }
 
                 if (currentPage < totalPage) {
@@ -105,7 +119,7 @@ public class ListedContentStructureUtil {
                     String nextPageLink = nextPageLinks.get(currentPage).entrySet().iterator().next()
                         .getKey();
 
-                    checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType, nextPageLink);
+                    crawlConfluenceUtil.crawlNextPage(webDriver, nextPageType, nextPageLink);
                 }
             }
         } catch (InterruptedException e) {

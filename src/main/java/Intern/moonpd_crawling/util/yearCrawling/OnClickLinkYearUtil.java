@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HasOnClickYearUtil {
+public class OnClickLinkYearUtil {
 
     public void goToYearByOnclick(WebDriver webDriver, String onClickYearScript) {
 

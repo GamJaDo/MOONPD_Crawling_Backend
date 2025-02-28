@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NoOnClickNextPageUtil {
+public class HrefLinkNextPageUtil {
 
     public void goToNextPageByHref(WebDriver webDriver, String nextPageLink) {
 

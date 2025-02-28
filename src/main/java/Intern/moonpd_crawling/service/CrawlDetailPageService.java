@@ -8,7 +8,8 @@ import Intern.moonpd_crawling.status.type.ExtendedType;
 import Intern.moonpd_crawling.status.type.LinkType;
 import Intern.moonpd_crawling.status.type.SelectorType;
 import Intern.moonpd_crawling.status.type.TagType;
-import Intern.moonpd_crawling.util.CheckOnClickPdfUtil;
+import Intern.moonpd_crawling.status.type.TitleType;
+import Intern.moonpd_crawling.util.CrawlPdfConfluenceUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
@@ -17,26 +18,27 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LstCrawlingService {
+public class CrawlDetailPageService {
 
     private final CrawlingDataRepository crawlingDataRepository;
-    private final CheckOnClickPdfUtil checkOnClickPdfUtil;
+    private final CrawlPdfConfluenceUtil crawlPdfConfluenceUtil;
     private final ElementFinderUtil elementFinderUtil;
 
-    public LstCrawlingService(CrawlingDataRepository crawlingDataRepository,
-        CheckOnClickPdfUtil checkOnClickPdfUtil, ElementFinderUtil elementFinderUtil) {
+    public CrawlDetailPageService(CrawlingDataRepository crawlingDataRepository,
+        CrawlPdfConfluenceUtil crawlPdfConfluenceUtil, ElementFinderUtil elementFinderUtil) {
         this.crawlingDataRepository = crawlingDataRepository;
-        this.checkOnClickPdfUtil = checkOnClickPdfUtil;
+        this.crawlPdfConfluenceUtil = crawlPdfConfluenceUtil;
         this.elementFinderUtil = elementFinderUtil;
     }
 
-    public void crawlLst(String pageUrl, Target target, LinkType lstType, ExtendedType extendedPdfType,
+    public void crawlSubPage(String pageUrl, Target target, LinkType lstType, ExtendedType extendedPdfType,
         String extendedPdfIdentifier, TagType extendedPdfTagType, SelectorType extendedPdfSelectorType,
         String lstLink, LinkType pdfType, String parentPdfIdentifier, TagType parentPdfTagType,
         SelectorType parentPdfSelectorType, String childPdfIdentifier, TagType childPdfTagType,
-        SelectorType childPdfSelectorType, int pdfOrdinalNumber, String parentTitleIdentifier,
-        TagType parentTitleTagType, SelectorType parentTitleSelectorType, String childTitleIdentifier,
-        TagType childTitleTagType, SelectorType childTitleSelectorType, int titleOrdinalNumber) {
+        SelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
+        String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
+        String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
+        int titleOrdinalNumber, String titleText) {
 
         System.setProperty("webdriver.chrome.driver",
             "C:\\tools\\chromedriver-win64\\chromedriver.exe");
@@ -55,14 +57,20 @@ public class LstCrawlingService {
                 pdfType, parentPdfIdentifier,
                 parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
                 childPdfSelectorType, pdfOrdinalNumber);
-            titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, parentTitleIdentifier,
-                parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
-                childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
+
+            if (!titleType.equals(TitleType.OUT)) {
+                titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, titleType,
+                    parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
+                    childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
+            }
 
             if (!pdfElements.isEmpty()) {
                 for (int i = 0; i < pdfElements.size(); i++) {
-                    String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(pageUrl, pdfType, pdfElements, i);
-                    String titleText = titleElements.get(i).getText();
+                    String pdfLink = crawlPdfConfluenceUtil.crawlPdf(pageUrl, pdfType, pdfElements, i);
+
+                    if (!titleType.equals(TitleType.OUT)) {
+                        titleText = titleElements.get(i).getText();
+                    }
 
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
                         continue;

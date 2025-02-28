@@ -1,12 +1,11 @@
 package Intern.moonpd_crawling.util.nextPageCrawling;
 
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HasOnClickNextPageUtil {
+public class OnClickLinkNextPageUtil {
 
     public void goToNextPageByOnclick(WebDriver webDriver, String onClickNextPageScript) {
 

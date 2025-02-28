@@ -9,10 +9,12 @@ import Intern.moonpd_crawling.status.type.LinkType;
 import Intern.moonpd_crawling.status.type.SelectorType;
 import Intern.moonpd_crawling.status.type.StructureType;
 import Intern.moonpd_crawling.status.type.TagType;
-import Intern.moonpd_crawling.util.CheckOnClickPdfUtil;
-import Intern.moonpd_crawling.util.CheckOnClickUtil;
+import Intern.moonpd_crawling.status.type.TitleType;
+import Intern.moonpd_crawling.util.CrawlPdfConfluenceUtil;
+import Intern.moonpd_crawling.util.CrawlConfluenceUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
 import Intern.moonpd_crawling.util.ElementFinderUtil;
+import Intern.moonpd_crawling.util.ElementLinkExtractorUtil;
 import java.util.List;
 import java.util.Map;
 import org.openqa.selenium.WebDriver;
@@ -23,19 +25,22 @@ import org.springframework.stereotype.Component;
 public class SinglePageStructureUtil {
 
     private final CrawlingDataRepository crawlingDataRepository;
-    private final CheckOnClickUtil checkOnClickUtil;
-    private final CheckOnClickPdfUtil checkOnClickPdfUtil;
+    private final CrawlConfluenceUtil crawlConfluenceUtil;
+    private final CrawlPdfConfluenceUtil crawlPdfConfluenceUtil;
     private final ElementFinderUtil elementFinderUtil;
     private final ElementCountUtil elementCountUtil;
+    private final ElementLinkExtractorUtil elementLinkExtractorUtil;
 
     public SinglePageStructureUtil(CrawlingDataRepository crawlingDataRepository,
-        CheckOnClickUtil checkOnClickUtil, CheckOnClickPdfUtil checkOnClickPdfUtil,
-        ElementFinderUtil elementFinderUtil, ElementCountUtil elementCountUtil) {
+        CrawlConfluenceUtil crawlConfluenceUtil, CrawlPdfConfluenceUtil crawlPdfConfluenceUtil,
+        ElementFinderUtil elementFinderUtil, ElementCountUtil elementCountUtil,
+        ElementLinkExtractorUtil elementLinkExtractorUtil) {
         this.crawlingDataRepository = crawlingDataRepository;
-        this.checkOnClickUtil = checkOnClickUtil;
-        this.checkOnClickPdfUtil = checkOnClickPdfUtil;
+        this.crawlConfluenceUtil = crawlConfluenceUtil;
+        this.crawlPdfConfluenceUtil = crawlPdfConfluenceUtil;
         this.elementFinderUtil = elementFinderUtil;
         this.elementCountUtil = elementCountUtil;
+        this.elementLinkExtractorUtil = elementLinkExtractorUtil;
     }
 
     public void crawl(WebDriver webDriver, StructureType structureType, String pageUrl,
@@ -43,12 +48,13 @@ public class SinglePageStructureUtil {
         String extendedPdfIdentifier, TagType extendedPdfTagType, SelectorType extendedPdfSelectorType,
         LinkType pdfType, String parentPdfIdentifier, TagType parentPdfTagType,
         SelectorType parentPdfSelectorType, String childPdfIdentifier, TagType childPdfTagType,
-        SelectorType childPdfSelectorType, int pdfOrdinalNumber, String parentTitleIdentifier,
-        TagType parentTitleTagType, SelectorType parentTitleSelectorType, String childTitleIdentifier,
-        TagType childTitleTagType, SelectorType childTitleSelectorType, int titleOrdinalNumber,
-        LinkType nextPageType, String parentNextPageIdentifier, TagType parentNextPageTagType,
-        SelectorType parentNextPageSelectorType, String childNextPageIdentifier, TagType childNextPageTagType,
-        SelectorType childNextPageSelectorType, int nextPageOrdinalNumber) {
+        SelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
+        String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
+        String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
+        int titleOrdinalNumber, LinkType nextPageType, String parentNextPageIdentifier,
+        TagType parentNextPageTagType, SelectorType parentNextPageSelectorType,
+        String childNextPageIdentifier, TagType childNextPageTagType, SelectorType childNextPageSelectorType,
+        int nextPageOrdinalNumber) {
 
         List<WebElement> titleElements = null;
         List<WebElement> pdfElements = null;
@@ -58,7 +64,7 @@ public class SinglePageStructureUtil {
             parentNextPageSelectorType, childNextPageIdentifier, childNextPageTagType,
             childNextPageSelectorType, nextPageOrdinalNumber);
 
-        List<Map<String, Integer>> nextPageLinks = checkOnClickUtil.getNextPageLinks(totalPage,
+        List<Map<String, Integer>> nextPageLinks = elementLinkExtractorUtil.getNextPageLinks(totalPage,
             nextPageType, nextPageElements);
 /*
         System.out.println("######################");
@@ -87,8 +93,8 @@ public class SinglePageStructureUtil {
                             + childPdfIdentifier);
                 }
                 */
-                titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, parentTitleIdentifier,
-                    parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
+                titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, titleType,
+                    parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
                     childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
                 /*
                 if (titles.isEmpty()) {
@@ -124,7 +130,7 @@ public class SinglePageStructureUtil {
 
                 for (int i = 0; i < pdfElements.size(); i++) {
 
-                    String pdfLink = checkOnClickPdfUtil.checkOnClickPdf(pageUrl, pdfType, pdfElements, i);
+                    String pdfLink = crawlPdfConfluenceUtil.crawlPdf(pageUrl, pdfType, pdfElements, i);
                     String titleText = titleElements.get(i).getText();
 
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {
@@ -142,7 +148,7 @@ public class SinglePageStructureUtil {
                     String nextPageLink = nextPageLinks.get(currentPage).entrySet().iterator().next()
                         .getKey();
 
-                    checkOnClickUtil.checkOnClickNextPage(webDriver, nextPageType, nextPageLink);
+                    crawlConfluenceUtil.crawlNextPage(webDriver, nextPageType, nextPageLink);
                 }
             }
         } catch (InterruptedException e) {

@@ -1,30 +1,40 @@
-package Intern.moonpd_crawling.status.tag.child;
+package Intern.moonpd_crawling.status.type;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChildPdfTagType {
-    A("A"),         // 앵커 태그
-    BUTTON("BUTTON"), // 버튼 태그
-    IMG("IMG"),     // 이미지 태그
+public enum TagType {
+    A("A"),
+    BUTTON("BUTTON"),
+    IMG("IMG"),
     DIV("DIV"),
     TD("TD"),
-    TR("TR"),// DIV 태그
+    TR("TR"),
     SPAN("SPAN"),
     LI("LI"),
     DD("DD"),
     FORM("FORM"),
-    FIGCAPTION("FIGCAPTION"),
+    ARTICLE("ARTICLE"),
     H1("H1"),
     H2("H2"),
     H3("H3"),
     H4("H4"),
     H5("H5"),
-    NONE("NONE");   // 기본값 (빈 값 또는 null)
+    FIGURE("FIGURE"),
+    NAV("NAV"),
+    UL("UL"),
+    P("P"),
+    FIGCAPTION("FIGCAPTION"),
+    STRONG("STRONG"),
+    EM("EM"),
+    B("B"),
+    DT("DT"),
+    SELECT("SELECT"),
+    NONE("NONE");
 
     private final String value;
 
-    ChildPdfTagType(String value) {
+    TagType(String value) {
         this.value = value;
     }
 
@@ -39,11 +49,11 @@ public enum ChildPdfTagType {
     }
 
     @JsonCreator
-    public static ChildPdfTagType fromValue(String value) {
+    public static TagType fromValue(String value) {
         if (value == null || value.isEmpty()) {
             return NONE; // null 또는 빈 문자열에 대해 기본값 반환
         }
-        for (ChildPdfTagType type : values()) {
+        for (TagType type : values()) {
             if (type.value.equalsIgnoreCase(value)) {
                 return type; // 일치하는 값 반환
             }

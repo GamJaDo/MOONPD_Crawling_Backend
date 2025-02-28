@@ -1,36 +1,13 @@
 package Intern.moonpd_crawling.entity;
 
 import Intern.moonpd_crawling.dto.response.TargetViewResponse;
-import Intern.moonpd_crawling.status.selector.child.ChildLstSelectorType;
-import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
-import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
-import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
-import Intern.moonpd_crawling.status.selector.extended.ExtendedLstSelectorType;
-import Intern.moonpd_crawling.status.selector.extended.ExtendedPdfSelectorType;
-import Intern.moonpd_crawling.status.selector.parent.ParentLstSelectorType;
-import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
-import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
-import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
-import Intern.moonpd_crawling.status.tag.extended.ExtendedLstTagType;
-import Intern.moonpd_crawling.status.type.ExtendedLstType;
-import Intern.moonpd_crawling.status.type.ExtendedPdfType;
-import Intern.moonpd_crawling.status.type.LstType;
-import Intern.moonpd_crawling.status.type.PdfType;
-import Intern.moonpd_crawling.status.type.YearType;
-import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
-import Intern.moonpd_crawling.status.tag.child.ChildLstTagType;
-import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
-import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.tag.child.ChildYearTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
-import Intern.moonpd_crawling.status.tag.extended.ExtendedPdfTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentLstTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
-import Intern.moonpd_crawling.status.type.NextPageType;
+import Intern.moonpd_crawling.status.type.SelectorType;
+import Intern.moonpd_crawling.status.type.TagType;
+import Intern.moonpd_crawling.status.type.ExtendedType;
+import Intern.moonpd_crawling.status.type.LinkType;
+import Intern.moonpd_crawling.status.type.TitleType;
 import Intern.moonpd_crawling.status.type.OrganizationType;
 import Intern.moonpd_crawling.status.type.StructureType;
-import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentYearTagType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -65,45 +42,45 @@ public class Target {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "extended_lst_type", nullable = true)
-    private ExtendedLstType extendedLstType;
+    private ExtendedType extendedLstType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "extended_lst_tag_type", nullable = true)
-    private ExtendedLstTagType extendedLstTagType;
+    private TagType extendedLstTagType;
 
     @Column(name = "extended_lst_identifier", nullable = true)
     private String extendedLstIdentifier;
 
     @Column(name = "extended_lst_selector_type", nullable = true)
-    private ExtendedLstSelectorType extendedLstSelectorType;
+    private SelectorType extendedLstSelectorType;
 
     // #############################################################################################
 
     @Enumerated(EnumType.STRING)
     @Column(name = "lst_type", nullable = true)
-    private LstType lstType;
+    private LinkType lstType;
 
     @Column(name = "parent_lst_identifier", nullable = true)
     private String parentLstIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "parent_lst_tag_type", nullable = true)
-    private ParentLstTagType parentLstTagType;
+    private TagType parentLstTagType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "parent_lst_selector_type", nullable = true)
-    private ParentLstSelectorType parentLstSelectorType;
+    private SelectorType parentLstSelectorType;
 
     @Column(name = "child_lst_identifier", nullable = true)
     private String childLstIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_lst_tag_type", nullable = true)
-    private ChildLstTagType childLstTagType;
+    private TagType childLstTagType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_lst_selector_type", nullable = true)
-    private ChildLstSelectorType childLstSelectorType;
+    private SelectorType childLstSelectorType;
 
     @Column(name = "lst_ordinal_number", nullable = true)
     private int lstOrdinalNumber;
@@ -112,21 +89,29 @@ public class Target {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "year_type", nullable = true)
-    private YearType yearType;
+    private LinkType yearType;
 
     @Column(name = "parent_year_identifier", nullable = true)
     private String parentYearIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "parent_year_tag_type", nullable = true)
-    private ParentYearTagType parentYearTagType;
+    private TagType parentYearTagType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "parent_year_selector_type", nullable = true)
+    private SelectorType parentYearSelectorType;
 
     @Column(name = "child_year_identifier", nullable = true)
     private String childYearIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_year_tag_type", nullable = true)
-    private ChildYearTagType childYearTagType;
+    private TagType childYearTagType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "child_year_selector_type", nullable = true)
+    private SelectorType childYearSelectorType;
 
     @Column(name = "year_ordinal_number", nullable = true)
     private int yearOrdinalNumber;
@@ -144,72 +129,76 @@ public class Target {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "extended_pdf_type", nullable = true)
-    private ExtendedPdfType extendedPdfType;
+    private ExtendedType extendedPdfType;
 
     @Column(name = "extended_pdf_identifier", nullable = true)
     private String extendedPdfIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "extended_pdf_tag_type", nullable = true)
-    private ExtendedPdfTagType extendedPdfTagType;
+    private TagType extendedPdfTagType;
 
     @Column(name = "extended_pdf_selector_type", nullable = true)
-    private ExtendedPdfSelectorType extendedPdfSelectorType;
+    private SelectorType extendedPdfSelectorType;
 
     // #############################################################################################
 
     @Enumerated(EnumType.STRING)
     @Column(name = "pdf_type", nullable = true)
-    private PdfType pdfType;
+    private LinkType pdfType;
 
     @Column(name = "parent_pdf_identifier", nullable = true)
     private String parentPdfIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "parent_pdf_tag_type", nullable = true)
-    private ParentPdfTagType parentPdfTagType;
+    private TagType parentPdfTagType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "parent_pdf_selector_type", nullable = true)
-    private ParentPdfSelectorType parentPdfSelectorType;
+    private SelectorType parentPdfSelectorType;
 
     @Column(name = "child_pdf_identifier", nullable = true)
     private String childPdfIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_pdf_tag_type", nullable = true)
-    private ChildPdfTagType childPdfTagType;
+    private TagType childPdfTagType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_pdf_selector_type", nullable = true)
-    private ChildPdfSelectorType childPdfSelectorType;
+    private SelectorType childPdfSelectorType;
 
     @Column(name = "pdf_ordinal_number", nullable = true)
     private int pdfOrdinalNumber;
 
     // #############################################################################################
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "title_type", nullable = true)
+    private TitleType titleType;
+
     @Column(name = "parent_title_identifier", nullable = true)
     private String parentTitleIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "parent_title_tag_type", nullable = true)
-    private ParentTitleTagType parentTitleTagType;
+    private TagType parentTitleTagType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "parent_title_selector_type", nullable = true)
-    private ParentTitleSelectorType parentTitleSelectorType;
+    private SelectorType parentTitleSelectorType;
 
     @Column(name = "child_title_identifier", nullable = true)
     private String childTitleIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_title_tag_type", nullable = true)
-    private ChildTitleTagType childTitleTagType;
+    private TagType childTitleTagType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_title_selector_type", nullable = true)
-    private ChildTitleSelectorType childTitleSelectorType;
+    private SelectorType childTitleSelectorType;
 
     @Column(name = "title_ordinal_number", nullable = true)
     private int titleOrdinalNumber;
@@ -218,29 +207,29 @@ public class Target {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "next_page_type", nullable = true)
-    private NextPageType nextPageType;
+    private LinkType nextPageType;
 
     @Column(name = "parent_next_page_identifier", nullable = true)
     private String parentNextPageIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "parent_next_page_tag_type", nullable = true)
-    private ParentNextPageTagType parentNextPageTagType;
+    private TagType parentNextPageTagType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "parent_next_page_selector_type", nullable = true)
-    private ParentNextPageSelectorType parentNextPageSelectorType;
+    private SelectorType parentNextPageSelectorType;
 
     @Column(name = "child_next_page_identifier", nullable = true)
     private String childNextPageIdentifier;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_next_page_tag_type", nullable = true)
-    private ChildNextPageTagType childNextPageTagType;
+    private TagType childNextPageTagType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "child_next_page_selector_type", nullable = true)
-    private ChildNextPageSelectorType childNextPageSelectorType;
+    private SelectorType childNextPageSelectorType;
 
     @Column(name = "next_page_ordinal_number", nullable = true)
     private int nextPageOrdinalNumber;
@@ -258,28 +247,24 @@ public class Target {
     protected Target() {
     }
 
-    public Target(OrganizationType organizationType, String region, String group,
-        StructureType structureType, ExtendedLstType extendedLstType,
-        String extendedLstIdentifier, ExtendedLstTagType extendedLstTagType,
-        ExtendedLstSelectorType extendedLstSelectorType, LstType lstType, String parentLstIdentifier,
-        ParentLstTagType parentLstTagType, ParentLstSelectorType parentLstSelectorType,
-        String childLstIdentifier, ChildLstTagType childLstTagType,
-        ChildLstSelectorType childLstSelectorType, int lstOrdinalNumber, YearType yearType,
-        String parentYearIdentifier, ParentYearTagType parentYearTagType,
-        String childYearIdentifier,
-        ChildYearTagType childYearTagType, int yearOrdinalNumber, String pageUrl, int totalPage,
-        ExtendedPdfType extendedPdfType, String extendedPdfIdentifier, ExtendedPdfTagType extendedPdfTagType,
-        ExtendedPdfSelectorType extendedPdfSelectorType, PdfType pdfType, String parentPdfIdentifier,
-        ParentPdfTagType parentPdfTagType, ParentPdfSelectorType parentPdfSelectorType,
-        String childPdfIdentifier, ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType,
-        int pdfOrdinalNumber, String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
-        ChildTitleTagType childTitleTagType, ChildTitleSelectorType childTitleSelectorType,
-        int titleOrdinalNumber, NextPageType nextPageType, String parentNextPageIdentifier,
-        ParentNextPageTagType parentNextPageTagType,
-        ParentNextPageSelectorType parentNextPageSelectorType, String childNextPageIdentifier,
-        ChildNextPageTagType childNextPageTagType,
-        ChildNextPageSelectorType childNextPageSelectorType, int nextPageOrdinalNumber) {
+    public Target(OrganizationType organizationType, String region, String group, StructureType structureType,
+        ExtendedType extendedLstType, String extendedLstIdentifier, TagType extendedLstTagType,
+        SelectorType extendedLstSelectorType, LinkType lstType, String parentLstIdentifier,
+        TagType parentLstTagType, SelectorType parentLstSelectorType, String childLstIdentifier,
+        TagType childLstTagType, SelectorType childLstSelectorType, int lstOrdinalNumber, LinkType yearType,
+        String parentYearIdentifier, TagType parentYearTagType, SelectorType parentYearSelectorType,
+        String childYearIdentifier, TagType childYearTagType, SelectorType childYearSelectorType,
+        int yearOrdinalNumber, String pageUrl, int totalPage, ExtendedType extendedPdfType,
+        String extendedPdfIdentifier, TagType extendedPdfTagType, SelectorType extendedPdfSelectorType,
+        LinkType pdfType, String parentPdfIdentifier, TagType parentPdfTagType,
+        SelectorType parentPdfSelectorType, String childPdfIdentifier, TagType childPdfTagType,
+        SelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
+        String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
+        String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
+        int titleOrdinalNumber, LinkType nextPageType, String parentNextPageIdentifier,
+        TagType parentNextPageTagType, SelectorType parentNextPageSelectorType,
+        String childNextPageIdentifier, TagType childNextPageTagType, SelectorType childNextPageSelectorType,
+        int nextPageOrdinalNumber) {
         this.organizationType = organizationType;
         this.region = region;
         this.group = group;
@@ -299,8 +284,10 @@ public class Target {
         this.yearType = yearType;
         this.parentYearIdentifier = parentYearIdentifier;
         this.parentYearTagType = parentYearTagType;
+        this.parentYearSelectorType = parentYearSelectorType;
         this.childYearIdentifier = childYearIdentifier;
         this.childYearTagType = childYearTagType;
+        this.childYearSelectorType = childYearSelectorType;
         this.yearOrdinalNumber = yearOrdinalNumber;
         this.pageUrl = pageUrl;
         this.totalPage = totalPage;
@@ -316,6 +303,7 @@ public class Target {
         this.childPdfTagType = childPdfTagType;
         this.childPdfSelectorType = childPdfSelectorType;
         this.pdfOrdinalNumber = pdfOrdinalNumber;
+        this.titleType = titleType;
         this.titleOrdinalNumber = titleOrdinalNumber;
         this.parentTitleIdentifier = parentTitleIdentifier;
         this.parentTitleTagType = parentTitleTagType;
@@ -361,8 +349,10 @@ public class Target {
         this.yearType = target.getYearType();
         this.parentYearIdentifier = target.getParentYearIdentifier();
         this.parentYearTagType = target.getParentYearTagType();
+        this.parentYearSelectorType = target.getParentYearSelectorType();
         this.childYearIdentifier = target.getChildYearIdentifier();
         this.childYearTagType = target.getChildYearTagType();
+        this.childYearSelectorType = target.getChildYearSelectorType();
         this.yearOrdinalNumber = target.getYearOrdinalNumber();
         this.pageUrl = target.getPageUrl();
         this.totalPage = target.getTotalPage();
@@ -378,6 +368,7 @@ public class Target {
         this.childPdfTagType = target.getChildPdfTagType();
         this.childPdfSelectorType = target.getChildPdfSelectorType();
         this.pdfOrdinalNumber = target.getPdfOrdinalNumber();
+        this.titleType = target.getTitleType();
         this.parentTitleIdentifier = target.getParentTitleIdentifier();
         this.parentTitleTagType = target.getParentTitleTagType();
         this.parentTitleSelectorType = target.getParentTitleSelectorType();

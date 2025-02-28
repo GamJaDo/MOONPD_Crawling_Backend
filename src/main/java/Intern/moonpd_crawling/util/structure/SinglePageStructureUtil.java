@@ -4,29 +4,15 @@ import Intern.moonpd_crawling.entity.CrawlingData;
 import Intern.moonpd_crawling.entity.Target;
 import Intern.moonpd_crawling.exception.WebDriverException;
 import Intern.moonpd_crawling.repository.CrawlingDataRepository;
-import Intern.moonpd_crawling.status.selector.child.ChildNextPageSelectorType;
-import Intern.moonpd_crawling.status.selector.child.ChildPdfSelectorType;
-import Intern.moonpd_crawling.status.selector.child.ChildTitleSelectorType;
-import Intern.moonpd_crawling.status.selector.extended.ExtendedPdfSelectorType;
-import Intern.moonpd_crawling.status.selector.parent.ParentNextPageSelectorType;
-import Intern.moonpd_crawling.status.selector.parent.ParentPdfSelectorType;
-import Intern.moonpd_crawling.status.selector.parent.ParentTitleSelectorType;
-import Intern.moonpd_crawling.status.type.ExtendedPdfType;
-import Intern.moonpd_crawling.status.type.LstType;
-import Intern.moonpd_crawling.status.type.NextPageType;
-import Intern.moonpd_crawling.status.type.PdfType;
-import Intern.moonpd_crawling.status.tag.child.ChildNextPageTagType;
-import Intern.moonpd_crawling.status.tag.child.ChildPdfTagType;
-import Intern.moonpd_crawling.status.tag.child.ChildTitleTagType;
-import Intern.moonpd_crawling.status.tag.extended.ExtendedPdfTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentNextPageTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentPdfTagType;
-import Intern.moonpd_crawling.status.tag.parent.ParentTitleTagType;
+import Intern.moonpd_crawling.status.type.ExtendedType;
+import Intern.moonpd_crawling.status.type.LinkType;
+import Intern.moonpd_crawling.status.type.SelectorType;
 import Intern.moonpd_crawling.status.type.StructureType;
+import Intern.moonpd_crawling.status.type.TagType;
 import Intern.moonpd_crawling.util.CheckOnClickPdfUtil;
 import Intern.moonpd_crawling.util.CheckOnClickUtil;
-import Intern.moonpd_crawling.util.ElementFinderUtil;
 import Intern.moonpd_crawling.util.ElementCountUtil;
+import Intern.moonpd_crawling.util.ElementFinderUtil;
 import java.util.List;
 import java.util.Map;
 import org.openqa.selenium.WebDriver;
@@ -53,20 +39,16 @@ public class SinglePageStructureUtil {
     }
 
     public void crawl(WebDriver webDriver, StructureType structureType, String pageUrl,
-        int totalPage, Target target, LstType lstType, ExtendedPdfType extendedPdfType,
-        String extendedPdfIdentifier, ExtendedPdfTagType extendedPdfTagType,
-        ExtendedPdfSelectorType extendedPdfSelectorType, PdfType pdfType, String parentPdfIdentifier,
-        ParentPdfTagType parentPdfTagType,
-        ParentPdfSelectorType parentPdfSelectorType, String childPdfIdentifier,
-        ChildPdfTagType childPdfTagType, ChildPdfSelectorType childPdfSelectorType, int pdfOrdinalNumber,
-        String parentTitleIdentifier, ParentTitleTagType parentTitleTagType,
-        ParentTitleSelectorType parentTitleSelectorType, String childTitleIdentifier,
-        ChildTitleTagType childTitleTagType, ChildTitleSelectorType childTitleSelectorType,
-        int titleOrdinalNumber, NextPageType nextPageType, String parentNextPageIdentifier,
-        ParentNextPageTagType parentNextPageTagType,
-        ParentNextPageSelectorType parentNextPageSelectorType, String childNextPageIdentifier,
-        ChildNextPageTagType childNextPageTagType,
-        ChildNextPageSelectorType childNextPageSelectorType, int nextPageOrdinalNumber) {
+        int totalPage, Target target, LinkType lstType, ExtendedType extendedPdfType,
+        String extendedPdfIdentifier, TagType extendedPdfTagType, SelectorType extendedPdfSelectorType,
+        LinkType pdfType, String parentPdfIdentifier, TagType parentPdfTagType,
+        SelectorType parentPdfSelectorType, String childPdfIdentifier, TagType childPdfTagType,
+        SelectorType childPdfSelectorType, int pdfOrdinalNumber, String parentTitleIdentifier,
+        TagType parentTitleTagType, SelectorType parentTitleSelectorType, String childTitleIdentifier,
+        TagType childTitleTagType, SelectorType childTitleSelectorType, int titleOrdinalNumber,
+        LinkType nextPageType, String parentNextPageIdentifier, TagType parentNextPageTagType,
+        SelectorType parentNextPageSelectorType, String childNextPageIdentifier, TagType childNextPageTagType,
+        SelectorType childNextPageSelectorType, int nextPageOrdinalNumber) {
 
         List<WebElement> titleElements = null;
         List<WebElement> pdfElements = null;

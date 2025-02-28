@@ -1,9 +1,7 @@
 package Intern.moonpd_crawling.util;
 
-import Intern.moonpd_crawling.status.selector.extended.ExtendedLstSelectorType;
-import Intern.moonpd_crawling.status.selector.extended.ExtendedPdfSelectorType;
-import Intern.moonpd_crawling.status.tag.extended.ExtendedLstTagType;
-import Intern.moonpd_crawling.status.tag.extended.ExtendedPdfTagType;
+import Intern.moonpd_crawling.status.type.SelectorType;
+import Intern.moonpd_crawling.status.type.TagType;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
@@ -14,19 +12,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class ElementExtendedUtil {
 
-    public List<WebElement> getExtendedLstElements(String extendedLstIdentifier,
-        ExtendedLstTagType extendedLstTagType, ExtendedLstSelectorType extendedLstSelectorType,
-        List<WebElement> lstElements) {
+    public List<WebElement> getExtendedLstElements(String extendedLstIdentifier, TagType extendedLstTagType,
+        SelectorType extendedLstSelectorType, List<WebElement> lstElements) {
 
         List<WebElement> filteredElements = new ArrayList<>();
 
         String xpath = "ancestor::*[local-name()='" + extendedLstTagType + "'";
         if (extendedLstIdentifier != null && !extendedLstIdentifier.isEmpty()) {
-            if (extendedLstSelectorType.equals(ExtendedLstSelectorType.CLASS)) {
+            if (extendedLstSelectorType.equals(SelectorType.CLASS)) {
                 xpath += " and contains(@class, '" + extendedLstIdentifier + "')";
-            } else if (extendedLstSelectorType.equals(ExtendedLstSelectorType.STYLE)) {
+            } else if (extendedLstSelectorType.equals(SelectorType.STYLE)) {
                 xpath += " and contains(@style, '" + extendedLstIdentifier + "')";
-            } else if (extendedLstSelectorType.equals(ExtendedLstSelectorType.ID)) {
+            } else if (extendedLstSelectorType.equals(SelectorType.ID)) {
                 xpath += " and contains(@id, '" + extendedLstIdentifier + "')";
             } else {
                 throw new WebDriverException("Unsupported extendedSelectorType type");
@@ -43,19 +40,18 @@ public class ElementExtendedUtil {
         return filteredElements;
     }
 
-    public List<WebElement> getExtendedPdfElements(String extendedPdfIdentifier,
-        ExtendedPdfTagType extendedPdfTagType, ExtendedPdfSelectorType extendedPdfSelectorType,
-        List<WebElement> pdfElements) {
+    public List<WebElement> getExtendedPdfElements(String extendedPdfIdentifier, TagType extendedPdfTagType,
+        SelectorType extendedPdfSelectorType, List<WebElement> pdfElements) {
 
         List<WebElement> filteredElements = new ArrayList<>();
 
         String xpath = "ancestor::*[local-name()='" + extendedPdfTagType + "'";
         if (extendedPdfIdentifier != null && !extendedPdfIdentifier.isEmpty()) {
-            if (extendedPdfSelectorType.equals(ExtendedPdfSelectorType.CLASS)) {
+            if (extendedPdfSelectorType.equals(SelectorType.CLASS)) {
                 xpath += " and contains(@class, '" + extendedPdfIdentifier + "')";
-            } else if (extendedPdfSelectorType.equals(ExtendedPdfSelectorType.STYLE)) {
+            } else if (extendedPdfSelectorType.equals(SelectorType.STYLE)) {
                 xpath += " and contains(@style, '" + extendedPdfIdentifier + "')";
-            } else if (extendedPdfSelectorType.equals(ExtendedPdfSelectorType.ID)) {
+            } else if (extendedPdfSelectorType.equals(SelectorType.ID)) {
                 xpath += " and contains(@id, '" + extendedPdfIdentifier + "')";
             } else {
                 throw new WebDriverException("Unsupported extendedSelectorType type");

@@ -1,8 +1,7 @@
 package Intern.moonpd_crawling.util;
 
 import Intern.moonpd_crawling.constants.KeywordConstants;
-import Intern.moonpd_crawling.status.type.LstType;
-import Intern.moonpd_crawling.status.type.PdfType;
+import Intern.moonpd_crawling.status.type.LinkType;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
@@ -12,13 +11,13 @@ import java.util.List;
 @Component
 public class ElementFilterUtil {
 
-    public List<WebElement> getLstElementWithLink(LstType lstType, List<WebElement> lstElements) {
+    public List<WebElement> getLstElementWithLink(LinkType lstType, List<WebElement> lstElements) {
 
         String[] onClickLstKeywords =  KeywordConstants.ON_CLICK_LST_KEYWORDS;
         List<WebElement> lstElementsWithLink = new ArrayList<>();
 
         for (WebElement lstElement : lstElements) {
-            if (lstType.equals(LstType.HAS_ONCLICK)) {
+            if (lstType.equals(LinkType.ONCLICK_LINK)) {
                 String onClickAttr = lstElement.getAttribute("onclick");
                 if (onClickAttr != null) {
                     boolean flag = false;
@@ -32,11 +31,11 @@ public class ElementFilterUtil {
                         lstElementsWithLink.add(lstElement);
                     }
                 }
-            } else if (lstType.equals(LstType.NO_ONCLICK) || lstType.equals(LstType.JAVASCRIPT_LINK)) {
+            } else if (lstType.equals(LinkType.HREF_LINK) || lstType.equals(LinkType.JAVASCRIPT_LINK)) {
                 if (lstElement.getAttribute("href") != null) {
                     lstElementsWithLink.add(lstElement);
                 }
-            } else if (lstType.equals(LstType.PSEUDO_LINK)) {
+            } else if (lstType.equals(LinkType.PSEUDO_LINK)) {
                 String temp = "";
                 for (String pSudoKeyWord : KeywordConstants.P_SUDO_KEYWORDS) {
                     temp = lstElement.getAttribute(pSudoKeyWord);
@@ -53,13 +52,13 @@ public class ElementFilterUtil {
         return lstElementsWithLink;
     }
 
-    public List<WebElement> getPdfElementWithLink(PdfType pdfType, List<WebElement> pdfElements) {
+    public List<WebElement> getPdfElementWithLink(LinkType pdfType, List<WebElement> pdfElements) {
 
         String[] onClickPdfKeywords = KeywordConstants.ON_CLICK_PDF_KEYWORDS;
         List<WebElement> pdfElementsWithLink = new ArrayList<>();
 
         for (WebElement pdfElement : pdfElements) {
-            if (pdfType.equals(PdfType.HAS_ONCLICK)) {
+            if (pdfType.equals(LinkType.ONCLICK_LINK)) {
                 String onClickAttr = pdfElement.getAttribute("onclick");
                 if (onClickAttr != null) {
                     boolean flag = false;
@@ -73,11 +72,11 @@ public class ElementFilterUtil {
                         pdfElementsWithLink.add(pdfElement);
                     }
                 }
-            } else if (pdfType.equals(PdfType.NO_ONCLICK) || pdfType.equals(PdfType.JAVASCRIPT_LINK)) {
+            } else if (pdfType.equals(LinkType.HREF_LINK) || pdfType.equals(LinkType.JAVASCRIPT_LINK)) {
                 if (pdfElement.getAttribute("href") != null) {
                     pdfElementsWithLink.add(pdfElement);
                 }
-            } else if (pdfType.equals(PdfType.PSEUDO_LINK)) {
+            } else if (pdfType.equals(LinkType.PSEUDO_LINK)) {
                 String temp = "";
                 for (String pSudoKeyWord : KeywordConstants.P_SUDO_KEYWORDS) {
                     temp = pdfElement.getAttribute(pSudoKeyWord);

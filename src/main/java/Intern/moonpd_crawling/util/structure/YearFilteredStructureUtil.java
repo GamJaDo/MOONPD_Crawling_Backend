@@ -69,13 +69,13 @@ public class YearFilteredStructureUtil {
 
         List<Map<String, Integer>> yearLinks = elementLinkExtractorUtil.getYearLinks(pageUrl, yearType,
             yearElements);
-
+/*
         System.out.println("############################");
-        for (int i = 0; i < yearElements.size(); i++) {
-            System.out.println("yearLinks[" + i + "]: " + yearLinks.get(i));
+        for (int i = 0; i < yearLinks.size(); i++) {
+            System.out.println("yearLinks[" + i + "]: " + yearLinks.get(i).entrySet().iterator().next().getKey());
         }
         System.out.println("############################");
-
+*/
         try {
             int totalYear = elementCountUtil.getTotalYearCnt(yearLinks);
 

@@ -124,7 +124,7 @@ public class SinglePageStructureUtil {
                     if (pdfElements.size() > titleElements.size()) {
                         pdfElements = pdfElements.subList(diff, pdfElements.size());
                     } else {
-                        titleElements = titleElements.subList(0, titleElements.size() - diff);
+                        titleElements = titleElements.subList(diff, titleElements.size());
                     }
                 }
 

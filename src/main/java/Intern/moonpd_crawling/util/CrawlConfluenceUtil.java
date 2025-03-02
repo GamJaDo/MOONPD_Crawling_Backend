@@ -108,7 +108,7 @@ public class CrawlConfluenceUtil {
 
             onClickLinkYearUtil.goToYearByOnclick(webDriver, yearLink);
             Thread.sleep(500);
-        } else if (yearType.equals(LinkType.HREF_LINK)) {
+        } else if (yearType.equals(LinkType.HREF_LINK) || yearType.equals(LinkType.OPTION_LINK)) {
 
             hrefLinkYearUtil.goToYearByHref(webDriver, yearLink);
             Thread.sleep(500);

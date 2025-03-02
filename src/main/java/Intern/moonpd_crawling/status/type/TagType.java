@@ -29,6 +29,7 @@ public enum TagType {
     EM("EM"),
     B("B"),
     DT("DT"),
+    SECTION("SECTION"),
     SELECT("SELECT"),
     NONE("NONE");
 

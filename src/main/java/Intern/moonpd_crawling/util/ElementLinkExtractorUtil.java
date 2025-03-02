@@ -27,11 +27,24 @@ public class ElementLinkExtractorUtil {
         List<Map<String, Integer>> yearPageLinks = new ArrayList<>();
 
         if (yearType.equals(LinkType.OPTION_LINK)) {
-            int startYear = Integer.parseInt(yearElements.get(0).getText().replaceAll("[^0-9]", ""));
-            Map<String, Integer> map = new HashMap<>();
+            int startYear = 0;
+
+            for (WebElement element : yearElements) {
+                String rawYear = element.getAttribute("value");
+
+                if (rawYear != null && rawYear.matches("\\d{4}")) {
+                    startYear = Integer.parseInt(rawYear);
+                    break;
+                }
+            }
+
+            if (startYear == 0) {
+                return yearPageLinks;
+            }
 
             for (int i = 0; i < yearElements.size(); i++) {
-                map.put(pageUrl.replaceAll(String.valueOf(startYear), String.valueOf(startYear - i)),
+                Map<String, Integer> map = new HashMap<>();
+                map.put(pageUrl.replace(String.valueOf(startYear), String.valueOf(startYear - i)),
                     startYear - i);
                 yearPageLinks.add(map);
             }

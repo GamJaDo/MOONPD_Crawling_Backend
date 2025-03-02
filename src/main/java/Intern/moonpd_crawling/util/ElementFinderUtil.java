@@ -53,7 +53,7 @@ public class ElementFinderUtil {
 
         WebElement parentElement = webDriver.findElement(By.cssSelector(cssSelector));
         List<WebElement> result = null;
-        if (yearType.equals(LinkType.ONCLICK_LINK)) {
+        if (yearType.equals(LinkType.OPTION_LINK)) {
             result = parentElement.findElements(By.tagName("option"));
         } else {
             result = parentElement.findElements(By.tagName("a"));
@@ -157,7 +157,7 @@ public class ElementFinderUtil {
             if (childSelectorType == SelectorType.CLASS) {
                 childSelector = childTagType + "." + childIdentifier;
             } else if (childSelectorType == SelectorType.STYLE) {
-                childSelector = childTagType + "[style*=\"" + childIdentifier + "\"";
+                childSelector = childTagType + "[style*=\"" + childIdentifier + "\"]";
             } else if (childSelectorType == SelectorType.ID) {
                 childSelector = childTagType + "#" + childIdentifier;
             } else {

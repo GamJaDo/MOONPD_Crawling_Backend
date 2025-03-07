@@ -29,17 +29,20 @@ public class OnClickLinkLstUtil {
         SelectorType extendedPdfSelectorType, String onClickLstScript, LinkType pdfType,
         String parentPdfIdentifier, TagType parentPdfTagType, SelectorType parentPdfSelectorType,
         String childPdfIdentifier, TagType childPdfTagType, SelectorType childPdfSelectorType,
-        int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier, TagType parentTitleTagType,
-        SelectorType parentTitleSelectorType, String childTitleIdentifier, TagType childTitleTagType,
-        SelectorType childTitleSelectorType, int titleOrdinalNumber, String titleText) {
+        int pdfOrdinalNumber, ExtendedType extendedTitleType, String extendedTitleIdentifier,
+        TagType extendedTitleTagType, SelectorType extendedTitleSelectorType,  TitleType titleType,
+        String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
+        String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
+        int titleOrdinalNumber, String titleText) {
 
         String lstLink = getLstLink(pageUrl, onClickLstScript);
 
         crawlDetailPageService.crawlSubPage(pageUrl, target, lstType, extendedPdfType,
             extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType, lstLink, pdfType,
             parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
-            childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
-            parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
+            childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, extendedTitleType,
+            extendedTitleIdentifier, extendedTitleTagType, extendedTitleSelectorType,  titleType,
+            parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
             childTitleTagType, childTitleSelectorType, titleOrdinalNumber, titleText);
     }
 
@@ -56,7 +59,10 @@ public class OnClickLinkLstUtil {
                 return extractGoToView(onClickLstScript, baseDomain, pageUrl);
             } else if (onClickLstScript.contains(KeywordConstants.ON_CLICK_LST_KEYWORDS[3])) {
                 return extractGoDetail(onClickLstScript, baseDomain, pageUrl);
-            } else {
+            } else if (onClickLstScript.contains(KeywordConstants.ON_CLICK_LST_KEYWORDS[4])) {
+                return extractFnSearchDetail(onClickLstScript, baseDomain);
+            }
+            else {
                 throw new WebDriverException("Unsupported onClickLstScript: " + onClickLstScript);
             }
         } catch (Exception e) {
@@ -123,5 +129,15 @@ public class OnClickLinkLstUtil {
             return baseDomain + "/portal/ebook/siboDetail.do?mId=" + mId + "&idx=" + idx;
         }
         throw new WebDriverException("Failed to extract parameters from goDetail script: " + script);
+    }
+
+    private String extractFnSearchDetail(String script, String baseDomain) {
+        Pattern pattern = Pattern.compile("fn_search_detail\\('([^']+)'\\)");
+        Matcher matcher = pattern.matcher(script);
+        if (matcher.find() && matcher.groupCount() >= 1) {
+            String nttId = matcher.group(1);
+            return baseDomain + "/prog/bbsArticle/BBSMSTR_000000000191/view.do?nttId=" + nttId;
+        }
+        throw new WebDriverException("Failed to extract parameters from fn_search_detail script: " + script);
     }
 }

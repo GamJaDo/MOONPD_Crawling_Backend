@@ -42,13 +42,14 @@ public class ListedContentStructureUtil {
         ExtendedType extendedPdfType, String extendedPdfIdentifier, TagType extendedPdfTagType,
         SelectorType extendedPdfSelectorType, LinkType pdfType, String parentPdfIdentifier,
         TagType parentPdfTagType, SelectorType parentPdfSelectorType, String childPdfIdentifier,
-        TagType childPdfTagType, SelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
-        String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
-        String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
-        int titleOrdinalNumber, LinkType nextPageType, String parentNextPageIdentifier,
-        TagType parentNextPageTagType, SelectorType parentNextPageSelectorType,
-        String childNextPageIdentifier, TagType childNextPageTagType, SelectorType childNextPageSelectorType,
-        int nextPageOrdinalNumber) {
+        TagType childPdfTagType, SelectorType childPdfSelectorType, int pdfOrdinalNumber,
+        ExtendedType extendedTitleType, String extendedTitleIdentifier, TagType extendedTitleTagType,
+        SelectorType extendedTitleSelectorType, TitleType titleType, String parentTitleIdentifier,
+        TagType parentTitleTagType, SelectorType parentTitleSelectorType, String childTitleIdentifier,
+        TagType childTitleTagType, SelectorType childTitleSelectorType, int titleOrdinalNumber,
+        LinkType nextPageType, String parentNextPageIdentifier, TagType parentNextPageTagType,
+        SelectorType parentNextPageSelectorType, String childNextPageIdentifier, TagType childNextPageTagType,
+        SelectorType childNextPageSelectorType, int nextPageOrdinalNumber) {
 
         List<WebElement> lstElements = null;
         List<WebElement> titleElements = null;
@@ -81,7 +82,8 @@ public class ListedContentStructureUtil {
                 }
 
                 if (titleType.equals(TitleType.OUT)) {
-                    titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, titleType,
+                    titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, extendedTitleType,
+                        extendedTitleIdentifier, extendedTitleTagType, extendedTitleSelectorType, titleType,
                         parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
                         childTitleIdentifier, childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
                 }
@@ -109,9 +111,10 @@ public class ListedContentStructureUtil {
                         extendedPdfType, extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType,
                         pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
                         childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber,
-                        titleType, parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType,
-                        childTitleIdentifier, childTitleTagType, childTitleSelectorType, titleOrdinalNumber,
-                        titleText, i);
+                        extendedTitleType, extendedTitleIdentifier, extendedTitleTagType,
+                        extendedTitleSelectorType, titleType, parentTitleIdentifier, parentTitleTagType,
+                        parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
+                        childTitleSelectorType, titleOrdinalNumber, titleText, i);
                 }
 
                 if (currentPage < totalPage) {

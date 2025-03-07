@@ -12,56 +12,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class ElementExtendedUtil {
 
-    public List<WebElement> getExtendedLstElements(String extendedLstIdentifier, TagType extendedLstTagType,
-        SelectorType extendedLstSelectorType, List<WebElement> lstElements) {
+    public List<WebElement> getExtendedElements(String extendedIdentifier, TagType extendedTagType,
+        SelectorType extendedSelectorType, List<WebElement> elements) {
 
         List<WebElement> filteredElements = new ArrayList<>();
 
-        String xpath = "ancestor::*[local-name()='" + extendedLstTagType + "'";
-        if (extendedLstIdentifier != null && !extendedLstIdentifier.isEmpty()) {
-            if (extendedLstSelectorType.equals(SelectorType.CLASS)) {
-                xpath += " and contains(@class, '" + extendedLstIdentifier + "')";
-            } else if (extendedLstSelectorType.equals(SelectorType.STYLE)) {
-                xpath += " and contains(@style, '" + extendedLstIdentifier + "')";
-            } else if (extendedLstSelectorType.equals(SelectorType.ID)) {
-                xpath += " and contains(@id, '" + extendedLstIdentifier + "')";
+        String xpath = "ancestor::*[local-name()='" + extendedTagType + "'";
+        if (extendedIdentifier != null && !extendedIdentifier.isEmpty()) {
+            if (extendedSelectorType.equals(SelectorType.CLASS)) {
+                xpath += " and contains(@class, '" + extendedIdentifier + "')";
+            } else if (extendedSelectorType.equals(SelectorType.STYLE)) {
+                xpath += " and contains(@style, '" + extendedIdentifier + "')";
+            } else if (extendedSelectorType.equals(SelectorType.ID)) {
+                xpath += " and contains(@id, '" + extendedIdentifier + "')";
             } else {
                 throw new WebDriverException("Unsupported extendedSelectorType type");
             }
         }
         xpath += "]";
 
-        for (WebElement lstElement : lstElements) {
-            if (!lstElement.findElements(By.xpath(xpath)).isEmpty()) {
-                filteredElements.add(lstElement);
-            }
-        }
-
-        return filteredElements;
-    }
-
-    public List<WebElement> getExtendedPdfElements(String extendedPdfIdentifier, TagType extendedPdfTagType,
-        SelectorType extendedPdfSelectorType, List<WebElement> pdfElements) {
-
-        List<WebElement> filteredElements = new ArrayList<>();
-
-        String xpath = "ancestor::*[local-name()='" + extendedPdfTagType + "'";
-        if (extendedPdfIdentifier != null && !extendedPdfIdentifier.isEmpty()) {
-            if (extendedPdfSelectorType.equals(SelectorType.CLASS)) {
-                xpath += " and contains(@class, '" + extendedPdfIdentifier + "')";
-            } else if (extendedPdfSelectorType.equals(SelectorType.STYLE)) {
-                xpath += " and contains(@style, '" + extendedPdfIdentifier + "')";
-            } else if (extendedPdfSelectorType.equals(SelectorType.ID)) {
-                xpath += " and contains(@id, '" + extendedPdfIdentifier + "')";
-            } else {
-                throw new WebDriverException("Unsupported extendedSelectorType type");
-            }
-        }
-        xpath += "]";
-
-        for (WebElement pdfElement : pdfElements) {
-            if (!pdfElement.findElements(By.xpath(xpath)).isEmpty()) {
-                filteredElements.add(pdfElement);
+        for (WebElement element : elements) {
+            if (!element.findElements(By.xpath(xpath)).isEmpty()) {
+                filteredElements.add(element);
             }
         }
 

@@ -96,6 +96,11 @@ public class CrawlingService {
                 SelectorType childPdfSelectorType = target.getChildPdfSelectorType();
                 int pdfOrdinalNumber = target.getPdfOrdinalNumber();
 
+                ExtendedType extendedTitleType = target.getExtendedTitleType();
+                String extendedTitleIdentifier = target.getExtendedTitleIdentifier();
+                TagType extendedTitleTagType = target.getExtendedTitleTagType();
+                SelectorType extendedTitleSelectorType = target.getExtendedTitleSelectorType();
+
                 TitleType titleType = target.getTitleType();
                 String parentTitleIdentifier = target.getParentTitleIdentifier();
                 TagType parentTitleTagType = target.getParentTitleTagType();
@@ -119,7 +124,8 @@ public class CrawlingService {
                         target, lstType, extendedPdfType, extendedPdfIdentifier, extendedPdfTagType,
                         extendedPdfSelectorType, pdfType, parentPdfIdentifier, parentPdfTagType,
                         parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
-                        pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
+                        pdfOrdinalNumber, extendedTitleType, extendedTitleIdentifier, extendedTitleTagType,
+                        extendedTitleSelectorType, titleType, parentTitleIdentifier, parentTitleTagType,
                         parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
                         childTitleSelectorType, titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
                         parentNextPageTagType, parentNextPageSelectorType, childNextPageIdentifier,
@@ -134,7 +140,8 @@ public class CrawlingService {
                         childYearSelectorType, yearOrdinalNumber, extendedPdfType, extendedPdfIdentifier,
                         extendedPdfTagType, extendedPdfSelectorType, pdfType, parentPdfIdentifier,
                         parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
-                        childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
+                        childPdfSelectorType, pdfOrdinalNumber, extendedTitleType, extendedTitleIdentifier,
+                        extendedTitleTagType, extendedTitleSelectorType, titleType, parentTitleIdentifier,
                         parentTitleTagType, parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
                         childTitleSelectorType, titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
                         parentNextPageTagType, parentNextPageSelectorType, childNextPageIdentifier,
@@ -147,7 +154,8 @@ public class CrawlingService {
                         lstOrdinalNumber, extendedPdfType, extendedPdfIdentifier, extendedPdfTagType,
                         extendedPdfSelectorType, pdfType, parentPdfIdentifier, parentPdfTagType,
                         parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
-                        pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
+                        pdfOrdinalNumber, extendedTitleType, extendedTitleIdentifier, extendedTitleTagType,
+                        extendedTitleSelectorType, titleType, parentTitleIdentifier, parentTitleTagType,
                         parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
                         childTitleSelectorType, titleOrdinalNumber, nextPageType, parentNextPageIdentifier,
                         parentNextPageTagType, parentNextPageSelectorType, childNextPageIdentifier,

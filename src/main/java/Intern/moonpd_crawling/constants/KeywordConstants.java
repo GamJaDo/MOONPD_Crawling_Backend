@@ -7,7 +7,7 @@ public final class KeywordConstants {
     };
 
     public static final String[] ON_CLICK_LST_KEYWORDS = {
-        "fn_view(", "fn_articleLink(", "goTo.view(", "goDetail("
+        "fn_view(", "fn_articleLink(", "goTo.view(", "goDetail(", "fn_search_detail("
     };
 
     public static final String[] ON_CLICK_PDF_KEYWORDS = {

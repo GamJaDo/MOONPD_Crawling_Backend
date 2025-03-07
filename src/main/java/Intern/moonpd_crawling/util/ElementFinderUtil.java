@@ -36,7 +36,7 @@ public class ElementFinderUtil {
 
         List<WebElement> lstElements = webDriver.findElements(By.cssSelector(cssSelector));
         if (extendedLstType.equals(ExtendedType.ON)) {
-            lstElements = elementExtendedUtil.getExtendedLstElements(extendedLstIdentifier,
+            lstElements = elementExtendedUtil.getExtendedElements(extendedLstIdentifier,
                 extendedLstTagType, extendedLstSelectorType, lstElements);
         }
 
@@ -72,33 +72,38 @@ public class ElementFinderUtil {
         ExtendedType extendedPdfType, String extendedPdfIdentifier, TagType extendedPdfTagType,
         SelectorType extendedPdfSelectorType, LinkType pdfType, String parentPdfIdentifier,
         TagType parentPdfTagType, SelectorType parentPdfSelectorType, String childPdfIdentifier,
-        TagType childPdfTagType, SelectorType childPdfSelectorType, int pdfOrdinalNumber) {
+        TagType childPdfTagType, SelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType) {
 
         String cssSelector = getCssSelector(parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
             childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber);
 
         List<WebElement> pdfElements = webDriver.findElements(By.cssSelector(cssSelector));
         if (extendedPdfType.equals(ExtendedType.ON)) {
-            pdfElements = elementExtendedUtil.getExtendedPdfElements(extendedPdfIdentifier,
+            pdfElements = elementExtendedUtil.getExtendedElements(extendedPdfIdentifier,
                 extendedPdfTagType, extendedPdfSelectorType, pdfElements);
         }
-        if (!lstType.equals(LinkType.NONE)) {
+        if (!lstType.equals(LinkType.NONE) && !titleType.equals(TitleType.OUT)) {
             pdfElements = elementExtendedUtil.getDescendantPdfTextElements(pdfElements);
         }
 
         return elementFilterUtil.getPdfElementWithLink(pdfType, pdfElements);
     }
 
-    public List<WebElement> getTitleElements(WebDriver webDriver, LinkType lstType, TitleType titleType,
-        String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
-        String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
-        int titleOrdinalNumber) {
+    public List<WebElement> getTitleElements(WebDriver webDriver, LinkType lstType,
+        ExtendedType extendedTitleType, String extendedTitleIdentifier, TagType extendedTitleTagType,
+        SelectorType extendedTitleSelectorType, TitleType titleType, String parentTitleIdentifier,
+        TagType parentTitleTagType, SelectorType parentTitleSelectorType, String childTitleIdentifier,
+        TagType childTitleTagType, SelectorType childTitleSelectorType, int titleOrdinalNumber) {
 
         String cssSelector = getCssSelector(parentTitleIdentifier, parentTitleTagType,
             parentTitleSelectorType, childTitleIdentifier, childTitleTagType, childTitleSelectorType,
             titleOrdinalNumber);
 
         List<WebElement> titleElements = webDriver.findElements(By.cssSelector(cssSelector));
+        if (extendedTitleType.equals(ExtendedType.ON)) {
+            titleElements = elementExtendedUtil.getExtendedElements(extendedTitleIdentifier,
+                extendedTitleTagType, extendedTitleSelectorType, titleElements);
+        }
         if (!lstType.equals(LinkType.NONE) && !titleType.equals(TitleType.OUT)) {
             titleElements = elementExtendedUtil.getDescendantPdfTextElements(titleElements);
         }

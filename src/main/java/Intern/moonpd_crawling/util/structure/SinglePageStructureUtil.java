@@ -48,13 +48,14 @@ public class SinglePageStructureUtil {
         String extendedPdfIdentifier, TagType extendedPdfTagType, SelectorType extendedPdfSelectorType,
         LinkType pdfType, String parentPdfIdentifier, TagType parentPdfTagType,
         SelectorType parentPdfSelectorType, String childPdfIdentifier, TagType childPdfTagType,
-        SelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
-        String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
-        String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
-        int titleOrdinalNumber, LinkType nextPageType, String parentNextPageIdentifier,
-        TagType parentNextPageTagType, SelectorType parentNextPageSelectorType,
-        String childNextPageIdentifier, TagType childNextPageTagType, SelectorType childNextPageSelectorType,
-        int nextPageOrdinalNumber) {
+        SelectorType childPdfSelectorType, int pdfOrdinalNumber, ExtendedType extendedTitleType,
+        String extendedTitleIdentifier, TagType extendedTitleTagType, SelectorType extendedTitleSelectorType,
+        TitleType titleType, String parentTitleIdentifier, TagType parentTitleTagType,
+        SelectorType parentTitleSelectorType, String childTitleIdentifier, TagType childTitleTagType,
+        SelectorType childTitleSelectorType, int titleOrdinalNumber, LinkType nextPageType,
+        String parentNextPageIdentifier, TagType parentNextPageTagType,
+        SelectorType parentNextPageSelectorType, String childNextPageIdentifier, TagType childNextPageTagType,
+        SelectorType childNextPageSelectorType, int nextPageOrdinalNumber) {
 
         List<WebElement> titleElements = null;
         List<WebElement> pdfElements = null;
@@ -84,7 +85,7 @@ public class SinglePageStructureUtil {
                 pdfElements = elementFinderUtil.getPdfElements(webDriver, lstType, extendedPdfType,
                     extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType, pdfType,
                     parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
-                    childPdfTagType, childPdfSelectorType, pdfOrdinalNumber);
+                    childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType);
 
                 /*
                 if (pdfLinks.isEmpty()) {
@@ -93,7 +94,8 @@ public class SinglePageStructureUtil {
                             + childPdfIdentifier);
                 }
                 */
-                titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, titleType,
+                titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, extendedTitleType,
+                    extendedTitleIdentifier, extendedTitleTagType, extendedTitleSelectorType, titleType,
                     parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
                     childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
                 /*

@@ -35,10 +35,11 @@ public class CrawlDetailPageService {
         String extendedPdfIdentifier, TagType extendedPdfTagType, SelectorType extendedPdfSelectorType,
         String lstLink, LinkType pdfType, String parentPdfIdentifier, TagType parentPdfTagType,
         SelectorType parentPdfSelectorType, String childPdfIdentifier, TagType childPdfTagType,
-        SelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
-        String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
-        String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
-        int titleOrdinalNumber, String titleText) {
+        SelectorType childPdfSelectorType, int pdfOrdinalNumber, ExtendedType extendedTitleType,
+        String extendedTitleIdentifier, TagType extendedTitleTagType, SelectorType extendedTitleSelectorType,
+        TitleType titleType, String parentTitleIdentifier, TagType parentTitleTagType,
+        SelectorType parentTitleSelectorType, String childTitleIdentifier, TagType childTitleTagType,
+        SelectorType childTitleSelectorType, int titleOrdinalNumber, String titleText) {
 
         System.setProperty("webdriver.chrome.driver",
             "C:\\tools\\chromedriver-win64\\chromedriver.exe");
@@ -54,12 +55,14 @@ public class CrawlDetailPageService {
 
             pdfElements = elementFinderUtil.getPdfElements(webDriver, lstType, extendedPdfType,
                 extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType,
-                pdfType, parentPdfIdentifier,
-                parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
-                childPdfSelectorType, pdfOrdinalNumber);
+                pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
+                childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType);
+
+            //System.out.println("pdfElements: " + pdfElements);
 
             if (!titleType.equals(TitleType.OUT)) {
-                titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, titleType,
+                titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, extendedTitleType,
+                    extendedTitleIdentifier, extendedTitleTagType, extendedTitleSelectorType, titleType,
                     parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
                     childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
             }
@@ -67,6 +70,8 @@ public class CrawlDetailPageService {
             if (!pdfElements.isEmpty()) {
                 for (int i = 0; i < pdfElements.size(); i++) {
                     String pdfLink = crawlPdfConfluenceUtil.crawlPdf(pageUrl, pdfType, pdfElements, i);
+
+                    System.out.println("pdfLink: " + pdfLink);
 
                     if (!titleType.equals(TitleType.OUT)) {
                         titleText = titleElements.get(i).getText();

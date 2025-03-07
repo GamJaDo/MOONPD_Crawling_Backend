@@ -24,17 +24,19 @@ public class PseudoLinkLstUtil {
         String extendedPdfIdentifier, TagType extendedPdfTagType, SelectorType extendedPdfSelectorType,
         WebElement pseudoLinkElement, LinkType pdfType, String parentPdfIdentifier, TagType parentPdfTagType,
         SelectorType parentPdfSelectorType, String childPdfIdentifier, TagType childPdfTagType,
-        SelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
-        String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
-        String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
-        int titleOrdinalNumber, String titleText) {
+        SelectorType childPdfSelectorType, int pdfOrdinalNumber, ExtendedType extendedTitleType,
+        String extendedTitleIdentifier, TagType extendedTitleTagType, SelectorType extendedTitleSelectorType,
+        TitleType titleType, String parentTitleIdentifier, TagType parentTitleTagType,
+        SelectorType parentTitleSelectorType, String childTitleIdentifier, TagType childTitleTagType,
+        SelectorType childTitleSelectorType, int titleOrdinalNumber, String titleText) {
 
         String lstLink = getLstLink(pageUrl, pseudoLinkElement);
 
         crawlDetailPageService.crawlSubPage(pageUrl, target, lstType, extendedPdfType,
             extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType,
             lstLink, pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
-            childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType,
+            childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, extendedTitleType,
+            extendedTitleIdentifier, extendedTitleTagType, extendedTitleSelectorType, titleType,
             parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
             childTitleTagType, childTitleSelectorType, titleOrdinalNumber, titleText);
     }

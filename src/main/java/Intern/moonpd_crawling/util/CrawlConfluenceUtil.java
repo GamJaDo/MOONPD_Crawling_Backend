@@ -51,9 +51,11 @@ public class CrawlConfluenceUtil {
         TagType extendedPdfTagType, SelectorType extendedPdfSelectorType, LinkType pdfType,
         String parentPdfIdentifier, TagType parentPdfTagType, SelectorType parentPdfSelectorType,
         String childPdfIdentifier, TagType childPdfTagType, SelectorType childPdfSelectorType,
-        int pdfOrdinalNumber, TitleType titleType, String parentTitleIdentifier, TagType parentTitleTagType,
-        SelectorType parentTitleSelectorType, String childTitleIdentifier, TagType childTitleTagType,
-        SelectorType childTitleSelectorType, int titleOrdinalNumber, String titleText, int index) {
+        int pdfOrdinalNumber, ExtendedType extendedTitleType, String extendedTitleIdentifier,
+        TagType extendedTitleTagType, SelectorType extendedTitleSelectorType,  TitleType titleType,
+        String parentTitleIdentifier, TagType parentTitleTagType, SelectorType parentTitleSelectorType,
+        String childTitleIdentifier, TagType childTitleTagType, SelectorType childTitleSelectorType,
+        int titleOrdinalNumber, String titleText, int index) {
 
         if (lstType.equals(LinkType.ONCLICK_LINK)) {
 
@@ -63,7 +65,8 @@ public class CrawlConfluenceUtil {
                 extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType,
                 onClickLstScript, pdfType, parentPdfIdentifier, parentPdfTagType,
                 parentPdfSelectorType, childPdfIdentifier, childPdfTagType, childPdfSelectorType,
-                pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
+                pdfOrdinalNumber, extendedTitleType, extendedTitleIdentifier, extendedTitleTagType,
+                extendedTitleSelectorType, titleType, parentTitleIdentifier, parentTitleTagType,
                 parentTitleSelectorType, childTitleIdentifier, childTitleTagType, childTitleSelectorType,
                 titleOrdinalNumber, titleText);
         } else if (lstType.equals(LinkType.HREF_LINK)) {
@@ -73,9 +76,10 @@ public class CrawlConfluenceUtil {
             hrefLinkLstUtil.goToLstByHref(pageUrl, target, lstType, extendedPdfType, extendedPdfIdentifier,
                 extendedPdfTagType, extendedPdfSelectorType, lstLink, pdfType, parentPdfIdentifier,
                 parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
-                childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
-                parentTitleSelectorType, childTitleIdentifier, childTitleTagType, childTitleSelectorType,
-                titleOrdinalNumber, titleText);
+                childPdfSelectorType, pdfOrdinalNumber,  extendedTitleType, extendedTitleIdentifier,
+                extendedTitleTagType, extendedTitleSelectorType,  titleType, parentTitleIdentifier,
+                parentTitleTagType, parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
+                childTitleSelectorType, titleOrdinalNumber, titleText);
         } else if (lstType.equals(LinkType.PSEUDO_LINK)) {
 
             WebElement pseudoLinkElement = lstLinks.get(index);
@@ -83,9 +87,10 @@ public class CrawlConfluenceUtil {
             pseudoLinkLstUtil.goToPseudoLink(pageUrl, target, lstType, extendedPdfType, extendedPdfIdentifier,
                 extendedPdfTagType, extendedPdfSelectorType, pseudoLinkElement, pdfType, parentPdfIdentifier,
                 parentPdfTagType, parentPdfSelectorType, childPdfIdentifier, childPdfTagType,
-                childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier, parentTitleTagType,
-                parentTitleSelectorType, childTitleIdentifier, childTitleTagType, childTitleSelectorType,
-                titleOrdinalNumber, titleText);
+                childPdfSelectorType, pdfOrdinalNumber, extendedTitleType, extendedTitleIdentifier,
+                extendedTitleTagType, extendedTitleSelectorType,  titleType, parentTitleIdentifier,
+                parentTitleTagType, parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
+                childTitleSelectorType, titleOrdinalNumber, titleText);
         } else if (lstType.equals(LinkType.JAVASCRIPT_LINK)) {
 
             String javaScriptLink = lstLinks.get(index).getAttribute("href");
@@ -93,9 +98,10 @@ public class CrawlConfluenceUtil {
             javaScriptLinkLstUtil.goToJavaScriptLink(webDriver, pageUrl, target, lstType, extendedPdfType,
                 extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType, javaScriptLink, pdfType,
                 parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
-                childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType, parentTitleIdentifier,
-                parentTitleTagType, parentTitleSelectorType, childTitleIdentifier, childTitleTagType,
-                childTitleSelectorType, titleOrdinalNumber, titleText);
+                childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, extendedTitleType,
+                extendedTitleIdentifier, extendedTitleTagType, extendedTitleSelectorType, titleType,
+                parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
+                childTitleTagType, childTitleSelectorType, titleOrdinalNumber, titleText);
         } else {
             throw new WebDriverException("Unsupported lst type");
         }

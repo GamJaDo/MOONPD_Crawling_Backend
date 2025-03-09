@@ -120,6 +120,7 @@ public class SinglePageStructureUtil {
                 }
                 System.out.println("#########################");
 */
+                /*
                 if (pdfElements.size() != titleElements.size()) {
                     int diff = Math.abs(pdfElements.size() - titleElements.size());
 
@@ -129,6 +130,7 @@ public class SinglePageStructureUtil {
                         titleElements = titleElements.subList(diff, titleElements.size());
                     }
                 }
+                 */
 
                 for (int i = 0; i < pdfElements.size(); i++) {
 

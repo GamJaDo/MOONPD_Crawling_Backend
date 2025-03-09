@@ -18,6 +18,6 @@ public final class KeywordConstants {
     public static final String[] NEXT_PAGE_KEYWORDS = {
         "p=", "pg=", "pageIndex=", "page=", "curPage=", "pno=", "page_no=", "pgno=",
         "PAGE=", "goPage(", "noticeList(", "Page2(", "search(", "linkPage(", "pageMove(",
-        "Page_func(", "Pag(", "movePage(", "Page(", "pageNo=", "Page=", "search("
+        "Page_func(", "Pag(", "movePage(", "Page(", "pageNo=", "Page=", "Search(", "Req("
     };
 }

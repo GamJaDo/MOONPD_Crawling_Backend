@@ -34,8 +34,7 @@ public class CrawlPdfConfluenceUtil {
         this.javaScriptLinkPdfUtil = javaScriptLinkPdfUtil;
     }
 
-    public String crawlPdf(String pageUrl, LinkType pdfType,
-        List<WebElement> pdfLinks, int index) {
+    public String crawlPdf(String pageUrl, LinkType pdfType, List<WebElement> pdfLinks, int index) {
 
         if (pdfType.equals(LinkType.ONCLICK_LINK)) {
 

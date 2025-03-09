@@ -10,6 +10,7 @@ public enum TagType {
     DIV("DIV"),
     TD("TD"),
     TR("TR"),
+    TABLE("TABLE"),
     SPAN("SPAN"),
     LI("LI"),
     DD("DD"),

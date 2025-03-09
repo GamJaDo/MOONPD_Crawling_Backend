@@ -71,8 +71,6 @@ public class CrawlDetailPageService {
                 for (int i = 0; i < pdfElements.size(); i++) {
                     String pdfLink = crawlPdfConfluenceUtil.crawlPdf(pageUrl, pdfType, pdfElements, i);
 
-                    System.out.println("pdfLink: " + pdfLink);
-
                     if (!titleType.equals(TitleType.OUT)) {
                         titleText = titleElements.get(i).getText();
                     }

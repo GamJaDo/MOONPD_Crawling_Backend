@@ -19,7 +19,7 @@ public class GapAwarePdfExtractorUtil {
 
         for (WebElement parent : parentElements) {
             List<WebElement> pdfList = parent.findElements(By.cssSelector(cssSelector));
-            if (pdfList.size() > 0) {
+            if (!pdfList.isEmpty()) {
                 results.add(pdfList.get(0));
             } else {
                 results.add(null);

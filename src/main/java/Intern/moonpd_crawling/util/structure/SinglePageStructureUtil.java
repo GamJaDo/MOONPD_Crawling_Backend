@@ -82,18 +82,6 @@ public class SinglePageStructureUtil {
             for (int currentPage = 1; currentPage <= totalPage; currentPage++) {
                 Thread.sleep(500);
 
-                pdfElements = elementFinderUtil.getPdfElements(webDriver, lstType, extendedPdfType,
-                    extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType, pdfType,
-                    parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
-                    childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType);
-
-                /*
-                if (pdfLinks.isEmpty()) {
-                    throw new WebDriverException(
-                        "No PDF links found for identifier: " + parentPdfIdentifier + " or "
-                            + childPdfIdentifier);
-                }
-                */
                 titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, extendedTitleType,
                     extendedTitleIdentifier, extendedTitleTagType, extendedTitleSelectorType, titleType,
                     parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
@@ -103,6 +91,19 @@ public class SinglePageStructureUtil {
                     throw new WebDriverException(
                         "No titles found for identifier: " + parentTitleIdentifier + " or "
                             + childTitleIdentifier);
+                }
+                */
+
+                pdfElements = elementFinderUtil.getPdfElements(webDriver, lstType, extendedPdfType,
+                    extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType, pdfType,
+                    parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
+                    childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType, titleElements.size());
+
+                /*
+                if (pdfLinks.isEmpty()) {
+                    throw new WebDriverException(
+                        "No PDF links found for identifier: " + parentPdfIdentifier + " or "
+                            + childPdfIdentifier);
                 }
                 */
 /*
@@ -134,7 +135,11 @@ public class SinglePageStructureUtil {
 
                 for (int i = 0; i < pdfElements.size(); i++) {
 
+                    if (pdfElements.get(i) == null){
+                        continue;
+                    }
                     String pdfLink = crawlPdfConfluenceUtil.crawlPdf(pageUrl, pdfType, pdfElements, i);
+
                     String titleText = titleElements.get(i).getText();
 
                     if (crawlingDataRepository.existsByPdfUrl(pdfLink)) {

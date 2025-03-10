@@ -18,11 +18,13 @@ public class ElementFinderUtil {
 
     private final ElementExtendedUtil elementExtendedUtil;
     private final ElementFilterUtil elementFilterUtil;
+    private final GapAwarePdfExtractorUtil gapAwarePdfExtractorUtil;
 
-    public ElementFinderUtil(ElementExtendedUtil elementExtendedUtil,
-        ElementFilterUtil elementFilterUtil) {
+    public ElementFinderUtil(ElementExtendedUtil elementExtendedUtil, ElementFilterUtil elementFilterUtil,
+        GapAwarePdfExtractorUtil gapAwarePdfExtractorUtil) {
         this.elementExtendedUtil = elementExtendedUtil;
         this.elementFilterUtil = elementFilterUtil;
+        this.gapAwarePdfExtractorUtil = gapAwarePdfExtractorUtil;
     }
 
     public List<WebElement> getLstElements(WebDriver webDriver, ExtendedType extendedLstType,
@@ -72,21 +74,38 @@ public class ElementFinderUtil {
         ExtendedType extendedPdfType, String extendedPdfIdentifier, TagType extendedPdfTagType,
         SelectorType extendedPdfSelectorType, LinkType pdfType, String parentPdfIdentifier,
         TagType parentPdfTagType, SelectorType parentPdfSelectorType, String childPdfIdentifier,
-        TagType childPdfTagType, SelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType) {
+        TagType childPdfTagType, SelectorType childPdfSelectorType, int pdfOrdinalNumber, TitleType titleType,
+        int titleCnt) {
+
+        List<WebElement> pdfElements = null;
 
         String cssSelector = getCssSelector(parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType,
             childPdfIdentifier, childPdfTagType, childPdfSelectorType, pdfOrdinalNumber);
 
-        List<WebElement> pdfElements = webDriver.findElements(By.cssSelector(cssSelector));
-        if (extendedPdfType.equals(ExtendedType.ON)) {
-            pdfElements = elementExtendedUtil.getExtendedElements(extendedPdfIdentifier,
-                extendedPdfTagType, extendedPdfSelectorType, pdfElements);
-        }
-        if (!lstType.equals(LinkType.NONE) && !titleType.equals(TitleType.OUT)) {
-            pdfElements = elementExtendedUtil.getDescendantPdfTextElements(pdfElements);
-        }
+        if (titleCnt != 0) {
 
-        return elementFilterUtil.getPdfElementWithLink(pdfType, pdfElements);
+            String extendedCssSelector = getCssSelector("", TagType.NONE, SelectorType.NONE,
+                extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType, 0);
+            String parentCssSelector = getCssSelector("", TagType.NONE, SelectorType.NONE,
+                parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, 0);
+
+            pdfElements = gapAwarePdfExtractorUtil.getPdfElementsFromBlogWrap(webDriver, extendedCssSelector,
+                parentCssSelector, cssSelector);
+
+            return pdfElements;
+        } else {
+            pdfElements = webDriver.findElements(By.cssSelector(cssSelector));
+
+            if (extendedPdfType.equals(ExtendedType.ON)) {
+                pdfElements = elementExtendedUtil.getExtendedElements(extendedPdfIdentifier,
+                    extendedPdfTagType, extendedPdfSelectorType, pdfElements);
+            }
+            if (!lstType.equals(LinkType.NONE) && !titleType.equals(TitleType.OUT)) {
+                pdfElements = elementExtendedUtil.getDescendantPdfTextElements(pdfElements);
+            }
+
+            return elementFilterUtil.getPdfElementWithLink(pdfType, pdfElements);
+        }
     }
 
     public List<WebElement> getTitleElements(WebDriver webDriver, LinkType lstType,

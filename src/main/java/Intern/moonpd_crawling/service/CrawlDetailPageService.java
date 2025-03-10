@@ -53,19 +53,19 @@ public class CrawlDetailPageService {
             webDriver.get(lstLink);
             Thread.sleep(500);
 
-            pdfElements = elementFinderUtil.getPdfElements(webDriver, lstType, extendedPdfType,
-                extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType,
-                pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
-                childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType);
-
-            //System.out.println("pdfElements: " + pdfElements);
-
             if (!titleType.equals(TitleType.OUT)) {
                 titleElements = elementFinderUtil.getTitleElements(webDriver, lstType, extendedTitleType,
                     extendedTitleIdentifier, extendedTitleTagType, extendedTitleSelectorType, titleType,
                     parentTitleIdentifier, parentTitleTagType, parentTitleSelectorType, childTitleIdentifier,
                     childTitleTagType, childTitleSelectorType, titleOrdinalNumber);
             }
+
+            pdfElements = elementFinderUtil.getPdfElements(webDriver, lstType, extendedPdfType,
+                extendedPdfIdentifier, extendedPdfTagType, extendedPdfSelectorType,
+                pdfType, parentPdfIdentifier, parentPdfTagType, parentPdfSelectorType, childPdfIdentifier,
+                childPdfTagType, childPdfSelectorType, pdfOrdinalNumber, titleType, 0);
+
+            //System.out.println("pdfElements: " + pdfElements);
 
             if (!pdfElements.isEmpty()) {
                 for (int i = 0; i < pdfElements.size(); i++) {
